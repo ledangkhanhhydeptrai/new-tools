@@ -1,0 +1,8 @@
+2026-09-05 12:05:29,904 | INFO | ======================================================================
+2026-09-05 12:05:29,905 | INFO | GOOGLE MAPS ADDRESS CHECKER
+2026-09-05 12:05:29,905 | INFO | ======================================================================
+2026-09-05 12:05:29,905 | INFO | INPUT_FILE  = D:\Product-Google-Maps\input\hotels_export_google_maps_result.xlsx
+2026-09-05 12:05:29,905 | INFO | OUTPUT_FILE = D:\Product-Google-Maps\output\hotels_export_google_maps_checked.xlsx
+2026-09-05 12:05:29,905 | INFO | Existing output found.
+2026-09-05 12:05:29,906 | INFO | RESUME from: D:\Product-Google-Maps\output\hotels_export_google_maps_checked.xlsx
+2026-09-05 12:05:30,420 | INFO | Total rows: 1926

@@ -13,6 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent
 
 INPUT_DIR = BASE_DIR / "input"
 OUTPUT_DIR = BASE_DIR / "output"
+INPUT_FILE = INPUT_DIR / "hotels_export_google_maps_result.xlsx"
+OUTPUT_FILE = OUTPUT_DIR / "hotels_export_google_maps_checked.xlsx"
 CACHE_DIR = BASE_DIR / "cache"
 LOG_DIR = BASE_DIR / "logs"
 

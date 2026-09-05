@@ -1,5 +1,19 @@
 # ============================================================
 # app/excel.py
+# Google Maps Excel processor
+#
+# FLOW:
+#   1. Existing Google Maps URL -> HARD FAST PATH -> FOUND
+#   2. Cache -> validate
+#   3. JSON -> validate
+#   4. Real Google Maps Search
+#
+# IMPORTANT:
+#   - Existing Excel Maps URL is trusted immediately.
+#   - Existing Excel URL is NEVER navigated or re-validated.
+#   - Cache / JSON URL MUST be validated.
+#   - Successful search result is NOT validated twice.
+#   - FOUND is NEVER overwritten by MISSING.
 # ============================================================
 
 import json
@@ -12,6 +26,7 @@ from config import (
     TITLE_COLUMNS,
     ADDRESS_COLUMNS,
     URL_COLUMNS,
+    GOOGLE_MAPS_COLUMNS,
     CACHE_DIR,
     CACHE_FILE_NAME,
     RESULT_SUFFIX,
@@ -27,15 +42,13 @@ from config import (
 
 from .browser import GoogleMapsBrowser
 from .cache import GoogleMapsCache
-
-from .helpers import (
-    find_column,
-    find_google_maps_column,
-)
-
 from .matcher import find_best_match
 
-from .search import GoogleMapsSearchEngine
+from .search import (
+    GoogleMapsSearchEngine,
+    verify_candidate_address,
+    is_google_maps_place_url,
+)
 
 from .utils import (
     safe_text,
@@ -49,218 +62,91 @@ from .utils import (
 
 
 # ============================================================
-# COLUMN
+# COLUMN HELPERS
 # ============================================================
 
 
-def find_missing_reason_column(df):
+def find_column(df, candidates):
     """
-    Tìm column missing/status một cách linh hoạt.
+    Tìm column theo tên một cách linh hoạt.
 
-    Hỗ trợ:
-        missing_reason
-        Missing Reason
-        MissingReason
-        reason
-        status
+    Ví dụ:
+
+        Google Maps URL
+        google_maps_url
+        GoogleMapsURL
+
+    đều có thể match nếu normalize_name()
+    xử lý tương ứng.
     """
 
-    normalized_columns = {}
-
-    for column in df.columns:
-        key = normalize_name(column)
-        normalized_columns[key] = column
-
-    candidates = (
-        "missingreason",
-        "reason",
-        "status",
-    )
+    normalized = {normalize_name(column): column for column in df.columns}
 
     for candidate in candidates:
-        if candidate in normalized_columns:
-            return normalized_columns[candidate]
+        key = normalize_name(candidate)
+
+        if key in normalized:
+            return normalized[key]
 
     return None
 
 
-# ============================================================
-# GOOGLE MAPS STATE
-# ============================================================
-
-
-def normalize_maps_value(value):
+def _record_value(record, *keys):
     """
-    Chuẩn hóa Google Maps URL.
-
-    Trả về:
-        Google Maps URL sạch nếu hợp lệ.
-        "" nếu không hợp lệ.
-
-    SOURCE OF TRUTH:
-        Chỉ cần là Google Maps URL hợp lệ.
-        Không bắt buộc /maps/place/.
+    Lấy giá trị đầu tiên không rỗng từ record.
     """
 
-    text = safe_text(value)
+    for key in keys:
+        value = safe_text(record.get(key))
 
-    if not text:
-        return ""
-
-    try:
-        cleaned = clean_google_maps_url(text)
-    except Exception:
-        cleaned = text.strip()
-
-    cleaned = safe_text(cleaned)
-
-    if not cleaned:
-        return ""
-
-    if is_google_maps_url(cleaned):
-        return cleaned
+        if value:
+            return value
 
     return ""
 
 
-def has_google_maps(value):
-    """
-    Kiểm tra row có Google Maps URL hay chưa.
-
-    QUY TẮC:
-        Có Google Maps URL
-            -> FOUND
-
-        Không có
-            -> có thể MISSING
-
-    Không bắt buộc URL phải là /maps/place/.
-    """
-
-    return bool(normalize_maps_value(value))
-
-
 # ============================================================
-# MISSING REASON
+# EXISTING GOOGLE MAPS URL
 # ============================================================
 
 
-def clear_missing_reason_for_found(
-    df,
-    google_maps_col,
-):
+def _get_existing_maps_url(existing_maps, existing_url):
     """
-    Nếu row đã có Google Maps URL:
+    Lấy Google Maps Place URL đã có sẵn.
 
-        -> clear missing reason
+    Ưu tiên:
+        1. google_maps_url
+        2. url
 
-    Đây là SOURCE OF TRUTH cuối cùng.
-    """
+    HARD FAST PATH:
 
-    reason_col = find_missing_reason_column(df)
+        Nếu URL là Google Maps Place URL hợp lệ
+        -> trả về ngay.
 
-    if not reason_col:
-        return
-
-    maps_mask = df[google_maps_col].apply(has_google_maps)
-
-    df.loc[
-        maps_mask,
-        reason_col,
-    ] = ""
-
-
-def set_missing_reason(
-    df,
-    index,
-    google_maps_col,
-    reason="",
-):
-    """
-    Đồng bộ missing reason của một row.
-
-    Nếu đã có Google Maps:
-        -> LUÔN clear reason.
-
-    Nếu chưa có Google Maps:
-        -> có thể ghi reason.
+    KHÔNG navigate.
+    KHÔNG validate.
+    KHÔNG search.
     """
 
-    reason_col = find_missing_reason_column(df)
+    # --------------------------------------------------------
+    # 1. google_maps_url
+    # --------------------------------------------------------
 
-    if not reason_col:
-        return
+    existing_maps = clean_google_maps_url(safe_text(existing_maps))
 
-    maps_url = normalize_maps_value(
-        df.at[
-            index,
-            google_maps_col,
-        ]
-    )
+    if existing_maps and is_google_maps_place_url(existing_maps):
+        return existing_maps
 
-    if maps_url:
-        df.at[
-            index,
-            reason_col,
-        ] = ""
+    # --------------------------------------------------------
+    # 2. url
+    # --------------------------------------------------------
 
-        return
+    existing_url = clean_google_maps_url(safe_text(existing_url))
 
-    if reason:
-        df.at[
-            index,
-            reason_col,
-        ] = safe_text(reason)
+    if existing_url and is_google_maps_place_url(existing_url):
+        return existing_url
 
-
-def get_missing_mask(
-    df,
-    google_maps_col,
-):
-    """
-    Tạo mask MISSING trực tiếp từ google_maps.
-
-    google_maps có:
-        -> False
-
-    google_maps không có:
-        -> True
-    """
-
-    return ~df[google_maps_col].apply(has_google_maps)
-
-
-def get_missing_dataframe(
-    df,
-    google_maps_col,
-):
-    """
-    Trả về DataFrame chỉ chứa row
-    thực sự chưa có Google Maps URL.
-    """
-
-    mask = get_missing_mask(
-        df,
-        google_maps_col,
-    )
-
-    return df.loc[mask].copy()
-
-
-def get_missing_indexes(
-    df,
-    google_maps_col,
-):
-    """
-    Lấy index các row thực sự MISSING.
-    """
-
-    mask = get_missing_mask(
-        df,
-        google_maps_col,
-    )
-
-    return list(df.index[mask])
+    return ""
 
 
 # ============================================================
@@ -268,15 +154,11 @@ def get_missing_indexes(
 # ============================================================
 
 
-def load_json_lookup(
-    base_dir,
-    logger=None,
-):
+def load_json_lookup(base_dir, logger=None):
     """
-    Load các JSON hiện có trong folder Excel.
+    Load tất cả JSON trong cùng folder với Excel.
 
-    Mục đích:
-        Tận dụng Maps URL đã crawl trước đó.
+    Chỉ lấy Google Maps Place URL hợp lệ.
     """
 
     lookup = {
@@ -291,20 +173,15 @@ def load_json_lookup(
     if not os.path.isdir(base_dir):
         return lookup
 
-    json_files = []
-
     for filename in os.listdir(base_dir):
-        if filename.lower().endswith(".json"):
-            json_files.append(
-                os.path.join(
-                    base_dir,
-                    filename,
-                )
-            )
+        if not filename.lower().endswith(".json"):
+            continue
 
-    total = 0
+        json_path = os.path.join(
+            base_dir,
+            filename,
+        )
 
-    for json_path in json_files:
         try:
             with open(
                 json_path,
@@ -315,40 +192,39 @@ def load_json_lookup(
 
         except Exception as error:
             if logger:
-                logger.warning(f"Cannot read JSON {json_path}: {error}")
+                logger.warning(
+                    "Cannot read JSON %s: %s",
+                    json_path,
+                    error,
+                )
 
             continue
 
         # ----------------------------------------------------
-        # Normalize possible structures
+        # JSON dạng object chứa list
         # ----------------------------------------------------
 
         if isinstance(data, dict):
-            candidates = [
-                data.get("data"),
-                data.get("results"),
-                data.get("items"),
-                data.get("businesses"),
-                data.get("hotels"),
-                data.get("places"),
-            ]
-
             data = next(
                 (
-                    item
-                    for item in candidates
+                    data.get(key)
+                    for key in (
+                        "data",
+                        "results",
+                        "items",
+                        "businesses",
+                        "hotels",
+                        "places",
+                    )
                     if isinstance(
-                        item,
+                        data.get(key),
                         list,
                     )
                 ),
                 [],
             )
 
-        if not isinstance(
-            data,
-            list,
-        ):
+        if not isinstance(data, list):
             continue
 
         # ----------------------------------------------------
@@ -356,42 +232,43 @@ def load_json_lookup(
         # ----------------------------------------------------
 
         for record in data:
-            if not isinstance(
+            if not isinstance(record, dict):
+                continue
+
+            title = _record_value(
                 record,
-                dict,
-            ):
+                "title",
+                "name",
+                "hotel_name",
+                "business_name",
+            )
+
+            address = _record_value(
+                record,
+                "address",
+                "full_address",
+                "location",
+            )
+
+            maps_url = _record_value(
+                record,
+                "google_maps_url",
+                "maps_url",
+                "google_map_url",
+                "map_url",
+                "url",
+            )
+
+            maps_url = clean_google_maps_url(maps_url)
+
+            # ------------------------------------------------
+            # Chỉ nhận Google Maps Place URL
+            # ------------------------------------------------
+
+            if not maps_url or not is_google_maps_place_url(maps_url):
                 continue
-
-            title = safe_text(
-                record.get("title")
-                or record.get("name")
-                or record.get("hotel_name")
-                or record.get("business_name")
-            )
-
-            address = safe_text(
-                record.get("address")
-                or record.get("full_address")
-                or record.get("location")
-            )
-
-            maps_url = safe_text(
-                record.get("google_maps_url")
-                or record.get("maps_url")
-                or record.get("google_map_url")
-                or record.get("map_url")
-                or record.get("url")
-            )
-
-            maps_url = normalize_maps_value(maps_url)
-
-            if not maps_url:
-                continue
-
-            total += 1
 
             n_title = normalize_name(title)
-
             n_address = normalize_name(address)
 
             combined = f"{n_title}|{n_address}"
@@ -405,17 +282,29 @@ def load_json_lookup(
 
             lookup["items"].append(item)
 
+            # ------------------------------------------------
+            # Combined lookup
+            # ------------------------------------------------
+
             if combined != "|":
                 lookup["combined"].setdefault(
                     combined,
                     maps_url,
                 )
 
+            # ------------------------------------------------
+            # Title lookup
+            # ------------------------------------------------
+
             if n_title:
                 lookup["title"].setdefault(
                     n_title,
                     maps_url,
                 )
+
+            # ------------------------------------------------
+            # Address lookup
+            # ------------------------------------------------
 
             if n_address:
                 lookup["address"].setdefault(
@@ -424,20 +313,20 @@ def load_json_lookup(
                 )
 
     if logger:
-        logger.info(f"JSON lookup loaded: {total} Maps URLs")
+        logger.info(
+            "JSON lookup loaded: %s Maps URLs",
+            len(lookup["items"]),
+        )
 
     return lookup
 
 
 # ============================================================
-# SAVE EXCEL
+# EXCEL SAVE
 # ============================================================
 
 
-def safe_save_excel(
-    df,
-    output_path,
-):
+def safe_save_excel(df, output_path):
     """
     Atomic Excel save.
     """
@@ -481,89 +370,130 @@ def safe_save_excel(
 
 
 # ============================================================
-# SAVE MISSING
+# CACHE / JSON VALIDATION
 # ============================================================
 
 
-def safe_save_missing(
-    df,
-    google_maps_col,
-    missing_path,
+def _validate_existing_url(
+    search_engine,
+    page,
+    context,
+    title,
+    address,
+    maps_url,
+    logger=None,
 ):
     """
-    Lưu danh sách MISSING.
+    Validate URL từ CACHE / JSON.
 
-    SOURCE OF TRUTH:
-        google_maps
+    KHÁC với Excel existing URL.
 
-    Có google_maps:
-        -> không missing
+    Cache / JSON vẫn phải validate vì có thể:
 
-    Không có google_maps:
-        -> missing
+        - stale
+        - sai hotel
+        - sai address
+        - URL cũ
+        - record bị duplicate
+
+    Existing Excel URL KHÔNG đi qua function này.
     """
 
-    clear_missing_reason_for_found(
-        df,
-        google_maps_col,
+    maps_url = clean_google_maps_url(maps_url)
+
+    if not maps_url or not is_google_maps_place_url(maps_url):
+        return None, page
+
+    candidate = {
+        "url": maps_url,
+        "google_maps_url": maps_url,
+        "title": title,
+        "texts": [],
+    }
+
+    verified = verify_candidate_address(
+        page,
+        context,
+        candidate,
+        title,
+        address,
+        logger=logger,
     )
 
-    missing_df = get_missing_dataframe(
-        df,
-        google_maps_col,
+    verified_page = verified.get(
+        "page",
+        page,
     )
 
-    if len(missing_df) == 0:
-        try:
-            if os.path.exists(missing_path):
-                os.remove(missing_path)
+    search_engine.update_page(verified_page)
 
-        except Exception:
-            pass
+    if verified.get("success"):
+        # ----------------------------------------------------
+        # Đảm bảo URL luôn được lấy đúng
+        # ----------------------------------------------------
 
-        return 0
+        verified_url = (
+            verified.get("google_maps_url") or verified.get("url") or maps_url
+        )
 
-    safe_save_excel(
-        missing_df,
-        missing_path,
+        verified_url = clean_google_maps_url(verified_url)
+
+        verified["google_maps_url"] = verified_url
+        verified["url"] = verified_url
+
+        return (
+            verified,
+            verified_page,
+        )
+
+    if logger:
+        logger.debug(
+            "Reused Maps URL rejected: url=%r address=%r score=%.3f reason=%s",
+            maps_url,
+            verified.get(
+                "address",
+                "",
+            ),
+            verified.get(
+                "address_score",
+                0.0,
+            ),
+            verified.get(
+                "reason",
+                "",
+            ),
+        )
+
+    return (
+        None,
+        verified_page,
     )
-
-    return len(missing_df)
 
 
 # ============================================================
-# APPLY MAPS URL
+# WRITE FOUND RESULT
 # ============================================================
 
 
-def apply_google_maps_url(
+def _write_found_result(
     df,
     index,
     google_maps_col,
     url_col,
     maps_url,
-    existing_url="",
+    existing_url,
 ):
     """
-    Ghi Google Maps URL vào DataFrame.
+    Ghi kết quả FOUND.
 
-    Khi ghi thành công:
-
-        google_maps = URL
-
-        missing_reason = ""
-
-    Google Maps là SOURCE OF TRUTH.
+    Không overwrite URL gốc nếu URL gốc
+    đã là Google Maps URL.
     """
 
-    maps_url = normalize_maps_value(maps_url)
+    maps_url = clean_google_maps_url(maps_url)
 
     if not maps_url:
         return False
-
-    # --------------------------------------------------------
-    # GOOGLE MAPS
-    # --------------------------------------------------------
 
     df.at[
         index,
@@ -571,121 +501,20 @@ def apply_google_maps_url(
     ] = maps_url
 
     # --------------------------------------------------------
-    # URL
-    #
-    # Nếu URL hiện tại chưa phải Google Maps
-    # thì ghi Maps URL vào URL.
-    #
-    # Nếu URL hiện tại là website chính thức
-    # thì giữ nguyên.
+    # Chỉ điền URL nếu URL hiện tại chưa phải Maps URL
     # --------------------------------------------------------
 
-    if not is_google_maps_url(existing_url):
+    if not is_google_maps_url(safe_text(existing_url)):
         df.at[
             index,
             url_col,
         ] = maps_url
 
-    # --------------------------------------------------------
-    # CLEAR MISSING REASON
-    # --------------------------------------------------------
-
-    set_missing_reason(
-        df=df,
-        index=index,
-        google_maps_col=google_maps_col,
-        reason="",
-    )
-
     return True
 
 
 # ============================================================
-# SEARCH RESULT NORMALIZATION
-# ============================================================
-
-
-def normalize_search_result(
-    result,
-):
-    """
-    Chuẩn hóa kết quả từ search.py.
-
-    SOURCE OF TRUTH:
-
-        Nếu tìm thấy Maps URL
-            -> luôn coi là success.
-
-    Không phụ thuộc success flag
-    của search.py.
-    """
-
-    if not isinstance(
-        result,
-        dict,
-    ):
-        return {}
-
-    maps_url = normalize_maps_value(
-        result.get("google_maps_url")
-        or result.get("url")
-        or result.get("maps_url")
-        or result.get("google_map_url")
-    )
-
-    if maps_url:
-        result["google_maps_url"] = maps_url
-
-        result["url"] = maps_url
-
-        result["success"] = True
-
-        # Nếu search.py chưa set reason
-        if not safe_text(result.get("reason")):
-            result["reason"] = "GOOGLE_MAPS_URL"
-
-    return result
-
-
-# ============================================================
-# GET SEARCH FAILURE REASON
-# ============================================================
-
-
-def get_search_failure_reason(
-    result,
-):
-    """
-    Lấy reason chính xác từ search result.
-
-    Ưu tiên:
-
-        1. reason
-        2. error
-        3. SEARCH_FAILED
-    """
-
-    if not isinstance(
-        result,
-        dict,
-    ):
-        return "SEARCH_FAILED"
-
-    reason = safe_text(result.get("reason"))
-
-    if reason:
-        return reason
-
-    error = safe_text(result.get("error"))
-
-    if error:
-        return error
-
-    return "SEARCH_FAILED"
-
-
-# ============================================================
-# PROCESS
+# PROCESS EXCEL
 # ============================================================
 
 
@@ -695,44 +524,51 @@ def process_excel(
     logger=None,
 ):
     """
-    Main Google Maps Excel processor.
+    Main Excel processor.
 
-    SOURCE OF TRUTH:
+    Priority:
 
-        google_maps
+        1. Existing Excel Maps URL
+        2. Cache
+        3. JSON
+        4. Real Google Maps search
 
-    Nếu row có google_maps:
-        -> FOUND
-        -> không search
-        -> không MISSING
+    Existing Excel Maps URL:
 
-    Nếu row không có google_maps:
-        -> mới search
-        -> nếu không tìm được -> MISSING
+        -> HARD FAST PATH
+        -> FOUND immediately
+        -> NEVER navigate
+        -> NEVER validate
+        -> NEVER search
     """
+
+    # ========================================================
+    # FILE
+    # ========================================================
 
     file_path = os.path.abspath(str(file_path))
 
     if not os.path.isfile(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
 
-    # ========================================================
-    # LOAD
-    # ========================================================
+    print("\n" + "=" * 75)
 
-    print()
-    print("=" * 75)
-    print("GOOGLE MAPS TOOL")
+    print("GOOGLE MAPS TOOL - STRICT ADDRESS VALIDATION")
+
     print("=" * 75)
 
     print(f"📄 Input: {file_path}")
+
+    # ========================================================
+    # READ EXCEL
+    # ========================================================
 
     df = pd.read_excel(file_path)
 
     print(f"📊 Rows: {len(df)}")
 
     # ========================================================
-    # COLUMNS
+    # FIND COLUMNS
     # ========================================================
 
     title_col = find_column(
@@ -750,7 +586,10 @@ def process_excel(
         URL_COLUMNS,
     )
 
-    google_maps_col = find_google_maps_column(df)
+    google_maps_col = find_column(
+        df,
+        GOOGLE_MAPS_COLUMNS,
+    )
 
     if not title_col:
         raise ValueError("Cannot find title/name column.")
@@ -758,80 +597,33 @@ def process_excel(
     if not address_col:
         raise ValueError("Cannot find address column.")
 
-    # --------------------------------------------------------
-    # URL column
-    # --------------------------------------------------------
+    # ========================================================
+    # CREATE MISSING COLUMNS
+    # ========================================================
 
     if not url_col:
         url_col = "url"
 
         df[url_col] = ""
 
-    # --------------------------------------------------------
-    # Google Maps column
-    # --------------------------------------------------------
-
     if not google_maps_col:
         google_maps_col = "google_maps_url"
 
         df[google_maps_col] = ""
 
-    # ========================================================
-    # NORMALIZE EXISTING GOOGLE MAPS
-    # ========================================================
+    print(f"📝 Title column       : {title_col}")
 
-    normalized_existing_maps = df[google_maps_col].apply(normalize_maps_value)
+    print(f"📍 Address column     : {address_col}")
 
-    df[google_maps_col] = normalized_existing_maps
+    print(f"🔗 URL column         : {url_col}")
 
-    # ========================================================
-    # URL COLUMN -> GOOGLE MAPS
-    #
-    # Nếu URL ban đầu đã là Google Maps
-    # nhưng google_maps đang rỗng,
-    # chuyển nó sang google_maps.
-    # ========================================================
-
-    for index in df.index:
-        existing_maps = normalize_maps_value(
-            df.at[
-                index,
-                google_maps_col,
-            ]
-        )
-
-        if existing_maps:
-            continue
-
-        existing_url = safe_text(
-            df.at[
-                index,
-                url_col,
-            ]
-        )
-
-        existing_url_maps = normalize_maps_value(existing_url)
-
-        if existing_url_maps:
-            df.at[
-                index,
-                google_maps_col,
-            ] = existing_url_maps
+    print(f"🗺️ Google Maps column : {google_maps_col}")
 
     # ========================================================
-    # CLEAR OLD MISSING REASON
+    # PATHS
     # ========================================================
 
-    clear_missing_reason_for_found(
-        df,
-        google_maps_col,
-    )
-
-    # ========================================================
-    # OUTPUT
-    # ========================================================
-
-    input_path = os.path.splitext(str(file_path))[0]
+    input_path = os.path.splitext(file_path)[0]
 
     result_path = input_path + RESULT_SUFFIX
 
@@ -839,11 +631,11 @@ def process_excel(
 
     report_path = input_path + REPORT_SUFFIX
 
+    cache_path = CACHE_DIR / CACHE_FILE_NAME
+
     # ========================================================
     # CACHE
     # ========================================================
-
-    cache_path = CACHE_DIR / CACHE_FILE_NAME
 
     cache = GoogleMapsCache(cache_path)
 
@@ -854,7 +646,7 @@ def process_excel(
     # ========================================================
 
     json_lookup = load_json_lookup(
-        os.path.dirname(str(file_path)),
+        os.path.dirname(file_path),
         logger,
     )
 
@@ -880,32 +672,39 @@ def process_excel(
     )
 
     # ========================================================
-    # STATS
+    # COUNTERS
     # ========================================================
 
     total_rows = len(df)
 
     processed = 0
     skipped = 0
-
     cache_hits = 0
     json_hits = 0
-
     searches = 0
     found = 0
     missing = 0
-
     recovery_count = 0
+
+    missing_indexes = []
+
+    # ========================================================
+    # TIMER
+    # ========================================================
 
     start_time = time.time()
 
     try:
         # ====================================================
-        # LOOP
+        # MAIN LOOP
         # ====================================================
 
         for index in df.index:
             processed += 1
+
+            # ------------------------------------------------
+            # INPUT VALUES
+            # ------------------------------------------------
 
             title = safe_text(
                 df.at[
@@ -921,7 +720,7 @@ def process_excel(
                 ]
             )
 
-            existing_maps = normalize_maps_value(
+            existing_maps = safe_text(
                 df.at[
                     index,
                     google_maps_col,
@@ -935,72 +734,111 @@ def process_excel(
                 ]
             )
 
-            # =================================================
-            # PRINT
-            # =================================================
+            # ------------------------------------------------
+            # HEADER
+            # ------------------------------------------------
 
-            print()
-
-            print("-" * 75)
+            print("\n" + "-" * 75)
 
             print(f"[{processed}/{total_rows}] {title}")
 
             print(f"📍 {address}")
 
             # =================================================
-            # 1. EXISTING GOOGLE MAPS
+            # EMPTY INPUT
             # =================================================
 
-            if existing_maps:
-                df.at[
-                    index,
-                    google_maps_col,
-                ] = existing_maps
+            if not title or not address:
+                missing += 1
 
-                set_missing_reason(
-                    df=df,
-                    index=index,
-                    google_maps_col=google_maps_col,
-                    reason="",
-                )
+                missing_indexes.append(index)
 
-                skipped += 1
-
-                print("⚡ Existing google_maps -> SKIP")
-
-                print(f"🔗 {existing_maps}")
+                print("❌ MISSING - title/address empty")
 
                 continue
 
             # =================================================
-            # 2. URL COLUMN IS GOOGLE MAPS
+            # 1. EXISTING EXCEL MAPS URL
+            #
+            # HARD FAST PATH
+            #
+            # NO:
+            #   navigation
+            #   validation
+            #   cache
+            #   JSON
+            #   search
+            #   delay
             # =================================================
 
-            existing_url_maps = normalize_maps_value(existing_url)
+            reusable_url = _get_existing_maps_url(
+                existing_maps,
+                existing_url,
+            )
 
-            if existing_url_maps:
-                df.at[
-                    index,
+            # -------------------------------------------------
+            # DEBUG
+            # -------------------------------------------------
+
+            if logger:
+                logger.info(
+                    "Existing URL check | "
+                    "maps_col=%s | "
+                    "url_col=%s | "
+                    "maps=%r | "
+                    "url=%r | "
+                    "reusable=%r",
                     google_maps_col,
-                ] = existing_url_maps
+                    url_col,
+                    existing_maps,
+                    existing_url,
+                    reusable_url,
+                )
 
-                set_missing_reason(
+            if reusable_url:
+                # ---------------------------------------------
+                # CLEAN URL
+                # ---------------------------------------------
+
+                reusable_url = clean_google_maps_url(reusable_url)
+
+                # ---------------------------------------------
+                # WRITE RESULT
+                # ---------------------------------------------
+
+                wrote = _write_found_result(
                     df=df,
                     index=index,
                     google_maps_col=google_maps_col,
-                    reason="",
+                    url_col=url_col,
+                    maps_url=reusable_url,
+                    existing_url=existing_url,
                 )
 
-                skipped += 1
+                if wrote:
+                    # -----------------------------------------
+                    # COUNTERS
+                    # -----------------------------------------
 
-                print("⚡ Existing URL is Google Maps -> SKIP")
+                    found += 1
+                    skipped += 1
 
-                print(f"🔗 {existing_url_maps}")
+                    # -----------------------------------------
+                    # OUTPUT
+                    # -----------------------------------------
 
-                continue
+                    print("⚡ EXISTING GOOGLE MAPS URL -> FOUND IMMEDIATELY")
+
+                    print(f"🔗 {reusable_url}")
+
+                    # -----------------------------------------
+                    # ABSOLUTE STOP FOR THIS ROW
+                    # -----------------------------------------
+
+                    continue
 
             # =================================================
-            # 3. GOOGLE MAPS CACHE
+            # 2. CACHE
             # =================================================
 
             cached = cache.get(
@@ -1009,34 +847,54 @@ def process_excel(
             )
 
             if cached:
-                maps_url = normalize_maps_value(
-                    cached.get("google_maps_url")
-                    or cached.get("url")
-                    or cached.get("maps_url")
-                    or cached.get("google_map_url")
+                maps_url = clean_google_maps_url(
+                    cached.get(
+                        "google_maps_url",
+                        "",
+                    )
                 )
 
-                if maps_url:
-                    apply_google_maps_url(
-                        df=df,
-                        index=index,
-                        google_maps_col=google_maps_col,
-                        url_col=url_col,
-                        maps_url=maps_url,
-                        existing_url=existing_url,
+                verified, page = _validate_existing_url(
+                    search_engine,
+                    page,
+                    context,
+                    title,
+                    address,
+                    maps_url,
+                    logger,
+                )
+
+                if verified:
+                    good_url = clean_google_maps_url(
+                        verified.get("google_maps_url")
+                        or verified.get(
+                            "url",
+                            "",
+                        )
                     )
 
-                    found += 1
-                    cache_hits += 1
+                    if good_url and is_google_maps_place_url(good_url):
+                        wrote = _write_found_result(
+                            df=df,
+                            index=index,
+                            google_maps_col=google_maps_col,
+                            url_col=url_col,
+                            maps_url=good_url,
+                            existing_url=existing_url,
+                        )
 
-                    print("💾 Cache HIT")
+                        if wrote:
+                            found += 1
+                            cache_hits += 1
 
-                    print(f"🔗 {maps_url}")
+                            print("💾 Cache HIT + ADDRESS VALIDATED")
 
-                    continue
+                            print(f"🔗 {good_url}")
+
+                            continue
 
             # =================================================
-            # 4. JSON LOOKUP
+            # 3. JSON LOOKUP
             # =================================================
 
             match = find_best_match(
@@ -1046,95 +904,103 @@ def process_excel(
             )
 
             if match:
-                maps_url = normalize_maps_value(
+                maps_url = clean_google_maps_url(
                     match.get(
                         "url",
                         "",
                     )
                 )
 
-                if maps_url:
-                    apply_google_maps_url(
-                        df=df,
-                        index=index,
-                        google_maps_col=google_maps_col,
-                        url_col=url_col,
-                        maps_url=maps_url,
-                        existing_url=existing_url,
+                verified, page = _validate_existing_url(
+                    search_engine,
+                    page,
+                    context,
+                    title,
+                    address,
+                    maps_url,
+                    logger,
+                )
+
+                if verified:
+                    good_url = clean_google_maps_url(
+                        verified.get("google_maps_url")
+                        or verified.get(
+                            "url",
+                            "",
+                        )
                     )
 
-                    found += 1
-                    json_hits += 1
+                    if good_url and is_google_maps_place_url(good_url):
+                        wrote = _write_found_result(
+                            df=df,
+                            index=index,
+                            google_maps_col=google_maps_col,
+                            url_col=url_col,
+                            maps_url=good_url,
+                            existing_url=existing_url,
+                        )
 
-                    cache.set(
-                        title,
-                        address,
-                        maps_url,
-                        confidence="HIGH",
-                        name_score=100,
-                        address_score=100,
-                        method=match.get(
-                            "method",
-                            "JSON",
-                        ),
-                    )
+                        if wrote:
+                            found += 1
+                            json_hits += 1
 
-                    print(f"💾 JSON MATCH -> {match.get('method')}")
+                            # ---------------------------------
+                            # Save validated URL to cache
+                            # ---------------------------------
 
-                    print(f"🔗 {maps_url}")
+                            cache.set(
+                                title,
+                                address,
+                                good_url,
+                                confidence="HIGH",
+                                name_score=verified.get(
+                                    "title_score",
+                                    0,
+                                ),
+                                address_score=verified.get(
+                                    "address_score",
+                                    0,
+                                ),
+                                method=match.get(
+                                    "method",
+                                    "JSON",
+                                ),
+                            )
 
-                    continue
+                            print("💾 JSON MATCH + ADDRESS VALIDATED")
+
+                            print(f"🔗 {good_url}")
+
+                            continue
 
             # =================================================
-            # 5. REAL GOOGLE MAPS SEARCH
+            # 4. REAL GOOGLE MAPS SEARCH
             # =================================================
 
             searches += 1
 
             print("🔎 REAL GOOGLE MAPS SEARCH")
 
+            # ------------------------------------------------
+            # Keep page reference
+            # ------------------------------------------------
+
             old_page = page
 
             search_engine.update_page(page)
 
-            # -------------------------------------------------
+            # ------------------------------------------------
             # SEARCH
-            # -------------------------------------------------
+            # ------------------------------------------------
 
             result = search_engine.search(
                 title,
                 address,
             )
 
-            # -------------------------------------------------
-            # DEBUG RESULT
-            # -------------------------------------------------
-
-            if isinstance(
-                result,
-                dict,
-            ):
-                print("🔍 SEARCH RESULT:")
-
-                print(f"   success={result.get('success')}")
-
-                print(f"   url={result.get('url')}")
-
-                print(f"   google_maps_url={result.get('google_maps_url')}")
-
-                print(f"   reason={result.get('reason')}")
-
-                print(f"   error={result.get('error')}")
-
-            # =================================================
-            # NORMALIZE SEARCH RESULT
-            # =================================================
-
-            result = normalize_search_result(result)
-
-            # =================================================
-            # UPDATE PAGE
-            # =================================================
+            # ------------------------------------------------
+            # Get returned page
+            # ------------------------------------------------
 
             page = result.get(
                 "page",
@@ -1143,39 +1009,151 @@ def process_excel(
 
             search_engine.update_page(page)
 
+            # ------------------------------------------------
+            # Recovery counter
+            # ------------------------------------------------
+
             if page is not old_page:
                 recovery_count += 1
 
             # =================================================
-            # GET MAPS URL AGAIN
+            # RESULT URL
             # =================================================
 
-            maps_url = normalize_maps_value(
-                result.get(
-                    "google_maps_url",
-                    "",
+            raw_google_maps_url = result.get("google_maps_url")
+
+            raw_url = result.get("url")
+
+            maps_url = clean_google_maps_url(raw_google_maps_url or raw_url or "")
+
+            # =================================================
+            # DEBUG SEARCH RESULT
+            # =================================================
+
+            if logger:
+                logger.info(
+                    "EXCEL SEARCH RESULT | "
+                    "success=%s | "
+                    "reason=%s | "
+                    "google_maps_url=%r | "
+                    "url=%r | "
+                    "cleaned_url=%r",
+                    result.get("success"),
+                    result.get("reason"),
+                    raw_google_maps_url,
+                    raw_url,
+                    maps_url,
                 )
-            )
-
-            attempts = result.get(
-                "attempts",
-                0,
-            )
 
             # =================================================
-            # SUCCESS
+            # SEARCH SUCCESS
             #
-            # IMPORTANT:
+            # search.py đã validate candidate.
             #
-            # Không kiểm tra:
-            #
-            #     result["success"]
-            #
-            # Chỉ cần maps_url.
+            # KHÔNG:
+            #   verify_candidate_address()
+            #   navigate again
+            #   validate again
             # =================================================
 
-            if maps_url:
-                applied = apply_google_maps_url(
+            if result.get("success"):
+                # ------------------------------------------------
+                # SUCCESS nhưng URL không hợp lệ
+                # ------------------------------------------------
+
+                if not maps_url or not is_google_maps_place_url(maps_url):
+                    if logger:
+                        logger.error(
+                            "SEARCH SUCCESS BUT INVALID "
+                            "MAPS URL | "
+                            "title=%r | "
+                            "address=%r | "
+                            "google_maps_url=%r | "
+                            "url=%r | "
+                            "cleaned=%r",
+                            title,
+                            address,
+                            raw_google_maps_url,
+                            raw_url,
+                            maps_url,
+                        )
+
+                    reason = "SUCCESS_BUT_INVALID_MAPS_URL"
+
+                    print("⚠️ SEARCH SUCCESS nhưng Google Maps URL không hợp lệ")
+
+                    print(f"   google_maps_url={raw_google_maps_url!r}")
+
+                    print(f"   url={raw_url!r}")
+
+                    # ---------------------------------------------
+                    # Không được gọi đây là NOT_FOUND.
+                    #
+                    # Nhưng vẫn đưa vào missing để user biết
+                    # record chưa có URL usable.
+                    # ---------------------------------------------
+
+                    missing += 1
+
+                    missing_indexes.append(index)
+
+                    if logger:
+                        logger.warning(
+                            "Record marked missing due to "
+                            "invalid URL after successful "
+                            "candidate verification | "
+                            "reason=%s",
+                            reason,
+                        )
+
+                    random_delay(
+                        FAILED_SEARCH_DELAY_MIN,
+                        FAILED_SEARCH_DELAY_MAX,
+                    )
+
+                    # ---------------------------------------------
+                    # Page reset
+                    # ---------------------------------------------
+
+                    if (
+                        RESET_PAGE_EVERY_SEARCHES
+                        and searches % RESET_PAGE_EVERY_SEARCHES == 0
+                    ):
+                        print(f"♻️ Periodic Page reset after {searches} searches")
+
+                        page = browser.recreate_page()
+
+                        search_engine.update_page(page)
+
+                        recovery_count += 1
+
+                    # ---------------------------------------------
+                    # Checkpoint
+                    # ---------------------------------------------
+
+                    if CHECKPOINT_EVERY_ROWS and processed % CHECKPOINT_EVERY_ROWS == 0:
+                        print(f"💾 CHECKPOINT row={processed}")
+
+                        safe_save_excel(
+                            df,
+                            result_path,
+                        )
+
+                        cache.save()
+
+                        if missing_indexes:
+                            safe_save_excel(
+                                df.loc[missing_indexes].copy(),
+                                missing_path,
+                            )
+
+                    continue
+
+                # =================================================
+                # VALID SUCCESS
+                # =================================================
+
+                wrote = _write_found_result(
                     df=df,
                     index=index,
                     google_maps_col=google_maps_col,
@@ -1184,117 +1162,117 @@ def process_excel(
                     existing_url=existing_url,
                 )
 
-                if applied:
-                    found += 1
-
-                    cache.set(
-                        title,
-                        address,
-                        maps_url,
-                        confidence="HIGH",
-                        name_score=result.get(
-                            "title_score",
-                            0,
-                        ),
-                        address_score=result.get(
-                            "address_score",
-                            result.get(
-                                "score",
-                                0,
-                            ),
-                        ),
-                        method="SEARCH",
-                    )
-
-                    print("✅ FOUND")
-
-                    print(f"🔗 {maps_url}")
-
-                    print(f"🔁 attempts={attempts}")
-
-                    random_delay(
-                        SEARCH_DELAY_MIN,
-                        SEARCH_DELAY_MAX,
-                    )
-
-                else:
-                    print("⚠️ Maps URL exists but could not be applied")
-
-            # =================================================
-            # FAILED
-            # =================================================
-
-            else:
-                # =================================================
-                # SAFETY CHECK:
-                #
-                # Search failed nhưng DataFrame có Maps
-                # =================================================
-
-                current_maps = normalize_maps_value(
-                    df.at[
-                        index,
-                        google_maps_col,
-                    ]
-                )
-
-                if current_maps:
-                    df.at[
-                        index,
-                        google_maps_col,
-                    ] = current_maps
-
-                    set_missing_reason(
-                        df=df,
-                        index=index,
-                        google_maps_col=google_maps_col,
-                        reason="",
-                    )
-
-                    print(
-                        "⚠️ Search returned empty "
-                        "but google_maps already exists "
-                        "-> NOT MISSING"
-                    )
-
-                    print(f"🔗 {current_maps}")
-
-                else:
-                    # -------------------------------------------------
-                    # IMPORTANT:
+                if not wrote:
+                    # ------------------------------------------------
+                    # Safety guard.
                     #
-                    # Đọc reason thực tế từ search.py.
-                    #
-                    # Không còn biến mọi lỗi thành SEARCH_FAILED.
-                    # -------------------------------------------------
+                    # Không nên xảy ra vì maps_url đã validate.
+                    # ------------------------------------------------
+
+                    if logger:
+                        logger.error(
+                            "SEARCH SUCCESS BUT "
+                            "WRITE FOUND FAILED | "
+                            "title=%r | "
+                            "address=%r | "
+                            "maps_url=%r",
+                            title,
+                            address,
+                            maps_url,
+                        )
 
                     missing += 1
 
-                    reason = get_search_failure_reason(result)
+                    missing_indexes.append(index)
 
-                    set_missing_reason(
-                        df=df,
-                        index=index,
-                        google_maps_col=google_maps_col,
-                        reason=reason,
-                    )
+                    continue
 
-                    print("❌ MISSING")
+                # ------------------------------------------------
+                # FOUND COUNTER
+                # ------------------------------------------------
 
-                    print(f"   reason={reason}")
+                found += 1
 
-                    random_delay(
-                        FAILED_SEARCH_DELAY_MIN,
-                        FAILED_SEARCH_DELAY_MAX,
-                    )
+                # ------------------------------------------------
+                # CACHE SUCCESS
+                # ------------------------------------------------
+
+                cache.set(
+                    title,
+                    address,
+                    maps_url,
+                    confidence="HIGH",
+                    name_score=result.get(
+                        "title_score",
+                        0,
+                    ),
+                    address_score=result.get(
+                        "address_score",
+                        0,
+                    ),
+                    method="SEARCH",
+                )
+
+                # ------------------------------------------------
+                # OUTPUT
+                # ------------------------------------------------
+
+                print("✅ FOUND")
+
+                print(f"🔗 {maps_url}")
+
+                print(f"🎯 reason={result.get('reason', '')}")
+
+                print(f"🎯 title_score={result.get('title_score', 0):.3f}")
+
+                print(f"🎯 address_score={result.get('address_score', 0):.3f}")
+
+                print(f"🎯 location_score={result.get('location_score', 0):.3f}")
+
+                # ------------------------------------------------
+                # NORMAL DELAY
+                # ------------------------------------------------
+
+                random_delay(
+                    SEARCH_DELAY_MIN,
+                    SEARCH_DELAY_MAX,
+                )
+
+                # ------------------------------------------------
+                # ABSOLUTE STOP
+                # ------------------------------------------------
+
+                continue
+
+            # =================================================
+            # SEARCH FAILED
+            # =================================================
+
+            missing += 1
+
+            missing_indexes.append(index)
+
+            reason = result.get(
+                "reason",
+                "",
+            )
+
+            print(f"❌ MISSING | reason={reason}")
+
+            # ------------------------------------------------
+            # FAILED DELAY
+            # ------------------------------------------------
+
+            random_delay(
+                FAILED_SEARCH_DELAY_MIN,
+                FAILED_SEARCH_DELAY_MAX,
+            )
 
             # =================================================
             # PERIODIC PAGE RESET
             # =================================================
 
-            if searches > 0 and searches % RESET_PAGE_EVERY_SEARCHES == 0:
-                print()
-
+            if RESET_PAGE_EVERY_SEARCHES and searches % RESET_PAGE_EVERY_SEARCHES == 0:
                 print(f"♻️ Periodic Page reset after {searches} searches")
 
                 page = browser.recreate_page()
@@ -1307,105 +1285,41 @@ def process_excel(
             # CHECKPOINT
             # =================================================
 
-            if processed % CHECKPOINT_EVERY_ROWS == 0:
-                print()
-
+            if CHECKPOINT_EVERY_ROWS and processed % CHECKPOINT_EVERY_ROWS == 0:
                 print(f"💾 CHECKPOINT row={processed}")
-
-                # -------------------------------------------------
-                # Normalize Maps
-                # -------------------------------------------------
-
-                df[google_maps_col] = df[google_maps_col].apply(normalize_maps_value)
-
-                # -------------------------------------------------
-                # Clear reason for rows with Maps
-                # -------------------------------------------------
-
-                clear_missing_reason_for_found(
-                    df,
-                    google_maps_col,
-                )
-
-                # -------------------------------------------------
-                # Save result
-                # -------------------------------------------------
 
                 safe_save_excel(
                     df,
                     result_path,
                 )
 
-                # -------------------------------------------------
-                # Save cache
-                # -------------------------------------------------
-
                 cache.save()
 
-                # -------------------------------------------------
-                # Recalculate missing
-                # -------------------------------------------------
-
-                current_missing_count = safe_save_missing(
-                    df,
-                    google_maps_col,
-                    missing_path,
-                )
-
-                print(f"📊 Current missing: {current_missing_count}")
+                if missing_indexes:
+                    safe_save_excel(
+                        df.loc[missing_indexes].copy(),
+                        missing_path,
+                    )
 
     # ========================================================
     # CTRL+C
     # ========================================================
 
     except KeyboardInterrupt:
-        print()
-
-        print("🛑 CTRL+C detected.")
-
-        print("💾 Saving emergency checkpoint...")
-
-        # ----------------------------------------------------
-        # Normalize
-        # ----------------------------------------------------
-
-        df[google_maps_col] = df[google_maps_col].apply(normalize_maps_value)
-
-        # ----------------------------------------------------
-        # Clear found reasons
-        # ----------------------------------------------------
-
-        clear_missing_reason_for_found(
-            df,
-            google_maps_col,
-        )
-
-        # ----------------------------------------------------
-        # Save Excel
-        # ----------------------------------------------------
+        print("\n🛑 CTRL+C detected. Saving emergency checkpoint...")
 
         safe_save_excel(
             df,
             result_path,
         )
 
-        # ----------------------------------------------------
-        # Save cache
-        # ----------------------------------------------------
-
         cache.save()
 
-        # ----------------------------------------------------
-        # Save missing
-        # ----------------------------------------------------
-
-        current_missing_count = safe_save_missing(
-            df,
-            google_maps_col,
-            missing_path,
-        )
-
-        print(f"📊 Current missing: {current_missing_count}")
+        if missing_indexes:
+            safe_save_excel(
+                df.loc[missing_indexes].copy(),
+                missing_path,
+            )
 
         raise
 
@@ -1417,73 +1331,29 @@ def process_excel(
         if logger:
             logger.exception("Unexpected processing error")
 
-        print()
-
-        print(f"❌ Unexpected error: {error}")
-
-        print("💾 Saving emergency checkpoint...")
-
-        # ----------------------------------------------------
-        # Normalize
-        # ----------------------------------------------------
-
-        df[google_maps_col] = df[google_maps_col].apply(normalize_maps_value)
-
-        # ----------------------------------------------------
-        # Clear found reasons
-        # ----------------------------------------------------
-
-        clear_missing_reason_for_found(
-            df,
-            google_maps_col,
-        )
-
-        # ----------------------------------------------------
-        # Save Excel
-        # ----------------------------------------------------
+        print(f"\n❌ Unexpected error: {error}")
 
         safe_save_excel(
             df,
             result_path,
         )
 
-        # ----------------------------------------------------
-        # Save cache
-        # ----------------------------------------------------
-
         cache.save()
 
-        # ----------------------------------------------------
-        # Save missing
-        # ----------------------------------------------------
-
-        current_missing_count = safe_save_missing(
-            df,
-            google_maps_col,
-            missing_path,
-        )
-
-        print(f"📊 Current missing: {current_missing_count}")
+        if missing_indexes:
+            safe_save_excel(
+                df.loc[missing_indexes].copy(),
+                missing_path,
+            )
 
         raise
 
+    # ========================================================
+    # CLOSE BROWSER
+    # ========================================================
+
     finally:
         browser.close()
-
-    # ========================================================
-    # FINAL NORMALIZATION
-    # ========================================================
-
-    df[google_maps_col] = df[google_maps_col].apply(normalize_maps_value)
-
-    # ========================================================
-    # FINAL MISSING REASON CLEANUP
-    # ========================================================
-
-    clear_missing_reason_for_found(
-        df,
-        google_maps_col,
-    )
 
     # ========================================================
     # FINAL SAVE
@@ -1497,25 +1367,12 @@ def process_excel(
     cache.save()
 
     # ========================================================
-    # FINAL MISSING CALCULATION
+    # MISSING FILE
     # ========================================================
 
-    final_missing_df = get_missing_dataframe(
-        df,
-        google_maps_col,
-    )
-
-    final_missing_indexes = list(final_missing_df.index)
-
-    missing = len(final_missing_df)
-
-    # ========================================================
-    # SAVE / REMOVE MISSING FILE
-    # ========================================================
-
-    if len(final_missing_df) > 0:
+    if missing_indexes:
         safe_save_excel(
-            final_missing_df,
+            df.loc[missing_indexes].copy(),
             missing_path,
         )
 
@@ -1528,14 +1385,6 @@ def process_excel(
             pass
 
     # ========================================================
-    # FINAL FOUND
-    # ========================================================
-
-    final_has_maps_mask = df[google_maps_col].apply(has_google_maps)
-
-    final_found_count = int(final_has_maps_mask.sum())
-
-    # ========================================================
     # REPORT
     # ========================================================
 
@@ -1544,18 +1393,15 @@ def process_excel(
     report = {
         "input_file": file_path,
         "result_file": str(result_path),
-        "missing_file": (str(missing_path) if len(final_missing_df) > 0 else None),
+        "missing_file": (str(missing_path) if missing_indexes else None),
         "total_rows": total_rows,
         "processed": processed,
         "skipped": skipped,
         "cache_hits": cache_hits,
         "json_hits": json_hits,
         "real_searches": searches,
-        # ---------------------------------------------
-        # FINAL SOURCE OF TRUTH
-        # ---------------------------------------------
-        "found": final_found_count,
-        "missing": len(final_missing_df),
+        "found": found,
+        "missing": missing,
         "recoveries": recovery_count,
         "elapsed_seconds": round(
             elapsed,
@@ -1570,53 +1416,39 @@ def process_excel(
     )
 
     # ========================================================
-    # SUMMARY
+    # FINAL OUTPUT
     # ========================================================
 
-    print()
-
-    print("=" * 75)
+    print("\n" + "=" * 75)
 
     print("GOOGLE MAPS TOOL FINISHED")
 
     print("=" * 75)
 
-    print(f"📊 Total       : {total_rows}")
+    print(f"📊 Total      : {total_rows}")
 
-    print(f"⚡ Skipped     : {skipped}")
+    print(f"⚡ Skipped    : {skipped}")
 
-    print(f"💾 Cache       : {cache_hits}")
+    print(f"💾 Cache      : {cache_hits}")
 
-    print(f"📂 JSON        : {json_hits}")
+    print(f"📂 JSON       : {json_hits}")
 
-    print(f"🔎 Searches    : {searches}")
+    print(f"🔎 Searches   : {searches}")
 
-    print(f"✅ Found       : {final_found_count}")
+    print(f"✅ Found      : {found}")
 
-    print(f"❌ Missing     : {len(final_missing_df)}")
+    print(f"❌ Missing    : {missing}")
 
-    print(f"♻️ Recoveries  : {recovery_count}")
+    print(f"♻️ Recoveries : {recovery_count}")
 
-    print(f"⏱️ Time        : {elapsed:.2f}s")
+    print(f"⏱️ Time       : {elapsed:.2f}s")
 
-    print()
+    print(f"📁 Result     : {result_path}")
 
-    print("📁 Result:")
+    if missing_indexes:
+        print(f"📁 Missing    : {missing_path}")
 
-    print(f"   {result_path}")
-
-    if len(final_missing_df) > 0:
-        print()
-
-        print("📁 Missing:")
-
-        print(f"   {missing_path}")
-
-    print()
-
-    print("📄 Report:")
-
-    print(f"   {report_path}")
+    print(f"📄 Report     : {report_path}")
 
     print("=" * 75)
 

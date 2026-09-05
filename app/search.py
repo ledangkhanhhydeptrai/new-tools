@@ -1,5 +1,7 @@
 # ============================================================
 # app/search.py
+# Address-first Google Maps search
+# ACCEPT ANY VALID GOOGLE MAPS PLACE URL
 # ============================================================
 
 import re
@@ -16,7 +18,6 @@ from config import (
 )
 
 from .recovery import safe_goto
-
 from .utils import (
     safe_text,
     clean_google_maps_url,
@@ -44,31 +45,34 @@ PLACE_URL_SCAN_MAX_DATA_ELEMENTS = 300
 RESULT_CARD_MAX = 60
 CARD_LINK_MAX = 30
 
-# Verify nhiều hơn một chút để giảm bỏ sót candidate đúng.
-MAX_CANDIDATES_TO_VERIFY = 8
-
-# Address.
-ADDRESS_MATCH_MIN_SCORE = 0.55
-ADDRESS_SOFT_SCORE = 0.30
-ADDRESS_GOOD_SCORE = 0.50
-
-# Location.
-MIN_LOCATION_MATCHES = 1
-
-# Search variants.
-MAX_SEARCH_VARIANTS = 10
-
-# Title.
-TITLE_STRONG_SCORE = 0.82
-TITLE_VERY_STRONG_SCORE = 0.90
-TITLE_MEDIUM_SCORE = 0.68
-
-# Tổng score.
-FINAL_SOFT_ACCEPT_SCORE = 0.60
+MAX_CANDIDATES_TO_VERIFY = 40
+MAX_SEARCH_VARIANTS = 14
 
 
 # ============================================================
-# GENERIC TOKENS
+# LEGACY VALIDATION CONFIG
+#
+# These values are kept because other code may import them.
+# IMPORTANT:
+#
+# A valid /maps/place/ URL is now enough for SUCCESS.
+#
+# Title/address/location scores are still calculated for
+# logging/debugging, but they DO NOT block a valid Place URL.
+# ============================================================
+
+ADDRESS_MATCH_MIN_SCORE = 0.55
+MIN_VALID_PLACE_ADDRESS_SCORE = 0.55
+MIN_VALID_PLACE_LOCATION_SCORE = 0.50
+MIN_LOCATION_MATCHES = 1
+
+# Kept for backward compatibility.
+# No longer blocks a valid Google Maps Place URL.
+REQUIRE_LOCATION_FOR_PLACE = False
+
+
+# ============================================================
+# GENERIC ADDRESS TOKENS
 # ============================================================
 
 GENERIC_ADDRESS_TOKENS = {
@@ -97,34 +101,20 @@ GENERIC_ADDRESS_TOKENS = {
 }
 
 
-# ============================================================
-# ADMIN PREFIXES
-# ============================================================
-
-ADMIN_PREFIXES = (
-    "phuong ",
-    "xa ",
-    "thi tran ",
-    "quan ",
-    "huyen ",
-    "thi xa ",
-    "thanh pho ",
-    "tp ",
-    "tinh ",
+ADMIN_PREFIX_RE = re.compile(
+    r"^(?:phuong|xa|thi\s+tran|quan|huyen|thi\s+xa|"
+    r"thanh\s+pho|tp|tinh)\s+",
+    re.IGNORECASE,
 )
 
 
-# ============================================================
-# COORDINATE REGEX
-# ============================================================
-
 COORDINATE_PATTERNS = (
     re.compile(
-        r"!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)",
+        r"!3d(-?\d+(?:\.\d+?)?)!4d(-?\d+(?:\.\d+?)?)",
         re.IGNORECASE,
     ),
     re.compile(
-        r"@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)",
+        r"@(-?\d+(?:\.\d+?)?),(-?\d+(?:\.\d+?)?)",
         re.IGNORECASE,
     ),
 )
@@ -140,30 +130,29 @@ def _normalize_text(value):
         return ""
 
     try:
-        value = str(value)
+        value = safe_text(value)
     except Exception:
-        return ""
+        try:
+            value = str(value)
+        except Exception:
+            return ""
 
-    value = value.strip().lower()
-    value = re.sub(r"\s+", " ", value)
-
-    return value
+    return re.sub(
+        r"\s+",
+        " ",
+        str(value or "").replace("\xa0", " ").strip(),
+    )
 
 
 def _remove_accents(value):
-    value = _normalize_text(value)
+    value = _normalize_text(value).lower()
 
     if not value:
         return ""
 
     try:
-        value = unicodedata.normalize(
-            "NFKD",
-            value,
-        )
-
-        value = "".join(char for char in value if not unicodedata.combining(char))
-
+        value = unicodedata.normalize("NFKD", value)
+        value = "".join(c for c in value if not unicodedata.combining(c))
     except Exception:
         pass
 
@@ -178,41 +167,12 @@ def _normalize_address(value):
 
     value = value.replace("&", " va ")
 
-    value = re.sub(
-        r"[/|;]+",
-        ",",
-        value,
-    )
-
-    value = re.sub(
-        r"[-_]+",
-        " ",
-        value,
-    )
-
-    value = re.sub(
-        r"[()\[\]{}]+",
-        " ",
-        value,
-    )
-
-    value = re.sub(
-        r"\s*,\s*",
-        ",",
-        value,
-    )
-
-    value = re.sub(
-        r"\s+",
-        " ",
-        value,
-    )
-
-    value = re.sub(
-        r",+",
-        ",",
-        value,
-    )
+    value = re.sub(r"[/|;]+", ",", value)
+    value = re.sub(r"[-_]+", " ", value)
+    value = re.sub(r"[()\[\]{}]+", " ", value)
+    value = re.sub(r"\s*,\s*", ",", value)
+    value = re.sub(r"\s+", " ", value)
+    value = re.sub(r",+", ",", value)
 
     return value.strip(" ,")
 
@@ -229,38 +189,47 @@ def _normalize_title(value):
         value,
     )
 
-    value = re.sub(
+    return re.sub(
         r"\s+",
         " ",
         value,
-    )
-
-    return value.strip()
-
-
-# ============================================================
-# TEXT HELPERS
-# ============================================================
+    ).strip()
 
 
 def _extract_lines(value):
+    """
+    Preserve real line breaks from Playwright text.
+    """
+
     if value is None:
         return []
 
     try:
-        text = str(value)
+        text = safe_text(value)
     except Exception:
+        try:
+            text = str(value)
+        except Exception:
+            return []
+
+    if not text:
         return []
 
-    result = []
+    text = str(text).replace("\r", "\n").replace("\xa0", " ")
 
-    for line in text.splitlines():
-        line = line.strip()
+    lines = []
+
+    for line in text.split("\n"):
+        line = re.sub(
+            r"\s+",
+            " ",
+            line,
+        ).strip()
 
         if line:
-            result.append(line)
+            lines.append(line)
 
-    return result
+    return lines
 
 
 def _unique_texts(values):
@@ -268,37 +237,23 @@ def _unique_texts(values):
     seen = set()
 
     for value in values:
-        text = safe_text(value)
+        text = _normalize_text(value)
+        key = text.casefold()
 
-        if not text:
-            continue
-
-        normalized = _normalize_text(text)
-
-        if not normalized:
-            continue
-
-        if normalized in seen:
-            continue
-
-        seen.add(normalized)
-        result.append(text)
+        if text and key not in seen:
+            seen.add(key)
+            result.append(text)
 
     return result
 
 
 # ============================================================
-# ADDRESS TOKENIZATION
+# ADDRESS HELPERS
 # ============================================================
 
 
 def _clean_address_token(token):
-    token = _normalize_address(token)
-
-    if not token:
-        return ""
-
-    return token.strip(" ,.-")
+    return _normalize_address(token).strip(" ,.-")
 
 
 def _address_tokens(address):
@@ -307,25 +262,37 @@ def _address_tokens(address):
     if not normalized:
         return []
 
-    raw_tokens = normalized.split(",")
-
     result = []
 
-    for token in raw_tokens:
+    for token in normalized.split(","):
         token = _clean_address_token(token)
 
-        if not token:
-            continue
-
-        if token in GENERIC_ADDRESS_TOKENS:
-            continue
-
-        if len(token) < 2:
+        if not token or len(token) < 2 or token in GENERIC_ADDRESS_TOKENS:
             continue
 
         result.append(token)
 
     return result
+
+
+def _canonical_address_token(token):
+    token = _normalize_address(token)
+
+    if not token:
+        return ""
+
+    previous = None
+
+    while token != previous:
+        previous = token
+
+        token = ADMIN_PREFIX_RE.sub(
+            "",
+            token,
+            count=1,
+        ).strip()
+
+    return token
 
 
 def _expand_address_token(token):
@@ -335,130 +302,90 @@ def _expand_address_token(token):
         return []
 
     variants = [token]
+    current = token
 
-    changed = True
+    while True:
+        stripped = ADMIN_PREFIX_RE.sub(
+            "",
+            current,
+            count=1,
+        ).strip()
 
-    while changed:
-        changed = False
+        if not stripped or stripped == current:
+            break
 
-        for current in list(variants):
-            for prefix in ADMIN_PREFIXES:
-                if current.startswith(prefix):
-                    stripped = current[len(prefix) :].strip()
+        variants.append(stripped)
+        current = stripped
 
-                    if stripped and stripped not in variants:
-                        variants.append(stripped)
-                        changed = True
-
-    return variants
-
-
-# ============================================================
-# ADDRESS SYNONYMS
-# ============================================================
-
-ADDRESS_SYNONYMS = {
-    "bai": "bai",
-    "bai dai": "bai dai",
-    "bai dai beach": "bai dai",
-    "beach": "beach",
-    "quy nhon": "quy nhon",
-    "quy nhon city": "quy nhon",
-    "tp quy nhon": "quy nhon",
-    "thanh pho quy nhon": "quy nhon",
-    "quy nhon nam": "quy nhon",
-    "quy nhon south": "quy nhon",
-    "gia lai": "gia lai",
-    "binh dinh": "binh dinh",
-    "da nang": "da nang",
-    "ho chi minh": "ho chi minh",
-    "ha noi": "ha noi",
-}
+    return _unique_texts(variants)
 
 
-def _canonical_address_token(token):
-    token = _normalize_address(token)
-
-    if not token:
-        return ""
-
-    for prefix in ADMIN_PREFIXES:
-        if token.startswith(prefix):
-            token = token[len(prefix) :].strip()
-
-    return ADDRESS_SYNONYMS.get(
-        token,
-        token,
-    )
-
-
-# ============================================================
-# TOKEN MATCH
-# ============================================================
-
-
-def _token_matches_address(
-    token,
-    actual_address,
-):
+def _token_matches_address(token, actual_address):
     actual = _normalize_address(actual_address)
 
     if not actual:
         return False
 
-    variants = _expand_address_token(token)
-
     canonical = _canonical_address_token(token)
 
-    if canonical:
-        variants.append(canonical)
+    if not canonical:
+        return False
 
-    # Exact substring.
+    variants = _unique_texts(_expand_address_token(token) + [canonical])
+
+    actual_parts = [p.strip() for p in actual.split(",") if p.strip()]
+
     for variant in variants:
-        if not variant:
+        if len(variant) < 4:
             continue
 
-        if variant in actual:
+        pattern = r"(?<![a-z0-9])" + re.escape(variant) + r"(?![a-z0-9])"
+
+        if re.search(
+            pattern,
+            actual,
+        ):
             return True
 
-    # Word-level matching.
-    canonical_words = [word for word in canonical.split() if len(word) >= 3]
+        for part in actual_parts:
+            if part == variant:
+                return True
 
-    if canonical_words:
-        matched_words = sum(1 for word in canonical_words if word in actual)
+            words = variant.split()
 
-        if matched_words >= len(canonical_words):
-            return True
+            if len(words) >= 2 and all(
+                re.search(
+                    r"(?<![a-z0-9])" + re.escape(word) + r"(?![a-z0-9])",
+                    part,
+                )
+                for word in words
+                if len(word) >= 3
+            ):
+                return True
 
-        # Nếu token nhiều từ, chỉ cần phần lớn match.
-        if len(canonical_words) >= 2 and matched_words / len(canonical_words) >= 0.5:
-            return True
+            if (
+                SequenceMatcher(
+                    None,
+                    variant,
+                    part,
+                ).ratio()
+                >= 0.88
+            ):
+                return True
 
     return False
 
 
-# ============================================================
-# LOCATION EXTRACTION
-# ============================================================
-
-
 def _extract_location_parts(address):
-    try:
-        address = str(address)
-    except Exception:
-        return []
-
-    parts = [part.strip() for part in address.split(",") if part.strip()]
-
     result = []
 
-    for part in parts:
-        normalized = _normalize_address(part)
+    for part in _normalize_address(address).split(","):
+        part = part.strip()
 
-        if not normalized:
+        if not part:
             continue
 
-        if normalized in {
+        if part in {
             "vietnam",
             "viet nam",
             "vn",
@@ -471,100 +398,136 @@ def _extract_location_parts(address):
 
 
 def _canonical_location_parts(address):
-    """
-    Trả về các location canonical.
-
-    Ví dụ:
-
-        Bãi Dài,
-        Quy Nhơn Nam,
-        Gia Lai,
-        Vietnam
-
-    ->
-
-        bai dai
-        quy nhon
-        gia lai
-    """
-
-    parts = _extract_location_parts(address)
-
     result = []
 
-    for part in parts:
-        canonical = _canonical_address_token(part)
+    for part in _extract_location_parts(address):
+        value = _canonical_address_token(part)
 
-        if canonical:
-            result.append(canonical)
+        if value and value not in GENERIC_ADDRESS_TOKENS:
+            result.append(value)
 
     return result
 
 
-# ============================================================
-# LOCATION SIMILARITY
-# ============================================================
+def _location_similarity(
+    input_location,
+    actual_location,
+):
+    a = _normalize_address(input_location)
+    b = _normalize_address(actual_location)
+
+    if not a or not b:
+        return 0.0
+
+    if a == b:
+        return 1.0
+
+    if a in b or b in a:
+        return 0.90
+
+    return SequenceMatcher(
+        None,
+        a,
+        b,
+    ).ratio()
 
 
 def _location_match_info(
     input_address,
     actual_address,
 ):
-    input_locations = _canonical_location_parts(input_address)
+    inputs = _canonical_location_parts(input_address)
 
-    actual_locations = _canonical_location_parts(actual_address)
+    actuals = _canonical_location_parts(actual_address)
 
-    if not input_locations or not actual_locations:
+    if not inputs or not actuals:
         return {
             "matches": [],
             "count": 0,
             "score": 0.0,
+            "tail_matches": 0,
+            "tail_score": 0.0,
         }
 
     matches = []
+    used = set()
 
-    for input_location in input_locations:
-        best = 0.0
+    for item in inputs:
+        best_score = 0.0
+        best_actual = ""
+        best_index = -1
 
-        for actual_location in actual_locations:
-            if input_location == actual_location:
-                best = 1.0
-                break
-
-            if input_location in actual_location or actual_location in input_location:
-                best = max(best, 0.85)
+        for idx, candidate in enumerate(actuals):
+            if idx in used:
                 continue
 
-            sequence = SequenceMatcher(
-                None,
-                input_location,
-                actual_location,
-            ).ratio()
-
-            if sequence >= 0.75:
-                best = max(best, sequence)
-
-        if best >= 0.70:
-            matches.append(
-                (
-                    input_location,
-                    round(best, 4),
-                )
+            score = _location_similarity(
+                item,
+                candidate,
             )
 
-    count = len(matches)
+            if score > best_score:
+                (
+                    best_score,
+                    best_actual,
+                    best_index,
+                ) = (
+                    score,
+                    candidate,
+                    idx,
+                )
 
-    score = count / len(input_locations) if input_locations else 0.0
+        if best_score >= 0.72:
+            used.add(best_index)
+
+            matches.append(
+                {
+                    "input": item,
+                    "actual": best_actual,
+                    "score": round(
+                        best_score,
+                        4,
+                    ),
+                }
+            )
+
+    tail = inputs[-2:] if len(inputs) >= 2 else inputs
+
+    tail_results = []
+
+    for item in tail:
+        best = max(
+            (
+                _location_similarity(
+                    item,
+                    candidate,
+                )
+                for candidate in actuals
+            ),
+            default=0.0,
+        )
+
+        tail_results.append(best)
 
     return {
         "matches": matches,
-        "count": count,
-        "score": round(score, 4),
+        "count": len(matches),
+        "score": round(
+            len(matches) / len(inputs),
+            4,
+        ),
+        "tail_matches": sum(1 for score in tail_results if score >= 0.75),
+        "tail_score": round(
+            sum(tail_results) / len(tail_results),
+            4,
+        )
+        if tail_results
+        else 0.0,
     }
 
 
 # ============================================================
-# ADDRESS MATCH SCORE
+# ADDRESS SCORE
 # ============================================================
 
 
@@ -572,124 +535,94 @@ def address_match_score(
     input_address,
     actual_address,
 ):
-    input_normalized = _normalize_address(input_address)
+    a = _normalize_address(input_address)
+    b = _normalize_address(actual_address)
 
-    actual_normalized = _normalize_address(actual_address)
-
-    if not input_normalized or not actual_normalized:
+    if not a or not b:
         return {
             "score": 0.0,
             "matched_tokens": [],
             "total_tokens": 0,
             "location_matches": 0,
             "location_score": 0.0,
+            "tail_location_matches": 0,
+            "tail_location_score": 0.0,
             "strong_match": False,
         }
 
-    # Exact.
-    if input_normalized == actual_normalized:
+    if a == b:
         tokens = _address_tokens(input_address)
+
+        location_parts = _canonical_location_parts(input_address)
 
         return {
             "score": 1.0,
             "matched_tokens": tokens,
             "total_tokens": len(tokens),
-            "location_matches": len(tokens),
+            "location_matches": len(location_parts),
             "location_score": 1.0,
+            "tail_location_matches": len(location_parts[-2:]),
+            "tail_location_score": 1.0,
             "strong_match": True,
         }
 
     tokens = _address_tokens(input_address)
 
-    if not tokens:
-        return {
-            "score": 0.0,
-            "matched_tokens": [],
-            "total_tokens": 0,
-            "location_matches": 0,
-            "location_score": 0.0,
-            "strong_match": False,
-        }
-
-    matched_tokens = []
-
-    for token in tokens:
+    matched = [
+        token
+        for token in tokens
         if _token_matches_address(
             token,
             actual_address,
-        ):
-            matched_tokens.append(token)
+        )
+    ]
 
-    token_score = len(matched_tokens) / len(tokens) if tokens else 0.0
+    token_score = len(matched) / len(tokens) if tokens else 0.0
 
-    location_info = _location_match_info(
+    location = _location_match_info(
         input_address,
         actual_address,
     )
 
-    location_matches = location_info.get(
-        "count",
-        0,
-    )
+    location_score = location["score"]
 
-    location_score = location_info.get(
-        "score",
-        0.0,
-    )
+    substring_bonus = 0.15 if len(a) >= 10 and a in b else 0.0
 
-    substring_bonus = 0.0
-
-    if len(input_normalized) >= 10 and input_normalized in actual_normalized:
-        substring_bonus = 0.15
-
-    # Location là signal quan trọng hơn token generic.
-    final_score = token_score * 0.60 + location_score * 0.40
-
-    final_score += substring_bonus
-
-    final_score = min(
+    score = min(
         1.0,
-        final_score,
+        token_score * 0.60 + location_score * 0.40 + substring_bonus,
     )
 
-    strong_match = False
-
-    # Address gần như giống hoàn toàn.
-    if final_score >= 0.80:
-        strong_match = True
-
-    # Đủ address + location.
-    elif (
-        final_score >= ADDRESS_MATCH_MIN_SCORE
-        and location_matches >= MIN_LOCATION_MATCHES
-    ):
-        strong_match = True
-
-    # Address ngắn.
-    elif (
-        len(tokens) <= 2
-        and len(matched_tokens) >= 1
-        and final_score >= ADDRESS_SOFT_SCORE
-    ):
-        strong_match = True
-
-    # Location rất mạnh.
-    elif location_score >= 0.75 and len(matched_tokens) >= 1:
-        strong_match = True
+    strong = (
+        score >= 0.80
+        or (
+            score >= ADDRESS_MATCH_MIN_SCORE
+            and location["count"] >= MIN_LOCATION_MATCHES
+        )
+        or (len(tokens) <= 2 and matched and score >= 0.40)
+    )
 
     return {
         "score": round(
-            final_score,
+            score,
             4,
         ),
-        "matched_tokens": matched_tokens,
+        "matched_tokens": matched,
         "total_tokens": len(tokens),
-        "location_matches": location_matches,
+        "location_matches": location["count"],
         "location_score": round(
             location_score,
             4,
         ),
-        "strong_match": strong_match,
+        "tail_location_matches": location.get(
+            "tail_matches",
+            0,
+        ),
+        "tail_location_score": location.get(
+            "tail_score",
+            0.0,
+        ),
+        "strong_match": bool(strong),
     }
 
 
@@ -697,21 +630,16 @@ def address_is_related(
     input_address,
     actual_address,
 ):
-    result = address_match_score(
-        input_address,
-        actual_address,
-    )
-
     return bool(
-        result.get(
-            "strong_match",
-            False,
-        )
+        address_match_score(
+            input_address,
+            actual_address,
+        ).get("strong_match")
     )
 
 
 # ============================================================
-# TITLE MATCH SCORE
+# TITLE SCORE
 # ============================================================
 
 
@@ -720,60 +648,53 @@ def title_match_score(
     actual_title,
     actual_text="",
 ):
-    input_norm = _normalize_title(input_title)
+    a = _normalize_title(input_title)
+    b = _normalize_title(actual_title)
+    combined = _normalize_title(actual_text)
 
-    actual_norm = _normalize_title(actual_title)
-
-    combined_norm = _normalize_title(actual_text)
-
-    if not input_norm:
+    if not a:
         return 0.0
 
-    if actual_norm and input_norm == actual_norm:
+    if a == b:
         return 1.0
 
-    if actual_norm and input_norm in actual_norm:
+    if b and a in b:
         return 0.95
 
-    if actual_norm and actual_norm in input_norm:
+    if b and b in a:
         return 0.90
 
-    sequence_score = 0.0
-
-    if actual_norm:
-        sequence_score = SequenceMatcher(
+    sequence = (
+        SequenceMatcher(
             None,
-            input_norm,
-            actual_norm,
+            a,
+            b,
         ).ratio()
+        if b
+        else 0.0
+    )
 
-    input_tokens = {token for token in input_norm.split() if len(token) >= 3}
+    wanted = {x for x in a.split() if len(x) >= 3}
 
-    actual_tokens = {token for token in combined_norm.split() if len(token) >= 3}
+    got = {x for x in combined.split() if len(x) >= 3}
 
-    token_score = 0.0
-
-    if input_tokens:
-        token_score = len(input_tokens & actual_tokens) / len(input_tokens)
+    overlap = len(wanted & got) / len(wanted) if wanted else 0.0
 
     return round(
         max(
-            sequence_score,
-            token_score,
+            sequence,
+            overlap,
         ),
         4,
     )
 
 
 # ============================================================
-# COORDINATE HELPERS
+# COORDINATES
 # ============================================================
 
 
-def _valid_lat_lng(
-    lat,
-    lng,
-):
+def _valid_lat_lng(lat, lng):
     try:
         lat = float(lat)
         lng = float(lng)
@@ -795,38 +716,53 @@ def _extract_coordinates_from_text(text):
     for pattern in COORDINATE_PATTERNS:
         match = pattern.search(text)
 
-        if not match:
-            continue
-
-        lat = match.group(1)
-        lng = match.group(2)
-
-        if _valid_lat_lng(lat, lng):
+        if match and _valid_lat_lng(
+            match.group(1),
+            match.group(2),
+        ):
             return (
-                float(lat),
-                float(lng),
+                float(match.group(1)),
+                float(match.group(2)),
             )
 
     return None
+
+
+def extract_coordinates_from_url(url):
+    coordinates = _extract_coordinates_from_text(url)
+
+    return coordinates if coordinates else (None, None)
+
+
+def get_current_page_coordinates(page):
+    try:
+        coordinates = _extract_coordinates_from_text(page.url or "")
+
+        return coordinates if coordinates else (None, None)
+    except Exception:
+        return None, None
 
 
 def extract_coordinates_from_page(page):
     if page is None:
         return None
 
-    # Current URL.
+    # --------------------------------------------------------
+    # 1. Current URL
+    # --------------------------------------------------------
+
     try:
-        current_url = page.url or ""
+        value = _extract_coordinates_from_text(page.url or "")
 
-        coordinates = _extract_coordinates_from_text(current_url)
-
-        if coordinates:
-            return coordinates
-
+        if value:
+            return value
     except Exception:
         pass
 
-    # Links.
+    # --------------------------------------------------------
+    # 2. Links
+    # --------------------------------------------------------
+
     try:
         links = page.locator("a[href]")
 
@@ -835,22 +771,19 @@ def extract_coordinates_from_page(page):
             COORDINATE_SCAN_MAX_LINKS,
         )
 
-        for index in range(count):
-            try:
-                href = links.nth(index).get_attribute("href")
+        for i in range(count):
+            value = _extract_coordinates_from_text(links.nth(i).get_attribute("href"))
 
-                coordinates = _extract_coordinates_from_text(href)
-
-                if coordinates:
-                    return coordinates
-
-            except Exception:
-                continue
+            if value:
+                return value
 
     except Exception:
         pass
 
-    # Data attributes.
+    # --------------------------------------------------------
+    # 3. data-url / data-href
+    # --------------------------------------------------------
+
     try:
         elements = page.locator("[data-url], [data-href]")
 
@@ -859,23 +792,17 @@ def extract_coordinates_from_page(page):
             COORDINATE_SCAN_MAX_DATA_ELEMENTS,
         )
 
-        for index in range(count):
-            try:
-                element = elements.nth(index)
+        for i in range(count):
+            element = elements.nth(i)
 
-                for attr in (
-                    "data-url",
-                    "data-href",
-                ):
-                    value = element.get_attribute(attr)
+            for attr in (
+                "data-url",
+                "data-href",
+            ):
+                value = _extract_coordinates_from_text(element.get_attribute(attr))
 
-                    coordinates = _extract_coordinates_from_text(value)
-
-                    if coordinates:
-                        return coordinates
-
-            except Exception:
-                continue
+                if value:
+                    return value
 
     except Exception:
         pass
@@ -900,8 +827,24 @@ def _is_google_maps_url(url):
     return "google.com/maps" in value or "maps.google.com" in value
 
 
+def is_google_maps_url(url):
+    return _is_google_maps_url(url)
+
+
 def _is_google_maps_place_url(url):
-    if not url:
+    """
+    ONLY accept real Google Maps Place URLs.
+
+    Accepted:
+        /maps/place/Hotel+Name/...
+
+    Rejected:
+        /maps/search/...
+        random google URL
+        generic Google Maps URL
+    """
+
+    if not _is_google_maps_url(url):
         return False
 
     try:
@@ -909,31 +852,17 @@ def _is_google_maps_place_url(url):
     except Exception:
         return False
 
-    if not _is_google_maps_url(value):
+    if "/maps/search" in value:
         return False
 
     return "/maps/place/" in value or "/maps/place?" in value
 
 
+def is_google_maps_place_url(url):
+    return _is_google_maps_place_url(url)
+
+
 def _is_usable_google_maps_place_url(url):
-    """
-    Chỉ cần URL là Google Maps place URL hợp lệ
-    thì có thể sử dụng làm kết quả.
-
-    Không yêu cầu title/address match.
-    """
-
-    if not url:
-        return False
-
-    try:
-        url = str(url).strip()
-    except Exception:
-        return False
-
-    if not url:
-        return False
-
     return _is_google_maps_place_url(url)
 
 
@@ -942,15 +871,12 @@ def _clean_place_url(url):
         return None
 
     try:
-        url = str(url).strip()
+        value = str(url).strip()
     except Exception:
         return None
 
-    if not url:
-        return None
-
     try:
-        cleaned = clean_google_maps_url(url)
+        cleaned = clean_google_maps_url(value)
 
         if cleaned and _is_google_maps_place_url(cleaned):
             return cleaned
@@ -958,21 +884,15 @@ def _clean_place_url(url):
     except Exception:
         pass
 
-    if _is_google_maps_place_url(url):
-        return url
+    if _is_google_maps_place_url(value):
+        return value
 
     return None
 
 
 def get_current_google_maps_url(page):
-    if page is None:
-        return None
-
     try:
-        url = page.url or ""
-
-        return _clean_place_url(url)
-
+        return _clean_place_url(page.url or "")
     except Exception:
         return None
 
@@ -982,36 +902,21 @@ def extract_google_maps_url_from_href(href):
         return None
 
     try:
-        href = str(href).strip()
-    except Exception:
-        return None
+        value = str(href).strip().replace("&amp;", "&")
 
-    if not href:
-        return None
-
-    href = href.replace("&amp;", "&").replace("\\u003d", "=").replace("\\u0026", "&")
-
-    if href.startswith("/maps/"):
-        href = "https://www.google.com" + href
-
-    if "\\/" in href:
-        href = href.replace(
-            "\\/",
-            "/",
+        value = (
+            value.replace("\\/", "/").replace("\\u003d", "=").replace("\\u0026", "&")
         )
 
-    # Decode once nếu URL bị encode.
-    try:
-        decoded = unquote(href)
+        if value.startswith("/maps/"):
+            value = "https://www.google.com" + value
 
-        if _is_google_maps_place_url(decoded) and len(decoded) < len(href) + 500:
-            href = decoded
+        decoded = unquote(value)
 
-    except Exception:
-        pass
+        if _is_google_maps_place_url(decoded):
+            value = decoded
 
-    try:
-        cleaned = clean_google_maps_url(href)
+        cleaned = clean_google_maps_url(value)
 
         if cleaned and _is_google_maps_place_url(cleaned):
             return cleaned
@@ -1023,7 +928,7 @@ def extract_google_maps_url_from_href(href):
 
 
 # ============================================================
-# POPUP HANDLING
+# POPUPS
 # ============================================================
 
 
@@ -1038,24 +943,17 @@ def close_google_popups(page):
         'button:has-text("Chấp nhận tất cả")',
         '[aria-label="Accept all"]',
         '[aria-label="I agree"]',
+        '[aria-label="Chấp nhận tất cả"]',
     ]
 
     for selector in selectors:
         try:
             locator = page.locator(selector)
 
-            count = locator.count()
+            if locator.count() and locator.first.is_visible(timeout=300):
+                locator.first.click(timeout=1200)
 
-            if count <= 0:
-                continue
-
-            button = locator.first
-
-            if button.is_visible(timeout=500):
-                button.click(timeout=1500)
-
-                time.sleep(0.2)
-
+                time.sleep(0.15)
                 break
 
         except Exception:
@@ -1063,7 +961,7 @@ def close_google_popups(page):
 
 
 # ============================================================
-# SEARCH RESULT WAITING
+# WAIT
 # ============================================================
 
 
@@ -1076,13 +974,17 @@ def wait_for_search_results(
 
     timeout = timeout or PAGE_TIMEOUT
 
-    deadline = time.time() + timeout / 1000.0
+    deadline = time.time() + timeout / 1000
+
+    interval = max(
+        float(SEARCH_POLL_INTERVAL or 0.15),
+        0.1,
+    )
 
     selectors = [
         '[role="main"]',
         'div[role="feed"]',
         "div.Nv2PK",
-        "div.bfdHYd",
         "h1",
         'a[href*="/maps/place/"]',
     ]
@@ -1096,26 +998,18 @@ def wait_for_search_results(
 
         for selector in selectors:
             try:
-                locator = page.locator(selector)
-
-                if locator.count() > 0:
+                if page.locator(selector).count() > 0:
                     return True
-
             except Exception:
-                continue
+                pass
 
-        time.sleep(
-            max(
-                float(SEARCH_POLL_INTERVAL or 0.15),
-                0.1,
-            )
-        )
+        time.sleep(interval)
 
     return False
 
 
 # ============================================================
-# LOCATOR TEXT
+# PLAYWRIGHT TEXT
 # ============================================================
 
 
@@ -1123,25 +1017,27 @@ def _read_locator_text(locator):
     if locator is None:
         return ""
 
-    try:
-        text = locator.inner_text(timeout=1500)
+    for method in (
+        "inner_text",
+        "text_content",
+    ):
+        try:
+            text = getattr(
+                locator,
+                method,
+            )(timeout=1500)
 
-        return safe_text(text)
+            if text:
+                return safe_text(text)
 
-    except Exception:
-        pass
+        except Exception:
+            pass
 
-    try:
-        text = locator.text_content(timeout=1500)
-
-        return safe_text(text)
-
-    except Exception:
-        return ""
+    return ""
 
 
 # ============================================================
-# SELECTED PLACE TITLE
+# PLACE TITLE
 # ============================================================
 
 
@@ -1152,31 +1048,29 @@ def extract_selected_place_title(
     if page is None:
         return ""
 
-    selectors = [
-        "h1",
-        '[data-item-id="title"]',
-        '[role="main"] h1',
-    ]
-
     values = []
 
-    for selector in selectors:
+    for selector in (
+        '[role="main"] h1',
+        "h1",
+        '[data-item-id="title"]',
+    ):
         try:
             locator = page.locator(selector)
 
-            count = locator.count()
+            count = min(
+                locator.count(),
+                5,
+            )
 
-            if count <= 0:
-                continue
-
-            for index in range(min(count, 5)):
-                text = _read_locator_text(locator.nth(index))
+            for i in range(count):
+                text = _read_locator_text(locator.nth(i))
 
                 if text:
                     values.append(text)
 
         except Exception:
-            continue
+            pass
 
     values = _unique_texts(values)
 
@@ -1186,9 +1080,9 @@ def extract_selected_place_title(
     if expected_title:
         return max(
             values,
-            key=lambda value: title_match_score(
+            key=lambda x: title_match_score(
                 expected_title,
-                value,
+                x,
             ),
         )
 
@@ -1196,92 +1090,283 @@ def extract_selected_place_title(
 
 
 # ============================================================
-# SELECTED PLACE ADDRESS
+# PLACE ADDRESS
 # ============================================================
 
 
-def extract_selected_place_address(page):
-    if page is None:
-        return ""
+def extract_selected_place_address(
+    page,
+    expected_address="",
+):
+    """
+    Try to extract real address.
+
+    IMPORTANT:
+    This value is ONLY used for scoring/logging.
+    It is NOT required for accepting a valid
+    Google Maps Place URL.
+    """
+
+    candidates = []
 
     selectors = [
+        '[role="main"] [data-item-id="address"]',
         '[data-item-id="address"]',
-        '[aria-label^="Address:"]',
-        '[aria-label*="Địa chỉ"]',
-        '[data-tooltip*="address"]',
+        '[role="main"] [data-item-id*="address"]',
         '[data-item-id*="address"]',
+        '[role="main"] [aria-label*="Địa chỉ"]',
+        '[role="main"] [aria-label*="Address"]',
+        '[role="main"] button[aria-label*="Địa chỉ"]',
+        '[role="main"] button[aria-label*="Address"]',
+        '[role="main"] a[aria-label*="Địa chỉ"]',
+        '[role="main"] a[aria-label*="Address"]',
     ]
 
     for selector in selectors:
         try:
             locator = page.locator(selector)
 
-            count = locator.count()
+            count = min(
+                locator.count(),
+                20,
+            )
 
-            if count <= 0:
-                continue
-
-            for index in range(min(count, 5)):
-                element = locator.nth(index)
+            for i in range(count):
+                element = locator.nth(i)
 
                 text = _read_locator_text(element)
 
                 if text:
-                    return text
+                    candidates.append(text)
 
+                # aria-label can contain the real
+                # address even when inner_text is icon-only.
                 try:
-                    aria = safe_text(element.get_attribute("aria-label"))
+                    aria = element.get_attribute("aria-label")
 
                     if aria:
-                        aria = re.sub(
-                            r"^(Address|Địa chỉ)\s*:\s*",
-                            "",
-                            aria,
-                            flags=re.IGNORECASE,
-                        )
-
-                        if aria:
-                            return aria
-
+                        candidates.append(aria)
                 except Exception:
                     pass
 
         except Exception:
-            continue
+            pass
 
-    # Fallback aria.
+    candidates = _unique_texts(candidates)
+
+    expected = _normalize_text(expected_address)
+
+    if candidates and expected:
+        scored = []
+
+        for candidate in candidates:
+            info = address_match_score(
+                expected,
+                candidate,
+            )
+
+            scored.append(
+                (
+                    info["score"],
+                    info["location_score"],
+                    candidate,
+                )
+            )
+
+        scored.sort(
+            key=lambda x: (
+                x[0],
+                x[1],
+            ),
+            reverse=True,
+        )
+
+        best_score = scored[0][0]
+        best_location_score = scored[0][1]
+        best_address = scored[0][2]
+
+        if (
+            best_score >= ADDRESS_MATCH_MIN_SCORE
+            or best_location_score >= MIN_VALID_PLACE_LOCATION_SCORE
+        ):
+            return best_address
+
+    if candidates and not expected:
+        return candidates[0]
+
+    # --------------------------------------------------------
+    # Fallback main text
+    # --------------------------------------------------------
+
     try:
         main = page.locator('[role="main"]').first
 
-        if main.count() > 0:
-            elements = main.locator("[aria-label]")
+        if main.count():
+            lines = _extract_lines(main.inner_text(timeout=2500))
 
-            count = min(
-                elements.count(),
-                250,
+            if expected and lines:
+                scored = []
+
+                for line in lines:
+                    info = address_match_score(
+                        expected,
+                        line,
+                    )
+
+                    scored.append(
+                        (
+                            info["score"],
+                            line,
+                        )
+                    )
+
+                scored = [item for item in scored if item[0] >= 0.20]
+
+                if scored:
+                    scored.sort(
+                        key=lambda x: x[0],
+                        reverse=True,
+                    )
+
+                    return scored[0][1]
+
+            if lines:
+                return lines[0]
+
+    except Exception:
+        pass
+
+    return ""
+
+
+# ============================================================
+# ADDRESS FALLBACK
+# ============================================================
+
+
+def _find_best_address_from_main_text(
+    page,
+    expected_address="",
+):
+    """
+    Final fallback.
+
+    Read visible [role="main"] text.
+    Never invent an address.
+    """
+
+    if page is None:
+        return ""
+
+    try:
+        main = page.locator('[role="main"]').first
+
+        if not main.count():
+            return ""
+
+        text = main.inner_text(timeout=2500)
+
+        lines = _extract_lines(text)
+
+        if not lines:
+            return ""
+
+        expected_address = _normalize_text(expected_address)
+
+        if expected_address:
+            scored = []
+
+            for line in lines:
+                line = _normalize_text(line)
+
+                if not line:
+                    continue
+
+                info = address_match_score(
+                    expected_address,
+                    line,
+                )
+
+                scored.append(
+                    (
+                        info.get(
+                            "score",
+                            0.0,
+                        ),
+                        info.get(
+                            "location_score",
+                            0.0,
+                        ),
+                        line,
+                    )
+                )
+
+            if scored:
+                scored.sort(
+                    key=lambda item: (
+                        item[0],
+                        item[1],
+                    ),
+                    reverse=True,
+                )
+
+                (
+                    best_score,
+                    best_location_score,
+                    best_line,
+                ) = scored[0]
+
+                if best_score >= 0.20 or best_location_score >= 0.25:
+                    return best_line
+
+        # ----------------------------------------------------
+        # Address-like lines
+        # ----------------------------------------------------
+
+        address_like = []
+
+        for line in lines:
+            normalized = _normalize_address(line)
+
+            if not normalized:
+                continue
+
+            has_number = bool(
+                re.search(
+                    r"\d",
+                    normalized,
+                )
             )
 
-            for index in range(count):
-                try:
-                    aria = safe_text(elements.nth(index).get_attribute("aria-label"))
+            has_comma = "," in normalized
 
-                    if not aria:
-                        continue
+            has_location_word = any(
+                token in normalized
+                for token in (
+                    "vietnam",
+                    "viet nam",
+                    "street",
+                    "road",
+                    "ward",
+                    "district",
+                    "province",
+                    "city",
+                    "phuong",
+                    "quan",
+                    "huyen",
+                    "tinh",
+                    "xa",
+                    "thanh pho",
+                    "thi tran",
+                    "thi xa",
+                )
+            )
 
-                    if re.search(
-                        r"^(Address|Địa chỉ)\s*:",
-                        aria,
-                        flags=re.IGNORECASE,
-                    ):
-                        return re.sub(
-                            r"^(Address|Địa chỉ)\s*:\s*",
-                            "",
-                            aria,
-                            flags=re.IGNORECASE,
-                        )
+            if has_number and (has_comma or has_location_word):
+                address_like.append(line)
 
-                except Exception:
-                    continue
+        if address_like:
+            return address_like[0]
 
     except Exception:
         pass
@@ -1298,13 +1383,19 @@ def extract_place_url_from_page(page):
     if page is None:
         return None
 
-    # 1. Current URL.
+    # --------------------------------------------------------
+    # 1. Current page URL
+    # --------------------------------------------------------
+
     current = get_current_google_maps_url(page)
 
     if current:
         return current
 
-    # 2. href.
+    # --------------------------------------------------------
+    # 2. Links
+    # --------------------------------------------------------
+
     try:
         links = page.locator("a[href]")
 
@@ -1313,22 +1404,19 @@ def extract_place_url_from_page(page):
             PLACE_URL_SCAN_MAX_LINKS,
         )
 
-        for index in range(count):
-            try:
-                href = links.nth(index).get_attribute("href")
+        for i in range(count):
+            url = extract_google_maps_url_from_href(links.nth(i).get_attribute("href"))
 
-                url = extract_google_maps_url_from_href(href)
-
-                if url:
-                    return url
-
-            except Exception:
-                continue
+            if url:
+                return url
 
     except Exception:
         pass
 
-    # 3. data attributes.
+    # --------------------------------------------------------
+    # 3. data-url / data-href
+    # --------------------------------------------------------
+
     try:
         elements = page.locator("[data-url], [data-href]")
 
@@ -1337,68 +1425,46 @@ def extract_place_url_from_page(page):
             PLACE_URL_SCAN_MAX_DATA_ELEMENTS,
         )
 
-        for index in range(count):
-            try:
-                element = elements.nth(index)
+        for i in range(count):
+            element = elements.nth(i)
 
-                for attr in (
-                    "data-url",
-                    "data-href",
-                ):
-                    value = element.get_attribute(attr)
+            for attr in (
+                "data-url",
+                "data-href",
+            ):
+                url = extract_google_maps_url_from_href(element.get_attribute(attr))
 
-                    url = extract_google_maps_url_from_href(value)
-
-                    if url:
-                        return url
-
-            except Exception:
-                continue
+                if url:
+                    return url
 
     except Exception:
         pass
 
-    # 4. HTML.
+    # --------------------------------------------------------
+    # 4. Raw HTML
+    # --------------------------------------------------------
+
     try:
         html = page.locator("body").inner_html(timeout=3000)
 
-        if html:
-            patterns = (
-                r'https?://www\.google\.com/maps/place/[^"\'>\s]+',
-                r'https?://google\.com/maps/place/[^"\'>\s]+',
-                r'/maps/place/[^"\'>\s]+',
-            )
+        patterns = (
+            r'https?://(?:www\.)?google\.com/maps/place/[^"\'>\s]+',
+            r'/maps/place/[^"\'>\s]+',
+        )
 
-            for pattern in patterns:
-                matches = re.findall(
-                    pattern,
-                    html,
-                    flags=re.IGNORECASE,
-                )
+        for pattern in patterns:
+            for match in re.findall(
+                pattern,
+                html,
+                re.IGNORECASE,
+            ):
+                if match.startswith("/"):
+                    match = "https://www.google.com" + match
 
-                for match in matches:
-                    if match.startswith("/"):
-                        match = "https://www.google.com" + match
+                url = extract_google_maps_url_from_href(match)
 
-                    match = (
-                        match.replace(
-                            "&amp;",
-                            "&",
-                        )
-                        .replace(
-                            "\\u003d",
-                            "=",
-                        )
-                        .replace(
-                            "\\u0026",
-                            "&",
-                        )
-                    )
-
-                    url = extract_google_maps_url_from_href(match)
-
-                    if url:
-                        return url
+                if url:
+                    return url
 
     except Exception:
         pass
@@ -1407,7 +1473,7 @@ def extract_place_url_from_page(page):
 
 
 # ============================================================
-# RESULT CARD TEXT
+# RESULT CARD
 # ============================================================
 
 
@@ -1415,11 +1481,7 @@ def _extract_card_texts(card):
     values = []
 
     try:
-        text = card.inner_text(timeout=1500)
-
-        if text:
-            values.append(text)
-
+        values.extend(_extract_lines(card.inner_text(timeout=1200)))
     except Exception:
         pass
 
@@ -1435,21 +1497,18 @@ def _extract_card_texts(card):
     return _unique_texts(values)
 
 
-def _extract_title_from_card_texts(texts):
-    if not texts:
-        return ""
+def _extract_title_from_card_texts(
+    texts,
+):
+    if texts:
+        lines = _extract_lines(texts[0])
 
-    lines = _extract_lines(texts[0])
+        if lines:
+            return lines[0]
 
-    if lines:
-        return lines[0]
+        return texts[0]
 
-    return texts[0]
-
-
-# ============================================================
-# RESULT CANDIDATE TEXT SCORE
-# ============================================================
+    return ""
 
 
 def _candidate_text_score(
@@ -1464,14 +1523,12 @@ def _candidate_text_score(
 
     combined = " ".join(texts)
 
-    title = candidate.get(
-        "title",
-        "",
-    )
-
     title_score = title_match_score(
         input_title,
-        title,
+        candidate.get(
+            "title",
+            "",
+        ),
         combined,
     )
 
@@ -1480,32 +1537,15 @@ def _candidate_text_score(
         combined,
     )
 
-    address_score = address_info.get(
-        "score",
-        0.0,
+    return (
+        title_score * 0.45
+        + address_info["score"] * 0.40
+        + address_info["location_score"] * 0.15
     )
-
-    location_score = address_info.get(
-        "location_score",
-        0.0,
-    )
-
-    # Title ưu tiên hơn address.
-    #
-    # title 55%
-    # address 30%
-    # location 15%
-    final_score = title_score * 55 + address_score * 30 + location_score * 15
-
-    # Nếu title cực mạnh thì cộng thêm.
-    if title_score >= 0.90:
-        final_score += 10
-
-    return final_score
 
 
 # ============================================================
-# RESULT CARD EXTRACTION
+# EXTRACT SEARCH CANDIDATES
 # ============================================================
 
 
@@ -1513,18 +1553,42 @@ def extract_result_candidates(page):
     if page is None:
         return []
 
-    candidates = []
-    seen_urls = set()
+    # --------------------------------------------------------
+    # Give Maps time to render.
+    # --------------------------------------------------------
 
-    selectors = [
-        "div.Nv2PK",
-        "div.bfdHYd",
-        '[role="article"]',
-    ]
+    try:
+        page.mouse.wheel(
+            0,
+            1800,
+        )
+
+        page.wait_for_timeout(500)
+
+        page.mouse.wheel(
+            0,
+            1800,
+        )
+
+        page.wait_for_timeout(500)
+
+    except Exception:
+        pass
+
+    candidates = []
+    seen = set()
 
     cards = []
 
-    for selector in selectors:
+    # --------------------------------------------------------
+    # Search cards
+    # --------------------------------------------------------
+
+    for selector in (
+        "div.Nv2PK",
+        "div.bfdHYd",
+        '[role="article"]',
+    ):
         try:
             locator = page.locator(selector)
 
@@ -1533,62 +1597,49 @@ def extract_result_candidates(page):
                 RESULT_CARD_MAX,
             )
 
-            if count <= 0:
-                continue
+            if count:
+                cards = [locator.nth(i) for i in range(count)]
 
-            for index in range(count):
-                try:
-                    cards.append(locator.nth(index))
-                except Exception:
-                    continue
-
-            if cards:
                 break
 
         except Exception:
-            continue
+            pass
 
-    # Card extraction.
+    # --------------------------------------------------------
+    # Parse cards
+    # --------------------------------------------------------
+
     for card in cards:
         try:
             texts = _extract_card_texts(card)
 
+            url = None
+
             links = card.locator("a[href]")
 
-            link_count = min(
+            count = min(
                 links.count(),
                 CARD_LINK_MAX,
             )
 
-            url = None
+            for i in range(count):
+                url = extract_google_maps_url_from_href(
+                    links.nth(i).get_attribute("href")
+                )
 
-            for index in range(link_count):
-                try:
-                    href = links.nth(index).get_attribute("href")
+                if url:
+                    break
 
-                    candidate_url = extract_google_maps_url_from_href(href)
-
-                    if candidate_url:
-                        url = candidate_url
-                        break
-
-                except Exception:
-                    continue
-
-            if not url:
+            if not url or url in seen:
                 continue
 
-            if url in seen_urls:
-                continue
-
-            seen_urls.add(url)
-
-            title = _extract_title_from_card_texts(texts)
+            seen.add(url)
 
             candidates.append(
                 {
                     "url": url,
-                    "title": title,
+                    "google_maps_url": url,
+                    "title": (_extract_title_from_card_texts(texts)),
                     "texts": texts,
                 }
             )
@@ -1596,9 +1647,9 @@ def extract_result_candidates(page):
         except Exception:
             continue
 
-    # ========================================================
-    # FALLBACK: ALL PLACE LINKS
-    # ========================================================
+    # --------------------------------------------------------
+    # Direct place links
+    # --------------------------------------------------------
 
     if len(candidates) < RESULT_CARD_MAX:
         try:
@@ -1609,52 +1660,38 @@ def extract_result_candidates(page):
                 PLACE_URL_SCAN_MAX_LINKS,
             )
 
-            for index in range(count):
+            for i in range(count):
                 try:
-                    link = links.nth(index)
+                    link = links.nth(i)
 
-                    href = link.get_attribute("href")
+                    url = extract_google_maps_url_from_href(link.get_attribute("href"))
 
-                    url = extract_google_maps_url_from_href(href)
-
-                    if not url:
+                    if not url or url in seen:
                         continue
 
-                    if url in seen_urls:
-                        continue
+                    texts = []
 
-                    text_values = []
+                    parent = link.locator("xpath=..")
 
-                    try:
-                        parent = link.locator("xpath=..")
+                    parent_text = _read_locator_text(parent)
 
-                        parent_text = _read_locator_text(parent)
+                    if parent_text:
+                        texts.append(parent_text)
 
-                        if parent_text:
-                            text_values.append(parent_text)
+                    link_text = _read_locator_text(link)
 
-                    except Exception:
-                        pass
+                    if link_text:
+                        texts.append(link_text)
 
-                    try:
-                        link_text = _read_locator_text(link)
+                    texts = _unique_texts(texts)
 
-                        if link_text:
-                            text_values.append(link_text)
-
-                    except Exception:
-                        pass
-
-                    texts = _unique_texts(text_values)
-
-                    title = _extract_title_from_card_texts(texts)
-
-                    seen_urls.add(url)
+                    seen.add(url)
 
                     candidates.append(
                         {
                             "url": url,
-                            "title": title,
+                            "google_maps_url": url,
+                            "title": (_extract_title_from_card_texts(texts)),
                             "texts": texts,
                         }
                     )
@@ -1672,7 +1709,7 @@ def extract_result_candidates(page):
 
 
 # ============================================================
-# CANDIDATE OPENING
+# CLICK / NAVIGATE CANDIDATE
 # ============================================================
 
 
@@ -1682,13 +1719,10 @@ def click_candidate(
     context=None,
     logger=None,
 ):
-    if page is None:
+    if page is None or not candidate:
         return page, False, 0
 
-    if not candidate:
-        return page, False, 0
-
-    url = candidate.get("url")
+    url = candidate.get("url") or candidate.get("google_maps_url")
 
     if not url:
         return page, False, 0
@@ -1697,133 +1731,35 @@ def click_candidate(
         try:
             context = page.context
         except Exception:
-            context = None
+            pass
 
-    # No context.
-    if context is None:
-        try:
-            page.goto(
+    try:
+        if context is not None:
+            return safe_goto(
+                page,
+                context,
                 url,
-                wait_until="domcontentloaded",
+                logger=logger,
                 timeout=PAGE_TIMEOUT,
             )
 
-            return page, True, 1
-
-        except Exception as error:
-            if logger:
-                logger.warning("Candidate navigation error: " + str(error)[:250])
-
-            return page, False, 1
-
-    try:
-        result = safe_goto(
-            page,
-            context,
+        page.goto(
             url,
-            logger=logger,
+            wait_until="domcontentloaded",
             timeout=PAGE_TIMEOUT,
         )
 
-        new_page, success, attempt = result
-
-        return (
-            new_page,
-            success,
-            attempt,
-        )
+        return page, True, 1
 
     except Exception as error:
         if logger:
-            logger.warning("safe_goto candidate error: " + str(error)[:250])
+            logger.warning("Candidate navigation error: " + str(error)[:250])
 
-        return (
-            page,
-            False,
-            1,
-        )
+        return page, False, 1
 
 
 # ============================================================
-# FALLBACK ADDRESS SCAN
-# ============================================================
-
-
-def _find_best_address_from_main_text(
-    page,
-    input_address,
-):
-    if page is None:
-        return ""
-
-    try:
-        main = page.locator('[role="main"]').first
-
-        if main.count() <= 0:
-            return ""
-
-        main_text = _read_locator_text(main)
-
-        if not main_text:
-            return ""
-
-        lines = _extract_lines(main_text)
-
-        best_line = ""
-        best_score = 0.0
-
-        for line in lines:
-            line = safe_text(line)
-
-            if len(line) < 5:
-                continue
-
-            normalized_line = _normalize_address(line)
-
-            if not normalized_line:
-                continue
-
-            if normalized_line.startswith(
-                (
-                    "website",
-                    "phone",
-                    "dien thoai",
-                    "hours",
-                    "gio mo cua",
-                    "reviews",
-                    "rating",
-                    "photos",
-                    "website:",
-                    "phone:",
-                )
-            ):
-                continue
-
-            score_info = address_match_score(
-                input_address,
-                line,
-            )
-
-            score = score_info.get(
-                "score",
-                0.0,
-            )
-
-            if score > best_score:
-                best_score = score
-                best_line = line
-
-        if best_line and best_score >= 0.25:
-            return best_line
-
-    except Exception:
-        pass
-
-    return ""
-
-
-# ============================================================
-# CANDIDATE DECISION
+# DECISION
 # ============================================================
 
 
@@ -1835,16 +1771,24 @@ def _decide_candidate(
     actual_url,
 ):
     """
-    Quyết định Google Maps candidate.
+    IMPORTANT:
 
-    PRINCIPLE:
+    NEW ACCEPTANCE RULE:
 
-    Nếu đã có Google Maps /maps/place/ URL
-    thì coi là usable.
+        Valid Google Maps Place URL
+                    +
+                 navigation
+                    =
+                 SUCCESS
 
-    Title/address chỉ dùng để logging / scoring,
-    KHÔNG được phép làm candidate bị fail
-    nếu URL Maps hợp lệ.
+    Title/address/location are only metadata.
+
+    This intentionally avoids rejecting a valid Place URL
+    because Google Maps DOM extraction returned:
+
+        actual_title=''
+        actual_address='\\ue52e'
+
     """
 
     address_info = address_match_score(
@@ -1852,10 +1796,13 @@ def _decide_candidate(
         actual_address,
     )
 
-    address_score = address_info.get(
-        "score",
-        0.0,
+    title_score = title_match_score(
+        input_title,
+        actual_title,
+        actual_address,
     )
+
+    valid_url = _is_usable_google_maps_place_url(actual_url)
 
     location_matches = address_info.get(
         "location_matches",
@@ -1867,53 +1814,51 @@ def _decide_candidate(
         0.0,
     )
 
-    strong_address = address_info.get(
-        "strong_match",
-        False,
+    tail_location_matches = address_info.get(
+        "tail_location_matches",
+        0,
     )
 
-    title_score = title_match_score(
-        input_title,
-        actual_title,
-        actual_address,
+    tail_location_score = address_info.get(
+        "tail_location_score",
+        0.0,
     )
 
-    valid_place_url = _is_usable_google_maps_place_url(actual_url)
+    address_score = address_info.get(
+        "score",
+        0.0,
+    )
 
-    # ========================================================
-    # MAIN RULE
-    # ========================================================
-    #
-    # Có Google Maps place URL
-    # => SUCCESS
-    #
-    # Không bắt title/address nữa.
-    # ========================================================
-
-    if valid_place_url:
-        return {
-            "success": True,
-            "reason": "GOOGLE_MAPS_PLACE_URL",
-            "title_score": title_score,
-            "address_score": address_score,
-            "location_matches": location_matches,
-            "location_score": location_score,
-            "strong_address": strong_address,
-        }
-
-    # ========================================================
-    # FAIL
-    # ========================================================
-
-    return {
+    base = {
         "success": False,
-        "reason": "INVALID_PLACE_URL",
         "title_score": title_score,
         "address_score": address_score,
         "location_matches": location_matches,
         "location_score": location_score,
-        "strong_address": strong_address,
+        "tail_location_matches": tail_location_matches,
+        "tail_location_score": tail_location_score,
+        "strong_address": address_info.get(
+            "strong_match",
+            False,
+        ),
     }
+
+    # --------------------------------------------------------
+    # ONLY HARD REQUIREMENT
+    # --------------------------------------------------------
+
+    if not valid_url:
+        base["reason"] = "INVALID_PLACE_URL"
+        return base
+
+    # --------------------------------------------------------
+    # VALID PLACE URL = SUCCESS
+    # --------------------------------------------------------
+
+    base["success"] = True
+    base["reason"] = "MAPS_PLACE_URL_ACCEPTED"
+
+    return base
 
 
 # ============================================================
@@ -1929,9 +1874,28 @@ def verify_candidate_address(
     input_address,
     logger=None,
 ):
-    result_base = {
+    """
+    Verify candidate.
+
+    NEW BEHAVIOR:
+
+    If navigation reaches a valid Google Maps
+    /maps/place/ URL -> ACCEPT IMMEDIATELY.
+
+    We DO NOT require:
+        - title
+        - address
+        - location
+        - score
+        - coordinates
+
+    Coordinates are collected when possible.
+    """
+
+    result = {
         "success": False,
         "url": None,
+        "google_maps_url": None,
         "title": "",
         "address": "",
         "score": 0.0,
@@ -1943,182 +1907,203 @@ def verify_candidate_address(
     }
 
     if page is None:
-        result_base["reason"] = "PAGE_NONE"
-        return result_base
+        result["reason"] = "PAGE_NONE"
+        return result
 
     if not candidate:
-        result_base["reason"] = "CANDIDATE_NONE"
-        return result_base
+        result["reason"] = "CANDIDATE_NONE"
+        return result
 
-    candidate_url = candidate.get("url")
+    # --------------------------------------------------------
+    # Navigate
+    # --------------------------------------------------------
 
-    if not candidate_url:
-        result_base["reason"] = "CANDIDATE_URL_EMPTY"
-        return result_base
-
-    (
-        current_page,
-        success,
-        attempt,
-    ) = click_candidate(
+    page, success, attempts = click_candidate(
         page,
         candidate,
         context=context,
         logger=logger,
     )
 
-    if current_page is None:
-        result_base["reason"] = "PAGE_NONE_AFTER_NAVIGATION"
-        return result_base
+    result["attempts"] = attempts
 
-    if not success:
-        result_base["reason"] = "NAVIGATION_FAILED"
-        return result_base
+    if not success or page is None:
+        result["reason"] = "NAVIGATION_FAILED"
+        return result
 
-    # Wait.
+    # --------------------------------------------------------
+    # Wait
+    # --------------------------------------------------------
+
     wait_for_search_results(
-        current_page,
-        timeout=PAGE_TIMEOUT,
+        page,
+        PAGE_TIMEOUT,
     )
 
-    close_google_popups(current_page)
+    close_google_popups(page)
 
     if FINAL_SEARCH_CHECK_DELAY:
         time.sleep(FINAL_SEARCH_CHECK_DELAY)
 
-    # ========================================================
+    # --------------------------------------------------------
     # URL
-    # ========================================================
+    # --------------------------------------------------------
 
-    actual_url = extract_place_url_from_page(current_page)
+    actual_url = extract_place_url_from_page(page)
+
+    # --------------------------------------------------------
+    # IMPORTANT:
+    #
+    # If DOM extraction failed but the candidate itself
+    # was already a valid /maps/place/ URL, keep it.
+    # --------------------------------------------------------
 
     if not actual_url:
-        for retry in range(
-            1,
-            SELECTED_PLACE_RETRIES + 1,
-        ):
-            try:
-                time.sleep(SELECTED_PLACE_RETRY_DELAY)
+        actual_url = get_current_google_maps_url(page)
 
-                actual_url = extract_place_url_from_page(current_page)
+    if not actual_url:
+        candidate_url = candidate.get("url") or candidate.get("google_maps_url")
 
-                if actual_url:
-                    break
+        if _is_google_maps_place_url(candidate_url):
+            actual_url = _clean_place_url(candidate_url)
 
-            except Exception:
-                continue
+    # --------------------------------------------------------
+    # Extract metadata
+    #
+    # These NEVER decide acceptance.
+    # --------------------------------------------------------
 
-    # ========================================================
-    # TITLE
-    # ========================================================
-
-    selected_title = extract_selected_place_title(
-        current_page,
+    actual_title = extract_selected_place_title(
+        page,
         expected_title=input_title,
     )
 
-    # ========================================================
-    # ADDRESS
-    # ========================================================
+    actual_address = extract_selected_place_address(
+        page,
+        expected_address=input_address,
+    )
 
-    selected_address = extract_selected_place_address(current_page)
-
-    if not selected_address:
-        selected_address = _find_best_address_from_main_text(
-            current_page,
+    if not actual_address:
+        actual_address = _find_best_address_from_main_text(
+            page,
             input_address,
         )
 
-    # ========================================================
-    # SCORE
-    # ========================================================
+    coordinates = extract_coordinates_from_page(page)
 
-    address_info = address_match_score(
-        input_address,
-        selected_address,
-    )
-
-    address_score = address_info.get(
-        "score",
-        0.0,
-    )
-
-    matched_tokens = address_info.get(
-        "matched_tokens",
-        [],
-    )
-
-    coordinates = extract_coordinates_from_page(current_page)
-
-    # ========================================================
-    # DECISION
-    # ========================================================
-
-    decision = _decide_candidate(
-        input_title=input_title,
-        input_address=input_address,
-        actual_title=selected_title,
-        actual_address=selected_address,
-        actual_url=actual_url,
-    )
-
-    title_score = decision.get(
-        "title_score",
-        0.0,
-    )
-
-    success_decision = decision.get(
-        "success",
-        False,
-    )
-
-    reason = decision.get(
-        "reason",
-        "",
-    )
-
-    # ========================================================
-    # DEBUG
-    # ========================================================
+    # --------------------------------------------------------
+    # LOG
+    # --------------------------------------------------------
 
     if logger:
-        try:
-            logger.debug(
-                "Google Maps candidate result | "
-                f"title={selected_title!r} | "
-                f"address={selected_address!r} | "
-                f"title_score={title_score:.3f} | "
-                f"address_score={address_score:.3f} | "
-                f"location_matches="
-                f"{address_info.get('location_matches', 0)} | "
-                f"location_score="
-                f"{address_info.get('location_score', 0.0):.3f} | "
-                f"url={actual_url!r} | "
-                f"decision={success_decision} | "
-                f"reason={reason}"
+        logger.info(
+            "VERIFY CANDIDATE | "
+            "input_title=%r | "
+            "actual_title=%r | "
+            "input_address=%r | "
+            "actual_address=%r | "
+            "url=%r | "
+            "coordinates=%r",
+            input_title,
+            actual_title,
+            input_address,
+            actual_address,
+            actual_url,
+            coordinates,
+        )
+
+    # --------------------------------------------------------
+    # HARD ACCEPT
+    #
+    # This is the key fix.
+    # --------------------------------------------------------
+
+    if actual_url and _is_google_maps_place_url(actual_url):
+        info = address_match_score(
+            input_address,
+            actual_address,
+        )
+
+        title_score = title_match_score(
+            input_title,
+            actual_title,
+            actual_address,
+        )
+
+        result.update(
+            {
+                "success": True,
+                "url": actual_url,
+                "google_maps_url": actual_url,
+                "title": actual_title,
+                "address": actual_address,
+                "score": info.get(
+                    "score",
+                    0.0,
+                ),
+                "address_score": info.get(
+                    "score",
+                    0.0,
+                ),
+                "title_score": title_score,
+                "matched_tokens": info.get(
+                    "matched_tokens",
+                    [],
+                ),
+                "coordinates": coordinates,
+                "reason": ("MAPS_PLACE_ACCEPTED"),
+                "location_matches": info.get(
+                    "location_matches",
+                    0,
+                ),
+                "location_score": info.get(
+                    "location_score",
+                    0.0,
+                ),
+                "tail_location_matches": info.get(
+                    "tail_location_matches",
+                    0,
+                ),
+                "tail_location_score": info.get(
+                    "tail_location_score",
+                    0.0,
+                ),
+                "page": page,
+            }
+        )
+
+        if logger:
+            logger.info(
+                "MAPS PLACE ACCEPTED | title=%r | address=%r | url=%r | coordinates=%r",
+                actual_title,
+                actual_address,
+                actual_url,
+                coordinates,
             )
 
-        except Exception:
-            pass
+        return result
 
-    result = {
-        "success": bool(success_decision),
-        "url": actual_url,
-        "title": selected_title,
-        "address": selected_address,
-        "score": address_score,
-        "address_score": address_score,
-        "title_score": title_score,
-        "matched_tokens": matched_tokens,
-        "coordinates": coordinates,
-        "reason": reason,
-    }
+    # --------------------------------------------------------
+    # No valid place URL
+    # --------------------------------------------------------
+
+    result["reason"] = "NO_VALID_MAPS_PLACE_URL"
+
+    result["title"] = actual_title
+    result["address"] = actual_address
+    result["coordinates"] = coordinates
+
+    if logger:
+        logger.warning(
+            "MAPS PLACE REJECTED | No valid /maps/place/ URL | url=%r",
+            actual_url,
+        )
 
     return result
 
 
 # ============================================================
-# COORDINATE RECOVERY
+# RECOVER COORDINATES
 # ============================================================
 
 
@@ -2128,60 +2113,36 @@ def recover_candidate_coordinates(
     candidate,
     logger=None,
 ):
-    if page is None:
-        return None
-
-    if not candidate:
-        return None
-
-    for attempt in range(
-        1,
-        SELECTED_PLACE_RETRIES + 1,
-    ):
+    for _ in range(SELECTED_PLACE_RETRIES):
         try:
-            (
-                current_page,
-                success,
-                _,
-            ) = click_candidate(
+            page, success, _ = click_candidate(
                 page,
                 candidate,
                 context=context,
                 logger=logger,
             )
 
-            page = current_page
-
-            if not success:
-                continue
-
-            wait_for_search_results(
-                page,
-                timeout=PAGE_TIMEOUT,
-            )
-
-            coordinates = extract_coordinates_from_page(page)
-
-            if coordinates:
-                return coordinates
-
-        except Exception as error:
-            if logger:
-                logger.warning(
-                    "Coordinate recovery error "
-                    f"attempt={attempt}/"
-                    f"{SELECTED_PLACE_RETRIES}: "
-                    f"{str(error)[:200]}"
+            if success:
+                wait_for_search_results(
+                    page,
+                    PAGE_TIMEOUT,
                 )
 
-        if attempt < SELECTED_PLACE_RETRIES:
-            time.sleep(SELECTED_PLACE_RETRY_DELAY)
+                coordinates = extract_coordinates_from_page(page)
+
+                if coordinates:
+                    return coordinates
+
+        except Exception:
+            pass
+
+        time.sleep(SELECTED_PLACE_RETRY_DELAY)
 
     return None
 
 
 # ============================================================
-# BUILD SEARCH URL
+# SEARCH URL
 # ============================================================
 
 
@@ -2207,49 +2168,6 @@ def _safe_build_search_url(query):
 
 
 # ============================================================
-# IMPORTANT LOCATION PARTS
-# ============================================================
-
-
-def _get_important_location_parts(address):
-    parts = _extract_location_parts(address)
-
-    if not parts:
-        return []
-
-    values = []
-
-    # Full location parts.
-    for part in parts:
-        normalized = _normalize_address(part)
-
-        if normalized:
-            values.append(part)
-
-    # Last 1.
-    if len(parts) >= 1:
-        values.append(", ".join(parts[-1:]))
-
-    # Last 2.
-    if len(parts) >= 2:
-        values.append(", ".join(parts[-2:]))
-
-    # Last 3.
-    if len(parts) >= 3:
-        values.append(", ".join(parts[-3:]))
-
-    # First + last.
-    if len(parts) >= 3:
-        values.append(f"{parts[0]}, {parts[-1]}")
-
-    # First + last 2.
-    if len(parts) >= 3:
-        values.append(f"{parts[0]}, {parts[-2]}, {parts[-1]}")
-
-    return _unique_texts(values)
-
-
-# ============================================================
 # SEARCH VARIANTS
 # ============================================================
 
@@ -2259,127 +2177,62 @@ def build_search_variants(
     address,
 ):
     """
-    Search nhiều tầng.
-
-    Ưu tiên:
-
-    1. title + full address
-    2. title + last 2 location
-    3. title + last 3 location
-    4. title + first/last location
-    5. title + important location
-    6. address + title
-    7. title
-    8. address
-    9. title + city
-    10. title + province
+    Build broad address-driven Maps queries.
     """
 
     title = safe_text(title)
     address = safe_text(address)
 
     variants = []
+    seen = set()
+
+    parts = _extract_location_parts(address)
 
     def add(query):
         query = safe_text(query)
 
-        if not query:
-            return
+        key = _normalize_text(query).casefold()
 
-        normalized = _normalize_text(query)
-
-        if not normalized:
-            return
-
-        if normalized not in {_normalize_text(item) for item in variants}:
+        if query and key not in seen:
+            seen.add(key)
             variants.append(query)
 
-    location_parts = _extract_location_parts(address)
-
     # --------------------------------------------------------
-    # 1. Full.
-    # --------------------------------------------------------
-
-    if title and address:
-        add(f"{title}, {address}")
-
-    # --------------------------------------------------------
-    # 2. Title + last 2.
-    # --------------------------------------------------------
-
-    if title and len(location_parts) >= 2:
-        add(f"{title}, {', '.join(location_parts[-2:])}")
-
-    # --------------------------------------------------------
-    # 3. Title + last 3.
-    # --------------------------------------------------------
-
-    if title and len(location_parts) >= 3:
-        add(f"{title}, {', '.join(location_parts[-3:])}")
-
-    # --------------------------------------------------------
-    # 4. Title + first + last.
-    # --------------------------------------------------------
-
-    if title and len(location_parts) >= 3:
-        add(f"{title}, {location_parts[0]}, {location_parts[-1]}")
-
-    # --------------------------------------------------------
-    # 5. Title + each important location.
-    # --------------------------------------------------------
-
-    if title:
-        for location in _get_important_location_parts(address):
-            if location:
-                add(f"{title}, {location}")
-
-    # --------------------------------------------------------
-    # 6. Address + title.
-    # --------------------------------------------------------
-
-    if title and address:
-        add(f"{address}, {title}")
-
-    # --------------------------------------------------------
-    # 7. Title only.
-    # --------------------------------------------------------
-
-    if title:
-        add(title)
-
-    # --------------------------------------------------------
-    # 8. Address only.
+    # Most reliable first
     # --------------------------------------------------------
 
     if address:
         add(address)
 
-    # --------------------------------------------------------
-    # 9. Title + city/location.
-    # --------------------------------------------------------
+    if address and title:
+        add(f"{address}, {title}")
+
+        add(f"{title}, {address}")
+
+    if address and len(parts) >= 3:
+        add(", ".join(parts[-3:]))
+
+    if address and len(parts) >= 2:
+        add(", ".join(parts[-2:]))
+
+    if title and len(parts) >= 3:
+        add(f"{title}, {', '.join(parts[-3:])}")
+
+    if title and len(parts) >= 2:
+        add(f"{title}, {', '.join(parts[-2:])}")
+
+    if title and parts:
+        for part in parts[-3:]:
+            add(f"{title}, {part}")
 
     if title:
-        canonical_locations = _canonical_location_parts(address)
-
-        for location in canonical_locations:
-            if location in {
-                "vietnam",
-                "viet nam",
-                "vn",
-            }:
-                continue
-
-            add(f"{title}, {location}")
-
-    # --------------------------------------------------------
-    # Return.
-    # --------------------------------------------------------
+        add(title)
 
     return variants[:MAX_SEARCH_VARIANTS]
 
 
 # ============================================================
-# LOG CANDIDATES
+# LOG CANDIDATE
 # ============================================================
 
 
@@ -2393,25 +2246,46 @@ def _log_candidate_summary(
         return
 
     try:
-        logger.debug("==================================================")
-
-        logger.debug(f"Google Maps Candidate {index}/{total}")
-
-        logger.debug(f"Title       : {verified.get('title', '')}")
-
-        logger.debug(f"Address     : {verified.get('address', '')}")
-
-        logger.debug(f"Title score : {verified.get('title_score', 0.0):.3f}")
-
-        logger.debug(f"Addr score  : {verified.get('address_score', 0.0):.3f}")
-
-        logger.debug(f"URL         : {verified.get('url', '')}")
-
-        logger.debug(f"Decision    : {verified.get('success', False)}")
-
-        logger.debug(f"Reason      : {verified.get('reason', '')}")
-
-        logger.debug("==================================================")
+        logger.debug(
+            "Candidate %s/%s | "
+            "title=%r | "
+            "address=%r | "
+            "title_score=%.3f | "
+            "address_score=%.3f | "
+            "location_score=%.3f | "
+            "success=%s | "
+            "reason=%s",
+            index,
+            total,
+            verified.get(
+                "title",
+                "",
+            ),
+            verified.get(
+                "address",
+                "",
+            ),
+            verified.get(
+                "title_score",
+                0.0,
+            ),
+            verified.get(
+                "address_score",
+                0.0,
+            ),
+            verified.get(
+                "location_score",
+                0.0,
+            ),
+            verified.get(
+                "success",
+                False,
+            ),
+            verified.get(
+                "reason",
+                "",
+            ),
+        )
 
     except Exception:
         pass
@@ -2436,254 +2310,127 @@ def _process_search_page(
 
     wait_for_search_results(
         page,
-        timeout=PAGE_TIMEOUT,
+        PAGE_TIMEOUT,
     )
 
     if FINAL_SEARCH_CHECK_DELAY:
         time.sleep(FINAL_SEARCH_CHECK_DELAY)
 
-    # ========================================================
-    # Redirect trực tiếp vào place.
-    # ========================================================
+    # --------------------------------------------------------
+    # If current page is already a Place page:
+    #
+    # ACCEPT immediately.
+    # --------------------------------------------------------
 
     current_url = get_current_google_maps_url(page)
 
     if current_url:
-        current_candidate = {
-            "url": current_url,
-            "title": "",
-            "texts": [],
-        }
-
         verified = verify_candidate_address(
             page,
             context,
-            current_candidate,
+            {
+                "url": current_url,
+                "google_maps_url": current_url,
+            },
             title,
             address,
             logger=logger,
         )
 
-        if verified.get(
-            "success",
-            False,
-        ):
+        if verified.get("success"):
             return verified
 
-    # ========================================================
-    # Extract candidates.
-    # ========================================================
+    # --------------------------------------------------------
+    # Search result cards
+    # --------------------------------------------------------
 
     candidates = extract_result_candidates(page)
 
-    if logger:
-        try:
-            logger.debug(f"Google Maps extracted {len(candidates)} candidates")
-        except Exception:
-            pass
-
-    # ========================================================
-    # No cards.
-    # ========================================================
-
     if not candidates:
-        fallback_url = extract_place_url_from_page(page)
-
-        if fallback_url:
-            fallback_candidate = {
-                "url": fallback_url,
-                "title": "",
-                "texts": [],
-            }
-
-            verified = verify_candidate_address(
-                page,
-                context,
-                fallback_candidate,
-                title,
-                address,
-                logger=logger,
-            )
-
-            if verified.get(
-                "success",
-                False,
-            ):
-                return verified
-
         return None
 
-    # ========================================================
-    # Rank.
-    # ========================================================
+    # --------------------------------------------------------
+    # Rank candidates only to decide order.
+    #
+    # Ranking does NOT decide acceptance.
+    # --------------------------------------------------------
 
-    try:
-        for candidate in candidates:
-            candidate["_rank_score"] = _candidate_text_score(
-                candidate,
-                title,
-                address,
-            )
-
-        candidates.sort(
-            key=lambda item: item.get(
-                "_rank_score",
-                0.0,
-            ),
-            reverse=True,
+    for candidate in candidates:
+        candidate["_rank_score"] = _candidate_text_score(
+            candidate,
+            title,
+            address,
         )
 
-    except Exception:
-        pass
+    candidates.sort(
+        key=lambda x: x.get(
+            "_rank_score",
+            0.0,
+        ),
+        reverse=True,
+    )
 
-    # ========================================================
-    # Verify top candidates.
-    # ========================================================
-
-    candidates = candidates[:MAX_CANDIDATES_TO_VERIFY]
-
-    if logger:
-        for index, candidate in enumerate(
-            candidates,
-            start=1,
-        ):
-            try:
-                logger.debug(
-                    "Ranked candidate "
-                    f"{index}/{len(candidates)} | "
-                    f"text_score="
-                    f"{candidate.get('_rank_score', 0):.2f} | "
-                    f"title="
-                    f"{candidate.get('title', '')!r} | "
-                    f"url="
-                    f"{candidate.get('url', '')}"
-                )
-
-            except Exception:
-                continue
-
-    # ========================================================
-    # Verify.
-    # ========================================================
+    # --------------------------------------------------------
+    # Verify candidates.
+    #
+    # First valid Place URL = SUCCESS.
+    # --------------------------------------------------------
 
     best_failed = None
 
     for index, candidate in enumerate(
-        candidates,
-        start=1,
+        candidates[:MAX_CANDIDATES_TO_VERIFY],
+        1,
     ):
-        try:
-            if logger:
-                logger.debug(
-                    "Verify Google Maps candidate "
-                    f"{index}/{len(candidates)} | "
-                    f"{candidate.get('title', '')!r} | "
-                    f"{candidate.get('url', '')}"
-                )
-
-            verified = verify_candidate_address(
-                page,
-                context,
-                candidate,
-                title,
-                address,
-                logger=logger,
-            )
-
-            _log_candidate_summary(
-                logger,
-                index,
-                len(candidates),
-                verified,
-            )
-
-            # =================================================
-            # Recover latest page.
-            # =================================================
-
-            try:
-                if context is not None:
-                    pages = context.pages
-
-                    if pages:
-                        for possible_page in reversed(pages):
-                            try:
-                                if not possible_page.is_closed():
-                                    page = possible_page
-                                    break
-
-                            except Exception:
-                                continue
-
-            except Exception:
-                pass
-
-            # =================================================
-            # Success.
-            # =================================================
-
-            if verified.get(
-                "success",
-                False,
-            ):
-                return verified
-
-            # =================================================
-            # Best failed.
-            # =================================================
-
-            verified_score = (
-                verified.get(
-                    "title_score",
-                    0.0,
-                )
-                * 0.60
-                + verified.get(
-                    "address_score",
-                    0.0,
-                )
-                * 0.40
-            )
-
-            if best_failed is None:
-                best_failed = verified
-                best_failed["_failure_score"] = verified_score
-
-            elif verified_score > best_failed.get(
-                "_failure_score",
-                0.0,
-            ):
-                best_failed = verified
-                best_failed["_failure_score"] = verified_score
-
-        except Exception as error:
-            if logger:
-                logger.warning(
-                    "Candidate verification error "
-                    f"{index}/{len(candidates)}: "
-                    f"{str(error)[:250]}"
-                )
-
-    # ========================================================
-    # Debug best failed.
-    # ========================================================
-
-    if logger and best_failed:
-        logger.debug(
-            "Best failed Google Maps candidate: "
-            f"title="
-            f"{best_failed.get('title', '')!r} "
-            f"address="
-            f"{best_failed.get('address', '')!r} "
-            f"title_score="
-            f"{best_failed.get('title_score', 0.0):.3f} "
-            f"address_score="
-            f"{best_failed.get('address_score', 0.0):.3f} "
-            f"url="
-            f"{best_failed.get('url', '')!r} "
-            f"reason="
-            f"{best_failed.get('reason', '')}"
+        verified = verify_candidate_address(
+            page,
+            context,
+            candidate,
+            title,
+            address,
+            logger=logger,
         )
+
+        _log_candidate_summary(
+            logger,
+            index,
+            min(
+                len(candidates),
+                MAX_CANDIDATES_TO_VERIFY,
+            ),
+            verified,
+        )
+
+        if verified.get("page") is not None:
+            page = verified["page"]
+
+        # ----------------------------------------------------
+        # IMPORTANT:
+        # Valid Place URL immediately returns.
+        # ----------------------------------------------------
+
+        if verified.get("success"):
+            return verified
+
+        score = (
+            verified.get(
+                "address_score",
+                0.0,
+            )
+            * 0.70
+            + verified.get(
+                "title_score",
+                0.0,
+            )
+            * 0.30
+        )
+
+        if best_failed is None or score > best_failed.get(
+            "_failure_score",
+            -1,
+        ):
+            verified["_failure_score"] = score
+            best_failed = verified
 
     return None
 
@@ -2694,16 +2441,6 @@ def _process_search_page(
 
 
 class GoogleMapsSearchEngine:
-    """
-    Google Maps search engine.
-
-    Contract:
-
-        search(title, address)
-            ->
-        dict result
-    """
-
     def __init__(
         self,
         page,
@@ -2715,52 +2452,175 @@ class GoogleMapsSearchEngine:
         self.logger = logger
 
     # ========================================================
+    # CURRENT PLACE PAGE
+    # ========================================================
+
+    def _try_current_place_page(
+        self,
+        title,
+        address,
+    ):
+        """
+        If current browser page is already a Google Maps
+        Place URL, ACCEPT IT immediately.
+
+        No search.
+        No click.
+        No title requirement.
+        No address requirement.
+        """
+
+        page = self.page
+
+        if page is None:
+            return None
+
+        try:
+            current_url = get_current_google_maps_url(page)
+
+            if not current_url:
+                return None
+
+            if not is_google_maps_place_url(current_url):
+                return None
+
+            current_url = clean_google_maps_url(current_url) or current_url
+
+            # ------------------------------------------------
+            # Extract optional metadata.
+            # ------------------------------------------------
+
+            coordinates = extract_coordinates_from_page(page)
+
+            actual_title = extract_selected_place_title(page) or ""
+
+            actual_address = (
+                extract_selected_place_address(
+                    page,
+                    expected_address=address,
+                )
+                or ""
+            )
+
+            if not actual_address:
+                actual_address = (
+                    _find_best_address_from_main_text(
+                        page,
+                        expected_address=address,
+                    )
+                    or ""
+                )
+
+            address_info = address_match_score(
+                address,
+                actual_address,
+            )
+
+            title_score = title_match_score(
+                title,
+                actual_title,
+                actual_address,
+            )
+
+            # ------------------------------------------------
+            # HARD ACCEPT
+            # ------------------------------------------------
+
+            if self.logger:
+                self.logger.info(
+                    "CURRENT MAPS PLACE ACCEPTED | "
+                    "title=%r | "
+                    "address=%r | "
+                    "url=%r | "
+                    "coordinates=%r",
+                    actual_title,
+                    actual_address,
+                    current_url,
+                    coordinates,
+                )
+
+            return {
+                "success": True,
+                "url": current_url,
+                "google_maps_url": current_url,
+                "title": actual_title,
+                "address": actual_address,
+                "title_score": title_score,
+                "address_score": address_info.get(
+                    "score",
+                    0.0,
+                ),
+                "location_score": address_info.get(
+                    "location_score",
+                    0.0,
+                ),
+                "location_matches": address_info.get(
+                    "location_matches",
+                    0,
+                ),
+                "tail_location_matches": address_info.get(
+                    "tail_location_matches",
+                    0,
+                ),
+                "tail_location_score": address_info.get(
+                    "tail_location_score",
+                    0.0,
+                ),
+                "reason": ("CURRENT_MAPS_PLACE_ACCEPTED"),
+                "page": page,
+                "coordinates": coordinates,
+                "matched_tokens": address_info.get(
+                    "matched_tokens",
+                    [],
+                ),
+                "score": address_info.get(
+                    "score",
+                    0.0,
+                ),
+            }
+
+        except Exception as error:
+            if self.logger:
+                self.logger.debug(
+                    "Current place page check failed: %s",
+                    error,
+                )
+
+        return None
+
+    # ========================================================
     # UPDATE PAGE
     # ========================================================
 
-    def update_page(
-        self,
-        page,
-    ):
-        if page is None:
-            return
+    def update_page(self, page):
+        if page is not None:
+            self.page = page
 
-        self.page = page
-
-        try:
-            if self.context is None:
-                self.context = page.context
-        except Exception:
-            pass
+            try:
+                if self.context is None:
+                    self.context = page.context
+            except Exception:
+                pass
 
     # ========================================================
-    # LOGGER
+    # LOG
     # ========================================================
 
-    def _log_info(
-        self,
-        message,
-    ):
+    def _log_info(self, message):
         if self.logger:
             try:
                 self.logger.info(message)
             except Exception:
                 pass
 
-    def _log_warning(
-        self,
-        message,
-    ):
+    def _log_warning(self, message):
         if self.logger:
             try:
                 self.logger.warning(message)
             except Exception:
                 pass
 
-    def _log_debug(
-        self,
-        message,
-    ):
+    def _log_debug(self, message):
         if self.logger:
             try:
                 self.logger.debug(message)
@@ -2772,19 +2632,14 @@ class GoogleMapsSearchEngine:
     # ========================================================
 
     def _recover_page(self):
+
         if self.context is not None:
             try:
-                pages = self.context.pages
+                for page in reversed(self.context.pages):
+                    if not page.is_closed():
+                        self.page = page
 
-                if pages:
-                    for candidate_page in reversed(pages):
-                        try:
-                            if not candidate_page.is_closed():
-                                self.page = candidate_page
-                                return self.page
-
-                        except Exception:
-                            continue
+                        return page
 
             except Exception:
                 pass
@@ -2806,71 +2661,77 @@ class GoogleMapsSearchEngine:
         title = safe_text(title)
         address = safe_text(address)
 
-        # ====================================================
-        # Validate
-        # ====================================================
+        base = {
+            "success": False,
+            "url": None,
+            "google_maps_url": None,
+            "title": title,
+            "address": address,
+            "score": 0.0,
+            "title_score": 0.0,
+            "address_score": 0.0,
+            "coordinates": None,
+            "matched_tokens": [],
+            "reason": "",
+            "attempts": 0,
+            "page": self.page,
+        }
+
+        # ----------------------------------------------------
+        # Input validation
+        # ----------------------------------------------------
 
         if not title:
-            return {
-                "success": False,
-                "url": None,
-                "title": "",
-                "address": address,
-                "score": 0.0,
-                "title_score": 0.0,
-                "address_score": 0.0,
-                "coordinates": None,
-                "matched_tokens": [],
-                "reason": "TITLE_EMPTY",
-            }
+            base["reason"] = "TITLE_EMPTY"
+            return base
 
         if not address:
-            return {
-                "success": False,
-                "url": None,
-                "title": title,
-                "address": "",
-                "score": 0.0,
-                "title_score": 0.0,
-                "address_score": 0.0,
-                "coordinates": None,
-                "matched_tokens": [],
-                "reason": "ADDRESS_EMPTY",
-            }
+            base["reason"] = "ADDRESS_EMPTY"
+            return base
 
-        # ====================================================
+        # ----------------------------------------------------
         # Recover page
-        # ====================================================
+        # ----------------------------------------------------
 
         self._recover_page()
 
         if self.page is None:
-            return {
-                "success": False,
-                "url": None,
-                "title": title,
-                "address": address,
-                "score": 0.0,
-                "title_score": 0.0,
-                "address_score": 0.0,
-                "coordinates": None,
-                "matched_tokens": [],
-                "reason": "PAGE_NONE",
-            }
-
-        # ====================================================
-        # Context
-        # ====================================================
+            base["reason"] = "PAGE_NONE"
+            return base
 
         if self.context is None:
             try:
                 self.context = self.page.context
             except Exception:
-                self.context = None
+                pass
 
-        # ====================================================
+        # ----------------------------------------------------
+        # CURRENT PLACE PAGE
+        #
+        # IMPORTANT:
+        # If already a Place URL, ACCEPT immediately.
+        # ----------------------------------------------------
+
+        current_result = self._try_current_place_page(
+            title,
+            address,
+        )
+
+        if current_result:
+            if self.logger:
+                self.logger.info(
+                    "CURRENT GOOGLE MAPS PLACE -> FOUND WITHOUT SEARCH | %s",
+                    current_result.get(
+                        "google_maps_url",
+                        "",
+                    ),
+                )
+
+            return current_result
+
+        # ----------------------------------------------------
         # Build variants
-        # ====================================================
+        # ----------------------------------------------------
 
         variants = build_search_variants(
             title,
@@ -2878,58 +2739,41 @@ class GoogleMapsSearchEngine:
         )
 
         if not variants:
-            return {
-                "success": False,
-                "url": None,
-                "title": title,
-                "address": address,
-                "score": 0.0,
-                "title_score": 0.0,
-                "address_score": 0.0,
-                "coordinates": None,
-                "matched_tokens": [],
-                "reason": "NO_SEARCH_VARIANTS",
-            }
+            base["reason"] = "NO_SEARCH_VARIANTS"
+            return base
 
         self._log_debug("Google Maps search variants: " + " | ".join(variants))
 
-        best_result = None
-        best_result_score = -1.0
+        best = None
 
         # ====================================================
-        # SEARCH EACH VARIANT
+        # SEARCH VARIANTS
         # ====================================================
 
         for variant_index, query in enumerate(
             variants,
-            start=1,
+            1,
         ):
             self._recover_page()
-
-            if self.page is None:
-                continue
 
             search_url = _safe_build_search_url(query)
 
             if not search_url:
-                self._log_warning(f"Cannot build Google Maps search URL: {query}")
                 continue
 
             self._log_info(
                 f"Google Maps search variant {variant_index}/{len(variants)}: {query}"
             )
 
-            self._log_debug(f"Google Maps URL: {search_url}")
-
-            # =================================================
-            # Navigation
-            # =================================================
+            # ------------------------------------------------
+            # Navigate
+            # ------------------------------------------------
 
             try:
                 (
                     new_page,
                     success,
-                    attempt,
+                    attempts,
                 ) = safe_goto(
                     self.page,
                     self.context,
@@ -2942,31 +2786,23 @@ class GoogleMapsSearchEngine:
                     self.update_page(new_page)
 
             except Exception as error:
-                self._log_warning(
-                    "Google Maps navigation wrapper error: " + str(error)[:250]
-                )
+                self._log_warning("Google Maps navigation error: " + str(error)[:250])
 
-                self._recover_page()
                 continue
-
-            # =================================================
-            # Navigation failed
-            # =================================================
 
             if not success:
                 self._log_warning(
                     "Google Maps navigation failed "
                     f"variant={variant_index}/"
                     f"{len(variants)} "
-                    f"attempts={attempt}"
+                    f"attempts={attempts}"
                 )
 
-                self._recover_page()
                 continue
 
-            # =================================================
-            # Process search page
-            # =================================================
+            # ------------------------------------------------
+            # Process page
+            # ------------------------------------------------
 
             try:
                 result = _process_search_page(
@@ -2977,239 +2813,148 @@ class GoogleMapsSearchEngine:
                     logger=self.logger,
                 )
 
-                # ------------------------------------------------
-                # No result
-                # ------------------------------------------------
-
                 if not result:
-                    self._log_debug(f"Google Maps variant returned no result: {query}")
                     continue
 
-                # ------------------------------------------------
-                # Extract result information
-                # ------------------------------------------------
+                result["attempts"] = (
+                    result.get(
+                        "attempts",
+                        0,
+                    )
+                    + attempts
+                )
 
-                result_url = result.get("url")
-                result_address = result.get("address", "")
-                result_title = result.get("title", "")
+                result["page"] = result.get(
+                    "page",
+                    self.page,
+                )
 
-                score_info = address_match_score(
+                # ============================================
+                # SUCCESS -> RETURN IMMEDIATELY
+                # ============================================
+
+                if result.get("success"):
+                    # ----------------------------------------
+                    # Ensure URL fields are ALWAYS synchronized
+                    # ----------------------------------------
+
+                    result["google_maps_url"] = result.get(
+                        "google_maps_url"
+                    ) or result.get("url")
+
+                    result["url"] = result.get("url") or result.get("google_maps_url")
+
+                    self._log_info(
+                        "Google Maps SUCCESS: "
+                        f"{title} | "
+                        f"{result.get('address', '')} | "
+                        f"url={result.get('url')} | "
+                        f"reason={result.get('reason')}"
+                    )
+
+                    # ----------------------------------------
+                    # Coordinates are optional.
+                    # Try to get them if missing.
+                    # ----------------------------------------
+
+                    if not result.get("coordinates"):
+                        result["coordinates"] = recover_candidate_coordinates(
+                            self.page,
+                            self.context,
+                            {"url": result.get("url")},
+                            logger=self.logger,
+                        )
+
+                    return result
+
+                # ============================================
+                # Failed candidate scoring
+                # ============================================
+
+                result_address = result.get(
+                    "address",
+                    "",
+                )
+
+                result_title = result.get(
+                    "title",
+                    "",
+                )
+
+                info = address_match_score(
                     address,
                     result_address,
                 )
 
-                final_address_score = score_info.get(
-                    "score",
-                    0.0,
-                )
+                result["address_score"] = info["score"]
 
-                final_title_score = title_match_score(
+                result["score"] = info["score"]
+
+                result["title_score"] = title_match_score(
                     title,
                     result_title,
                     result_address,
                 )
 
-                is_place_url = _is_usable_google_maps_place_url(result_url)
+                result["matched_tokens"] = info["matched_tokens"]
 
-                # ------------------------------------------------
-                # Calculate score
-                # ------------------------------------------------
+                combined = info["score"] * 0.75 + result["title_score"] * 0.25
 
-                combined_score = final_title_score * 0.60 + final_address_score * 0.40
+                if best is None or combined > best.get(
+                    "_final_score",
+                    -1,
+                ):
+                    result["_final_score"] = combined
 
-                result["_final_score"] = combined_score
-
-                result["title_score"] = final_title_score
-                result["address_score"] = final_address_score
-                result["score"] = final_address_score
-                result["matched_tokens"] = score_info.get(
-                    "matched_tokens",
-                    [],
-                )
-
-                # ------------------------------------------------
-                # Keep best result
-                # ------------------------------------------------
-
-                if combined_score > best_result_score:
-                    best_result = result
-                    best_result_score = combined_score
-
-                # =================================================
-                # MAIN SUCCESS RULE
-                # =================================================
-                #
-                # Google Maps place URL tồn tại
-                # => SUCCESS
-                #
-                # Không yêu cầu title/address score.
-                # =================================================
-
-                if is_place_url:
-                    result["success"] = True
-                    result["reason"] = "GOOGLE_MAPS_PLACE_URL"
-
-                    # ------------------------------------------------
-                    # Coordinate recovery
-                    # ------------------------------------------------
-
-                    if not result.get("coordinates"):
-                        try:
-                            candidate = {
-                                "url": result_url,
-                                "title": result_title,
-                                "texts": [],
-                            }
-
-                            coordinates = recover_candidate_coordinates(
-                                self.page,
-                                self.context,
-                                candidate,
-                                logger=self.logger,
-                            )
-
-                            if coordinates:
-                                result["coordinates"] = coordinates
-
-                        except Exception as error:
-                            self._log_debug(
-                                "Coordinate recovery after success failed: "
-                                + str(error)[:200]
-                            )
-
-                    # ------------------------------------------------
-                    # SUCCESS LOG
-                    # ------------------------------------------------
-
-                    self._log_info(
-                        "Google Maps SUCCESS: "
-                        f"{title} | "
-                        f"{result_address} | "
-                        f"title_score="
-                        f"{final_title_score:.3f} | "
-                        f"address_score="
-                        f"{final_address_score:.3f} | "
-                        f"url={result_url}"
-                    )
-
-                    return result
-
-                # ------------------------------------------------
-                # Not a usable place URL
-                # ------------------------------------------------
-
-                self._log_debug(
-                    "Google Maps result rejected: "
-                    f"title={result_title!r} "
-                    f"address={result_address!r} "
-                    f"title_score={final_title_score:.3f} "
-                    f"address_score={final_address_score:.3f} "
-                    f"url={result_url!r}"
-                )
+                    best = result
 
             except Exception as error:
                 self._log_warning(
                     "Google Maps page processing error: " + str(error)[:250]
                 )
 
-                self._recover_page()
                 continue
 
         # ====================================================
-        # FALLBACK
+        # NO SUCCESS
         # ====================================================
 
-        if best_result:
-            best_url = best_result.get("url")
+        base["page"] = self.page
 
-            if _is_usable_google_maps_place_url(best_url):
-                self._log_info(
-                    f"Google Maps FALLBACK SUCCESS: {title} | url={best_url}"
-                )
-
-                return {
-                    "success": True,
-                    "url": best_url,
-                    "title": best_result.get(
-                        "title",
-                        title,
-                    ),
-                    "address": best_result.get(
-                        "address",
-                        address,
-                    ),
-                    "score": best_result.get(
+        if best:
+            base.update(
+                {
+                    "score": best.get(
                         "address_score",
                         0.0,
                     ),
-                    "title_score": best_result.get(
+                    "title_score": best.get(
                         "title_score",
                         0.0,
                     ),
-                    "address_score": best_result.get(
+                    "address_score": best.get(
                         "address_score",
                         0.0,
                     ),
-                    "coordinates": best_result.get("coordinates"),
-                    "matched_tokens": best_result.get(
+                    "coordinates": best.get("coordinates"),
+                    "matched_tokens": best.get(
                         "matched_tokens",
                         [],
                     ),
-                    "reason": "GOOGLE_MAPS_PLACE_URL_FALLBACK",
                 }
+            )
 
-        # ====================================================
-        # NOT FOUND
-        # ====================================================
+        base["reason"] = "NOT_FOUND"
 
         self._log_warning(
-            f"Google Maps NOT_FOUND / NO_VALID_CANDIDATE: {title} | {address}"
+            f"Google Maps NOT_FOUND / NO_VALID_PLACE_URL: {title} | {address}"
         )
 
-        return {
-            "success": False,
-            "url": None,
-            "title": title,
-            "address": address,
-            "score": (
-                best_result.get(
-                    "address_score",
-                    0.0,
-                )
-                if best_result
-                else 0.0
-            ),
-            "title_score": (
-                best_result.get(
-                    "title_score",
-                    0.0,
-                )
-                if best_result
-                else 0.0
-            ),
-            "address_score": (
-                best_result.get(
-                    "address_score",
-                    0.0,
-                )
-                if best_result
-                else 0.0
-            ),
-            "coordinates": (best_result.get("coordinates") if best_result else None),
-            "matched_tokens": (
-                best_result.get(
-                    "matched_tokens",
-                    [],
-                )
-                if best_result
-                else []
-            ),
-            "reason": "NOT_FOUND",
-        }
+        return base
 
 
 # ============================================================
-# SIMPLE HELPER
+# PUBLIC FUNCTION
 # ============================================================
 
 
@@ -3221,14 +2966,12 @@ def search_google_maps(
     logger=None,
     timeout=None,
 ):
-    engine = GoogleMapsSearchEngine(
-        page=page,
+    return GoogleMapsSearchEngine(
+        page,
         context=context,
         logger=logger,
-    )
-
-    return engine.search(
-        title=title,
-        address=address,
+    ).search(
+        title,
+        address,
         timeout=timeout,
     )
