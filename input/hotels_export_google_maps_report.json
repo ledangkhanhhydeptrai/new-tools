@@ -1,16 +1,16 @@
 {
-  "input_file": "D:\\Product-Google-Maps\\input\\hotels_export.xlsx",
-  "result_file": "D:\\Product-Google-Maps\\input\\hotels_export_google_maps_result.xlsx",
-  "missing_file": "D:\\Product-Google-Maps\\input\\hotels_export_google_maps_missing.xlsx",
-  "total_rows": 1926,
-  "processed": 1926,
-  "skipped": 786,
-  "cache_hits": 772,
+  "input_file": "D:\\Product-Google-Maps.worktrees\\fix-google-maps-link-from-address\\input\\hotels_export.xlsx",
+  "result_file": "D:\\Product-Google-Maps.worktrees\\fix-google-maps-link-from-address\\input\\hotels_export_google_maps_result.xlsx",
+  "missing_file": null,
+  "total_rows": 2,
+  "processed": 2,
+  "skipped": 0,
+  "cache_hits": 0,
   "json_hits": 0,
-  "real_searches": 356,
-  "found": 1914,
-  "missing": 12,
+  "real_searches": 2,
+  "found": 2,
+  "missing": 0,
   "recoveries": 0,
-  "elapsed_seconds": 2403.38,
-  "finished_at": "2026-09-05T11:21:55"
+  "elapsed_seconds": 16.18,
+  "finished_at": "2026-09-07T15:34:35"
 }

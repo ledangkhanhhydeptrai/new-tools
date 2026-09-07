@@ -1,0 +1,7 @@
+2026-09-07 15:26:21,848 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-07 15:26:23,626 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:26:23,698 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | The Queen Hotel Ninh Binh | 
+2026-09-07 15:26:23,728 | INFO | Google Maps TITLE fallback 1/1: The Queen Hotel Ninh Binh
+2026-09-07 15:26:28,931 | INFO | NO_CANDIDATES | mode=title | title='The Queen Hotel Ninh Binh' | address='' | page_url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!3m1!4b1!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:26:28,951 | WARNING | Google Maps NOT_VERIFIED after ADDRESS + TITLE fallback | title='The Queen Hotel Ninh Binh' | address='' | detail_reason=TITLE_NO_CANDIDATES
+2026-09-07 15:26:28,961 | INFO | EXCEL SEARCH RESULT | success=False | status=MISSING | reason=NOT_VERIFIED | detail_reason=TITLE_NO_CANDIDATES | google_maps_url=None | url=None | cleaned_url=''
