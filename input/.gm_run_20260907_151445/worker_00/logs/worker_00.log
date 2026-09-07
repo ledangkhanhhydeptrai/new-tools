@@ -1,0 +1,161 @@
+2026-09-07 15:14:51,055 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-07 15:14:54,000 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:14:54,011 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | The Queen Hotel Ninh Binh | 
+2026-09-07 15:14:54,029 | INFO | Google Maps TITLE fallback 1/1: The Queen Hotel Ninh Binh
+2026-09-07 15:15:04,174 | INFO | VERIFY TITLE | input_title='The Queen Hotel Ninh Binh' | actual_title='The Queen Hotel Ninh Binh' | input_address='' | actual_address='20 Hoàng Hoa Thám, Phường, Hoa Lư, Ninh Bình 08000, Việt Nam' | title_score=1.000 | address_score=0.000 | location_score=0.000 | exact_identity=True | input_has_address=False | success=True | reason=TITLE_SEARCH_ACCEPTED | url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!3m1!4b1!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:15:04,176 | INFO | EXCEL SEARCH RESULT | success=True | status=FOUND | reason=VERIFIED | detail_reason=TITLE_SEARCH_ACCEPTED | google_maps_url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!3m1!4b1!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!3m1!4b1!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!3m1!4b1!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:15:04,179 | ERROR | Unexpected processing error
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\frame.py", line 4913, in _set_value
+    self._mgr.column_setitem(icol, iindex, value, inplace_only=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 1539, in column_setitem
+    col_mgr.setitem_inplace(idx, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 2241, in setitem_inplace
+    value = np_can_hold_element(arr.dtype, value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\dtypes\cast.py", line 1792, in np_can_hold_element
+    raise LossySetitemError
+pandas.errors.LossySetitemError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 1115, in setitem
+    casted = np_can_hold_element(values.dtype, value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\dtypes\cast.py", line 1792, in np_can_hold_element
+    raise LossySetitemError
+pandas.errors.LossySetitemError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\app\excel.py", line 1326, in process_excel
+    _write_verified_result(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        df,
+        ^^^
+    ...<10 lines>...
+        logger=logger,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\app\excel.py", line 584, in _write_verified_result
+    df.at[index, address_col] = actual_address
+    ~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2592, in __setitem__
+    return super().__setitem__(key, value)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2542, in __setitem__
+    self.obj._set_value(*key, value=value, takeable=self._takeable)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\frame.py", line 4924, in _set_value
+    self.loc[index, col] = value
+    ~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 938, in __setitem__
+    iloc._setitem_with_indexer(indexer, value, self.name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 1953, in _setitem_with_indexer
+    self._setitem_with_indexer_split_path(indexer, value, name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2044, in _setitem_with_indexer_split_path
+    self._setitem_single_column(loc, value, pi)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2181, in _setitem_single_column
+    self.obj._mgr.column_setitem(loc, plane_indexer, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 1541, in column_setitem
+    new_mgr = col_mgr.setitem((idx,), value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 620, in setitem
+    return self.apply("setitem", indexer=indexer, value=value)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 445, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 1118, in setitem
+    nb = self.coerce_to_target_dtype(value, raise_on_upcast=True)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 468, in coerce_to_target_dtype
+    raise TypeError(f"Invalid value '{other}' for dtype '{self.values.dtype}'")
+TypeError: Invalid value '20 Hoàng Hoa Thám, Phường, Hoa Lư, Ninh Bình 08000, Việt Nam' for dtype 'float64'
+2026-09-07 15:15:06,021 | ERROR | Worker 1 failed
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\frame.py", line 4913, in _set_value
+    self._mgr.column_setitem(icol, iindex, value, inplace_only=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 1539, in column_setitem
+    col_mgr.setitem_inplace(idx, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 2241, in setitem_inplace
+    value = np_can_hold_element(arr.dtype, value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\dtypes\cast.py", line 1792, in np_can_hold_element
+    raise LossySetitemError
+pandas.errors.LossySetitemError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 1115, in setitem
+    casted = np_can_hold_element(values.dtype, value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\dtypes\cast.py", line 1792, in np_can_hold_element
+    raise LossySetitemError
+pandas.errors.LossySetitemError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\run.py", line 598, in run_worker_terminal
+    process_excel(
+    ~~~~~~~~~~~~~^
+        str(chunk_path),
+        ^^^^^^^^^^^^^^^^
+        headless=headless,
+        ^^^^^^^^^^^^^^^^^^
+        logger=logger,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\app\excel.py", line 1326, in process_excel
+    _write_verified_result(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        df,
+        ^^^
+    ...<10 lines>...
+        logger=logger,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\app\excel.py", line 584, in _write_verified_result
+    df.at[index, address_col] = actual_address
+    ~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2592, in __setitem__
+    return super().__setitem__(key, value)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2542, in __setitem__
+    self.obj._set_value(*key, value=value, takeable=self._takeable)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\frame.py", line 4924, in _set_value
+    self.loc[index, col] = value
+    ~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 938, in __setitem__
+    iloc._setitem_with_indexer(indexer, value, self.name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 1953, in _setitem_with_indexer
+    self._setitem_with_indexer_split_path(indexer, value, name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2044, in _setitem_with_indexer_split_path
+    self._setitem_single_column(loc, value, pi)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2181, in _setitem_single_column
+    self.obj._mgr.column_setitem(loc, plane_indexer, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 1541, in column_setitem
+    new_mgr = col_mgr.setitem((idx,), value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 620, in setitem
+    return self.apply("setitem", indexer=indexer, value=value)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 445, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 1118, in setitem
+    nb = self.coerce_to_target_dtype(value, raise_on_upcast=True)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 468, in coerce_to_target_dtype
+    raise TypeError(f"Invalid value '{other}' for dtype '{self.values.dtype}'")
+TypeError: Invalid value '20 Hoàng Hoa Thám, Phường, Hoa Lư, Ninh Bình 08000, Việt Nam' for dtype 'float64'

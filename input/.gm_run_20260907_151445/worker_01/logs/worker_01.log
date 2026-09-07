@@ -1,0 +1,7 @@
+2026-09-07 15:14:51,055 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-07 15:14:54,245 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:14:54,246 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | Ninh Binh Legend Hotel & Convention Center | 
+2026-09-07 15:14:54,247 | INFO | Google Maps TITLE fallback 1/1: Ninh Binh Legend Hotel & Convention Center
+2026-09-07 15:15:03,349 | INFO | VERIFY TITLE | input_title='Ninh Binh Legend Hotel & Convention Center' | actual_title='Ninh Binh Legend Hotel' | input_address='' | actual_address='177 Đ. Lê Thái Tổ, Hoa Lư, Ninh Bình 430000, Việt Nam' | title_score=0.900 | address_score=0.000 | location_score=0.000 | exact_identity=False | input_has_address=False | success=False | reason=TITLE_MISMATCH | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!3m1!4b1!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:15:03,350 | WARNING | Google Maps NOT_VERIFIED after ADDRESS + TITLE fallback | title='Ninh Binh Legend Hotel & Convention Center' | address='' | detail_reason=TITLE_MISMATCH
+2026-09-07 15:15:03,351 | INFO | EXCEL SEARCH RESULT | success=False | status=MISSING | reason=NOT_VERIFIED | detail_reason=TITLE_MISMATCH | google_maps_url=None | url=None | cleaned_url=''

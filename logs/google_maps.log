@@ -46079,3 +46079,248 @@ UnboundLocalError: cannot access local variable 'actual_title' where it is not a
 2026-09-06 23:35:38,740 | WARNING | Stopping Worker 2 | PID=2472
 2026-09-06 23:35:40,335 | WARNING | Stopping Worker 4 | PID=732
 2026-09-06 23:35:41,448 | WARNING | Stopping Worker 3 | PID=27980
+2026-09-06 23:50:50,019 | WARNING | Stopping Worker 1 | PID=21744
+2026-09-06 23:50:50,760 | WARNING | Stopping Worker 2 | PID=32976
+2026-09-06 23:50:51,173 | WARNING | Stopping Worker 3 | PID=5996
+2026-09-07 08:33:02,656 | WARNING | Stopping Worker 1 | PID=17352
+2026-09-07 08:33:03,095 | WARNING | Stopping Worker 2 | PID=20384
+2026-09-07 08:33:03,978 | WARNING | Stopping Worker 3 | PID=18588
+2026-09-07 08:33:04,310 | WARNING | Stopping Worker 4 | PID=2124
+2026-09-07 08:33:19,565 | WARNING | Stopping Worker 1 | PID=16668
+2026-09-07 08:33:19,875 | WARNING | Stopping Worker 2 | PID=14488
+2026-09-07 08:33:20,118 | WARNING | Stopping Worker 3 | PID=17892
+2026-09-07 08:33:20,380 | WARNING | Stopping Worker 4 | PID=6312
+2026-09-07 08:57:51,905 | WARNING | Stopping Worker 1 | PID=24792
+2026-09-07 08:57:52,562 | WARNING | Stopping Worker 2 | PID=24636
+2026-09-07 08:57:53,123 | WARNING | Stopping Worker 3 | PID=27496
+2026-09-07 15:15:09,723 | ERROR | Fatal parallel processing error
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\run.py", line 1755, in main
+    process_excel_parallel(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        file_path=args.file,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        logger=logger,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\run.py", line 1545, in process_excel_parallel
+    raise RuntimeError(
+        f"Workers failed: {failed_text}. Outputs preserved in {run_dir}"
+    )
+RuntimeError: Workers failed: 1. Outputs preserved in D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\input\.gm_run_20260907_151445
+2026-09-07 15:16:48,425 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-07 15:16:51,399 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:16:51,400 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | The Queen Hotel Ninh Binh | 
+2026-09-07 15:16:51,401 | INFO | Google Maps TITLE fallback 1/1: The Queen Hotel Ninh Binh
+2026-09-07 15:16:56,227 | INFO | NO_CANDIDATES | mode=title | title='The Queen Hotel Ninh Binh' | address='' | page_url='https://www.google.com/maps/search/?api=1&query=The%20Queen%20Hotel%20Ninh%20Binh'
+2026-09-07 15:16:56,233 | WARNING | Google Maps NOT_VERIFIED after ADDRESS + TITLE fallback | title='The Queen Hotel Ninh Binh' | address='' | detail_reason=TITLE_NO_CANDIDATES
+2026-09-07 15:16:56,233 | INFO | EXCEL SEARCH RESULT | success=False | status=MISSING | reason=NOT_VERIFIED | detail_reason=TITLE_NO_CANDIDATES | google_maps_url=None | url=None | cleaned_url=''
+2026-09-07 15:16:57,432 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:16:57,437 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | Ninh Binh Legend Hotel & Convention Center | 
+2026-09-07 15:16:57,442 | INFO | Google Maps TITLE fallback 1/1: Ninh Binh Legend Hotel & Convention Center
+2026-09-07 15:17:07,972 | INFO | VERIFY TITLE | input_title='Ninh Binh Legend Hotel & Convention Center' | actual_title='Ninh Binh Legend Hotel' | input_address='' | actual_address='177 Đ. Lê Thái Tổ, Hoa Lư, Ninh Bình 430000, Việt Nam' | title_score=0.900 | address_score=0.000 | location_score=0.000 | exact_identity=False | input_has_address=False | success=False | reason=TITLE_MISMATCH | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:17:07,973 | WARNING | Google Maps NOT_VERIFIED after ADDRESS + TITLE fallback | title='Ninh Binh Legend Hotel & Convention Center' | address='' | detail_reason=TITLE_MISMATCH
+2026-09-07 15:17:07,973 | INFO | EXCEL SEARCH RESULT | success=False | status=MISSING | reason=NOT_VERIFIED | detail_reason=TITLE_MISMATCH | google_maps_url=None | url=None | cleaned_url=''
+2026-09-07 15:23:19,755 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-07 15:23:22,128 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:23:22,129 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | The Queen Hotel Ninh Binh | 
+2026-09-07 15:23:22,130 | INFO | Google Maps TITLE fallback 1/1: The Queen Hotel Ninh Binh
+2026-09-07 15:23:31,758 | INFO | NO_CANDIDATES | mode=title | title='The Queen Hotel Ninh Binh' | address='' | page_url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:23:31,765 | WARNING | Google Maps NOT_VERIFIED after ADDRESS + TITLE fallback | title='The Queen Hotel Ninh Binh' | address='' | detail_reason=TITLE_NO_CANDIDATES
+2026-09-07 15:23:31,765 | INFO | EXCEL SEARCH RESULT | success=False | status=MISSING | reason=NOT_VERIFIED | detail_reason=TITLE_NO_CANDIDATES | google_maps_url=None | url=None | cleaned_url=''
+2026-09-07 15:23:33,296 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:23:33,298 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | Ninh Binh Legend Hotel & Convention Center | 
+2026-09-07 15:23:33,298 | INFO | Google Maps TITLE fallback 1/1: Ninh Binh Legend Hotel & Convention Center
+2026-09-07 15:23:43,286 | INFO | VERIFY TITLE | input_title='Ninh Binh Legend Hotel & Convention Center' | actual_title='Ninh Binh Legend Hotel' | input_address='' | actual_address='177 Đ. Lê Thái Tổ, Hoa Lư, Ninh Bình 430000, Việt Nam' | title_score=0.900 | address_score=0.000 | location_score=0.000 | exact_identity=False | input_has_address=False | success=True | reason=TITLE_ONLY_ADDRESS_RECOVERED | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:23:43,298 | INFO | EXCEL SEARCH RESULT | success=True | status=FOUND | reason=VERIFIED | detail_reason=TITLE_ONLY_ADDRESS_RECOVERED | google_maps_url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:23:43,304 | ERROR | Unexpected processing error
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\frame.py", line 4913, in _set_value
+    self._mgr.column_setitem(icol, iindex, value, inplace_only=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 1539, in column_setitem
+    col_mgr.setitem_inplace(idx, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 2241, in setitem_inplace
+    value = np_can_hold_element(arr.dtype, value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\dtypes\cast.py", line 1792, in np_can_hold_element
+    raise LossySetitemError
+pandas.errors.LossySetitemError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 1115, in setitem
+    casted = np_can_hold_element(values.dtype, value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\dtypes\cast.py", line 1792, in np_can_hold_element
+    raise LossySetitemError
+pandas.errors.LossySetitemError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\app\excel.py", line 1326, in process_excel
+    _write_verified_result(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        df,
+        ^^^
+    ...<10 lines>...
+        logger=logger,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\app\excel.py", line 584, in _write_verified_result
+    df.at[index, address_col] = actual_address
+    ~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2592, in __setitem__
+    return super().__setitem__(key, value)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2542, in __setitem__
+    self.obj._set_value(*key, value=value, takeable=self._takeable)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\frame.py", line 4924, in _set_value
+    self.loc[index, col] = value
+    ~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 938, in __setitem__
+    iloc._setitem_with_indexer(indexer, value, self.name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 1953, in _setitem_with_indexer
+    self._setitem_with_indexer_split_path(indexer, value, name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2044, in _setitem_with_indexer_split_path
+    self._setitem_single_column(loc, value, pi)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2181, in _setitem_single_column
+    self.obj._mgr.column_setitem(loc, plane_indexer, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 1541, in column_setitem
+    new_mgr = col_mgr.setitem((idx,), value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 620, in setitem
+    return self.apply("setitem", indexer=indexer, value=value)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 445, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 1118, in setitem
+    nb = self.coerce_to_target_dtype(value, raise_on_upcast=True)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 468, in coerce_to_target_dtype
+    raise TypeError(f"Invalid value '{other}' for dtype '{self.values.dtype}'")
+TypeError: Invalid value '177 Đ. Lê Thái Tổ, Hoa Lư, Ninh Bình 430000, Việt Nam' for dtype 'float64'
+2026-09-07 15:23:44,800 | ERROR | Fatal error
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\frame.py", line 4913, in _set_value
+    self._mgr.column_setitem(icol, iindex, value, inplace_only=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 1539, in column_setitem
+    col_mgr.setitem_inplace(idx, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 2241, in setitem_inplace
+    value = np_can_hold_element(arr.dtype, value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\dtypes\cast.py", line 1792, in np_can_hold_element
+    raise LossySetitemError
+pandas.errors.LossySetitemError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 1115, in setitem
+    casted = np_can_hold_element(values.dtype, value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\dtypes\cast.py", line 1792, in np_can_hold_element
+    raise LossySetitemError
+pandas.errors.LossySetitemError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\run.py", line 1727, in main
+    process_excel(
+    ~~~~~~~~~~~~~^
+        args.file,
+        ^^^^^^^^^^
+        headless=headless,
+        ^^^^^^^^^^^^^^^^^^
+        logger=logger,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\app\excel.py", line 1326, in process_excel
+    _write_verified_result(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        df,
+        ^^^
+    ...<10 lines>...
+        logger=logger,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\app\excel.py", line 584, in _write_verified_result
+    df.at[index, address_col] = actual_address
+    ~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2592, in __setitem__
+    return super().__setitem__(key, value)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2542, in __setitem__
+    self.obj._set_value(*key, value=value, takeable=self._takeable)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\frame.py", line 4924, in _set_value
+    self.loc[index, col] = value
+    ~~~~~~~~^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 938, in __setitem__
+    iloc._setitem_with_indexer(indexer, value, self.name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 1953, in _setitem_with_indexer
+    self._setitem_with_indexer_split_path(indexer, value, name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2044, in _setitem_with_indexer_split_path
+    self._setitem_single_column(loc, value, pi)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\indexing.py", line 2181, in _setitem_single_column
+    self.obj._mgr.column_setitem(loc, plane_indexer, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 1541, in column_setitem
+    new_mgr = col_mgr.setitem((idx,), value)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 620, in setitem
+    return self.apply("setitem", indexer=indexer, value=value)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\managers.py", line 445, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 1118, in setitem
+    nb = self.coerce_to_target_dtype(value, raise_on_upcast=True)
+  File "D:\Product-Google-Maps.worktrees\fix-google-maps-link-from-address\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 468, in coerce_to_target_dtype
+    raise TypeError(f"Invalid value '{other}' for dtype '{self.values.dtype}'")
+TypeError: Invalid value '177 Đ. Lê Thái Tổ, Hoa Lư, Ninh Bình 430000, Việt Nam' for dtype 'float64'
+2026-09-07 15:30:27,397 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-07 15:30:29,196 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:30:29,221 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | The Queen Hotel Ninh Binh | 
+2026-09-07 15:30:29,224 | INFO | Google Maps TITLE fallback 1/1: The Queen Hotel Ninh Binh
+2026-09-07 15:30:36,515 | INFO | NO_CANDIDATES | mode=title | title='The Queen Hotel Ninh Binh' | address='' | page_url='https://www.google.com/maps/search/?api=1&query=The%20Queen%20Hotel%20Ninh%20Binh'
+2026-09-07 15:30:36,516 | WARNING | Google Maps NOT_VERIFIED after ADDRESS + TITLE fallback | title='The Queen Hotel Ninh Binh' | address='' | detail_reason=TITLE_NO_CANDIDATES
+2026-09-07 15:30:36,516 | INFO | EXCEL SEARCH RESULT | success=False | status=MISSING | reason=NOT_VERIFIED | detail_reason=TITLE_NO_CANDIDATES | google_maps_url=None | url=None | cleaned_url=''
+2026-09-07 15:30:37,922 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:30:37,923 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | Ninh Binh Legend Hotel & Convention Center | 
+2026-09-07 15:30:37,923 | INFO | Google Maps TITLE fallback 1/1: Ninh Binh Legend Hotel & Convention Center
+2026-09-07 15:30:42,382 | INFO | DIRECT PLACE DETECTED DURING HYDRATION | mode=title | title='Ninh Binh Legend Hotel & Convention Center' | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!3m1!4b1!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:30:44,484 | INFO | VERIFY TITLE | input_title='Ninh Binh Legend Hotel & Convention Center' | actual_title='Ninh Binh Legend Hotel' | input_address='' | actual_address='177 Đ. Lê Thái Tổ, Hoa Lư, Ninh Bình 430000, Việt Nam' | title_score=0.900 | address_score=0.000 | location_score=0.000 | exact_identity=False | input_has_address=False | success=True | reason=TITLE_ONLY_ADDRESS_RECOVERED | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!3m1!4b1!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:30:44,484 | INFO | EXCEL SEARCH RESULT | success=True | status=FOUND | reason=VERIFIED | detail_reason=TITLE_ONLY_ADDRESS_RECOVERED | google_maps_url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!3m1!4b1!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!3m1!4b1!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!3m1!4b1!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:34:18,322 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-07 15:34:19,490 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:34:19,492 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | The Queen Hotel Ninh Binh | 
+2026-09-07 15:34:19,493 | INFO | Google Maps TITLE fallback 1/3: The Queen Hotel Ninh Binh
+2026-09-07 15:34:24,898 | INFO | DIRECT PLACE DETECTED DURING HYDRATION | attempt=4/7 | mode=title | title='The Queen Hotel Ninh Binh' | url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:34:26,806 | INFO | VERIFY TITLE | input_title='The Queen Hotel Ninh Binh' | actual_title='The Queen Hotel Ninh Binh' | input_address='' | actual_address='20 Hoàng Hoa Thám, Phường, Hoa Lư, Ninh Bình 08000, Việt Nam' | title_score=1.000 | address_score=0.000 | location_score=0.000 | exact_identity=True | input_has_address=False | success=True | reason=TITLE_ONLY_ADDRESS_RECOVERED | url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:34:26,807 | INFO | EXCEL SEARCH RESULT | success=True | status=FOUND | reason=VERIFIED | detail_reason=TITLE_ONLY_ADDRESS_RECOVERED | google_maps_url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/The+Queen+Hotel+Ninh+Binh/@20.2516736,105.9785983,17z/data=!4m9!3m8!1s0x313670acfc030adf:0x408247ab32fd18cf!5m2!4m1!1i2!8m2!3d20.2516736!4d105.9785983!16s%2Fg%2F11b608sjl_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:34:27,803 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-07 15:34:27,804 | INFO | ADDRESS PHASE FAILED -> TITLE FALLBACK | Ninh Binh Legend Hotel & Convention Center | 
+2026-09-07 15:34:27,805 | INFO | Google Maps TITLE fallback 1/2: Ninh Binh Legend Hotel & Convention Center
+2026-09-07 15:34:32,874 | INFO | DIRECT PLACE DETECTED DURING HYDRATION | attempt=3/7 | mode=title | title='Ninh Binh Legend Hotel & Convention Center' | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:34:34,286 | INFO | VERIFY TITLE | input_title='Ninh Binh Legend Hotel & Convention Center' | actual_title='Ninh Binh Legend Hotel' | input_address='' | actual_address='177 Đ. Lê Thái Tổ, Hoa Lư, Ninh Bình 430000, Việt Nam' | title_score=0.900 | address_score=0.000 | location_score=0.000 | exact_identity=False | input_has_address=False | success=True | reason=TITLE_ONLY_ADDRESS_RECOVERED | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:34:34,286 | INFO | EXCEL SEARCH RESULT | success=True | status=FOUND | reason=VERIFIED | detail_reason=TITLE_ONLY_ADDRESS_RECOVERED | google_maps_url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Ninh+Binh+Legend+Hotel/@20.2743929,105.9583176,17z/data=!4m9!3m8!1s0x313679e61e830bcb:0x4a08422073a7973a!5m2!4m1!1i2!8m2!3d20.2743929!4d105.9583176!16s%2Fg%2F1hdy_fp4y?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-07 15:51:10,189 | WARNING | Stopping Worker 1 | PID=5116
+2026-09-07 15:52:58,837 | WARNING | Stopping Worker 1 | PID=7664
+2026-09-07 15:53:00,869 | WARNING | Stopping Worker 2 | PID=15316
+2026-09-07 15:53:02,010 | WARNING | Stopping Worker 3 | PID=4884
+2026-09-07 16:10:47,700 | WARNING | Stopping Worker 1 | PID=32652
+2026-09-07 16:10:48,156 | WARNING | Stopping Worker 2 | PID=8232
+2026-09-07 16:10:48,464 | WARNING | Stopping Worker 3 | PID=3368
+2026-09-07 16:10:48,916 | WARNING | Stopping Worker 4 | PID=18352
