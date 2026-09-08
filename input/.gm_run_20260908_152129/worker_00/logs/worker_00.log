@@ -1,0 +1,192 @@
+2026-09-08 15:21:36,425 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-08 15:21:39,399 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:21:39,405 | INFO | Google Maps title search variant 1/8: Lu Khach Quan Homestay, khu pho 2, long binh, đong nai 76000
+2026-09-08 15:21:39,414 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Lu%20Khach%20Quan%20Homestay%2C%20khu%20pho%202%2C%20long%20binh%2C%20%C4%91ong%20nai%2076000
+2026-09-08 15:21:42,237 | INFO | Navigation success | attempt=1/3 | 2.82s | url=https://www.google.com/maps/search/?api=1&query=Lu%20Khach%20Quan%20Homestay%2C%20khu%20pho%202%2C%20long%20binh%2C%20%C4%91ong%20nai%2076000
+2026-09-08 15:22:00,688 | INFO | DIRECT PLACE DETECTED DURING HYDRATION | attempt=2/6 | mode=title | url='https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:00,751 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:01,528 | INFO | Navigation success | attempt=1/3 | 0.78s | url=https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:08,307 | INFO | VERIFY CANDIDATE | input_title='Lu Khach Quan Homestay' | actual_title='Lu Khach Quan Homestay' | input_address='73A Nguyễn Ái Quốc, Khu Phố 2, Long Bình, Đồng Nai 76000, Việt Nam' | actual_address='\ue0c8 73A Nguyễn Ái Quốc, Khu Phố 2, Long Bình, Đồng Nai 76000, Việt Nam' | url='https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | coordinates=(10.9727103, 106.8)
+2026-09-08 15:22:08,426 | INFO | VERIFY FINAL | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | title_ok=True | address_ok=True | input_title='Lu Khach Quan Homestay' | maps_title='Lu Khach Quan Homestay' | input_address='73A Nguyễn Ái Quốc, Khu Phố 2, Long Bình, Đồng Nai 76000, Việt Nam' | maps_address='\ue0c8 73A Nguyễn Ái Quốc, Khu Phố 2, Long Bình, Đồng Nai 76000, Việt Nam' | url='https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:08,658 | INFO | DIRECT PLACE RESCUE SUCCESS | mode=title | title_ok=True | address_ok=True | maps_title='Lu Khach Quan Homestay' | maps_address='\ue0c8 73A Nguyễn Ái Quốc, Khu Phố 2, Long Bình, Đồng Nai 76000, Việt Nam' | url='https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:08,744 | INFO | Google Maps SUCCESS: Lu Khach Quan Homestay |  73A Nguyễn Ái Quốc, Khu Phố 2, Long Bình, Đồng Nai 76000, Việt Nam | url=https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D | reason=TITLE_AND_ADDRESS_VERIFIED
+2026-09-08 15:22:08,861 | INFO | EXCEL SEARCH RESULT | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | google_maps_url='https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:08,984 | INFO | PROMOTE VERIFIED MAPS METADATA | title_verified=True | address_verified=True | maps_title='Lu Khach Quan Homestay' | maps_address='\ue0c8 73A Nguyễn Ái Quốc, Khu Phố 2, Long Bình, Đồng Nai 76000, Việt Nam'
+2026-09-08 15:22:10,566 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:12,594 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Lava Rock Viet Nam Lodge' | actual_title='Lu Khach Quan Homestay' | input_address='Nam Cát Tiên, Vườn Quốc Gia, Cát Tiên, Đồng Nai, Việt Nam' | actual_address='73A Nguyễn Ái Quốc, Khu Phố 2, Long Bình, Đồng Nai 76000, Việt Nam' | url='https://www.google.com/maps/place/Lu+Khach+Quan+Homestay/@10.9727103,106.8880451,17z/data=!4m9!3m8!1s0x3174ddfea9f7d31d:0x7b15bf32a1e7c2!5m2!4m1!1i2!8m2!3d10.9727103!4d106.8880451!16s%2Fg%2F11hdsz0tnl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:12,726 | INFO | Google Maps title search variant 1/8: Lava Rock Viet Nam Lodge, vuon quoc gia, cat tien, đong nai
+2026-09-08 15:22:12,928 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Lava%20Rock%20Viet%20Nam%20Lodge%2C%20vuon%20quoc%20gia%2C%20cat%20tien%2C%20%C4%91ong%20nai
+2026-09-08 15:22:13,563 | INFO | Navigation success | attempt=1/3 | 0.63s | url=https://www.google.com/maps/search/?api=1&query=Lava%20Rock%20Viet%20Nam%20Lodge%2C%20vuon%20quoc%20gia%2C%20cat%20tien%2C%20%C4%91ong%20nai
+2026-09-08 15:22:21,816 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:22,289 | INFO | Navigation success | attempt=1/3 | 0.47s | url=https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:27,530 | INFO | VERIFY CANDIDATE | input_title='Lava Rock Viet Nam Lodge' | actual_title='Lava Rock Viet Nam Lodge' | input_address='Nam Cát Tiên, Vườn Quốc Gia, Cát Tiên, Đồng Nai, Việt Nam' | actual_address='\ue0c8 Nam Cát Tiên, Vườn Quốc Gia, Cát Tiên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | coordinates=(11.421394, 107.4)
+2026-09-08 15:22:27,735 | INFO | VERIFY FINAL | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | title_ok=True | address_ok=True | input_title='Lava Rock Viet Nam Lodge' | maps_title='Lava Rock Viet Nam Lodge' | input_address='Nam Cát Tiên, Vườn Quốc Gia, Cát Tiên, Đồng Nai, Việt Nam' | maps_address='\ue0c8 Nam Cát Tiên, Vườn Quốc Gia, Cát Tiên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:27,834 | INFO | Google Maps SUCCESS: Lava Rock Viet Nam Lodge |  Nam Cát Tiên, Vườn Quốc Gia, Cát Tiên, Đồng Nai, Việt Nam | url=https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D | reason=TITLE_AND_ADDRESS_VERIFIED
+2026-09-08 15:22:27,883 | INFO | EXCEL SEARCH RESULT | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | google_maps_url='https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:27,897 | INFO | PROMOTE VERIFIED MAPS METADATA | title_verified=True | address_verified=True | maps_title='Lava Rock Viet Nam Lodge' | maps_address='\ue0c8 Nam Cát Tiên, Vườn Quốc Gia, Cát Tiên, Đồng Nai, Việt Nam'
+2026-09-08 15:22:30,266 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:31,842 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Hotel Tuấn Phát' | actual_title='Lava Rock Viet Nam Lodge' | input_address='1 Đường D02, ấp Bàu Cá, Hưng Thịnh, Đồng Nai, Việt Nam' | actual_address='Nam Cát Tiên, Vườn Quốc Gia, Cát Tiên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Lava+Rock+Viet+Nam+Lodge/@11.421394,107.430569,17z/data=!4m9!3m8!1s0x31747bb517b5c5c3:0x21ef63aea548f88f!5m2!4m1!1i2!8m2!3d11.421394!4d107.430569!16s%2Fg%2F11cs3qq1mf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:31,928 | INFO | Google Maps title search variant 1/8: Hotel Tuấn Phát, ap bau ca, hung thinh, đong nai
+2026-09-08 15:22:31,975 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Hotel%20Tu%E1%BA%A5n%20Ph%C3%A1t%2C%20ap%20bau%20ca%2C%20hung%20thinh%2C%20%C4%91ong%20nai
+2026-09-08 15:22:32,360 | INFO | Navigation success | attempt=1/3 | 0.39s | url=https://www.google.com/maps/search/?api=1&query=Hotel%20Tu%E1%BA%A5n%20Ph%C3%A1t%2C%20ap%20bau%20ca%2C%20hung%20thinh%2C%20%C4%91ong%20nai
+2026-09-08 15:22:36,338 | INFO | CANDIDATES HYDRATED | attempt=1/6 | count=2
+2026-09-08 15:22:36,850 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Hotel+Tuấn+Phát/data=!4m7!3m6!1s0x3174e47fd4daa55f:0xf6cf943cb1a59a43!8m2!3d10.9453826!4d107.0604087!16s/g/11bbrgfcz3!19sChIJX6Xa1H_kdDERQ5qlsTyUz_Y?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:39,119 | INFO | Navigation success | attempt=1/3 | 2.27s | url=https://www.google.com/maps/place/Hotel+Tuấn+Phát/data=!4m7!3m6!1s0x3174e47fd4daa55f:0xf6cf943cb1a59a43!8m2!3d10.9453826!4d107.0604087!16s/g/11bbrgfcz3!19sChIJX6Xa1H_kdDERQ5qlsTyUz_Y?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:40,786 | INFO | VERIFY CANDIDATE | input_title='Hotel Tuấn Phát' | actual_title='' | input_address='1 Đường D02, ấp Bàu Cá, Hưng Thịnh, Đồng Nai, Việt Nam' | actual_address='' | url='https://www.google.com/maps/place/Hotel+Tu%E1%BA%A5n+Ph%C3%A1t/data=!4m7!3m6!1s0x3174e47fd4daa55f:0xf6cf943cb1a59a43!8m2!3d10.9453826!4d107.0604087!16s/g/11bbrgfcz3!19sChIJX6Xa1H_kdDERQ5qlsTyUz_Y?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1' | coordinates=(10.9453826, 107.0)
+2026-09-08 15:22:40,805 | INFO | VERIFY FINAL | success=False | reason=TITLE_UNAVAILABLE | title_ok=False | address_ok=False | input_title='Hotel Tuấn Phát' | maps_title='' | input_address='1 Đường D02, ấp Bàu Cá, Hưng Thịnh, Đồng Nai, Việt Nam' | maps_address='' | url='https://www.google.com/maps/place/Hotel+Tu%E1%BA%A5n+Ph%C3%A1t/data=!4m7!3m6!1s0x3174e47fd4daa55f:0xf6cf943cb1a59a43!8m2!3d10.9453826!4d107.0604087!16s/g/11bbrgfcz3!19sChIJX6Xa1H_kdDERQ5qlsTyUz_Y?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1'
+2026-09-08 15:22:40,838 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:40,856 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,883 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,910 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,917 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:40,937 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,944 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,956 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,966 | INFO | Google Maps title search variant 2/8: Hotel Tuấn Phát, 1 Đường D02, ấp Bàu Cá, Hưng Thịnh, Đồng Nai, Việt Nam
+2026-09-08 15:22:40,974 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:40,982 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,988 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,994 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:40,997 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:40,999 | INFO | Google Maps title search variant 3/8: 1 Đường D02, ấp Bàu Cá, Hưng Thịnh, Đồng Nai, Việt Nam, Hotel Tuấn Phát
+2026-09-08 15:22:41,003 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,008 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,011 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,019 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,021 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:41,021 | INFO | Google Maps title search variant 4/8: Hotel Tuấn Phát
+2026-09-08 15:22:41,022 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,024 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,025 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,028 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,034 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:41,047 | INFO | Google Maps address search variant 5/8: 1 Đường D02, ấp Bàu Cá, Hưng Thịnh, Đồng Nai, Việt Nam
+2026-09-08 15:22:41,047 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,057 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,069 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,084 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,087 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:41,088 | INFO | Google Maps title search variant 6/8: Hotel Tuấn Phát, hung thinh, đong nai
+2026-09-08 15:22:41,089 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,094 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,096 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,099 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,099 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:41,099 | INFO | Google Maps title search variant 7/8: ap bau ca, hung thinh, đong nai
+2026-09-08 15:22:41,100 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,102 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,102 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,104 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,104 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:41,104 | INFO | Google Maps title search variant 8/8: hung thinh, đong nai
+2026-09-08 15:22:41,105 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,107 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,107 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,109 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,109 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:41,110 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='Hotel Tuấn Phát' | address='1 Đường D02, ấp Bàu Cá, Hưng Thịnh, Đồng Nai, Việt Nam'
+2026-09-08 15:22:41,110 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''
+2026-09-08 15:22:42,814 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:42,838 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Hotel Hồng Thanh' | actual_title='' | input_address='Đ. Nguyễn Văn Trỗi, Bù Đăng, Đồng Nai, Việt Nam' | actual_address='' | url='https://www.google.com/maps/place/Hotel+Tu%E1%BA%A5n+Ph%C3%A1t/data=!4m7!3m6!1s0x3174e47fd4daa55f:0xf6cf943cb1a59a43!8m2!3d10.9453826!4d107.0604087!16s/g/11bbrgfcz3!19sChIJX6Xa1H_kdDERQ5qlsTyUz_Y?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1'
+2026-09-08 15:22:42,838 | INFO | Google Maps title search variant 1/8: Hotel Hồng Thanh, đ. nguyen van troi, bu đang, đong nai
+2026-09-08 15:22:42,839 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,840 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,840 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,842 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,843 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:42,843 | INFO | Google Maps title search variant 2/8: Hotel Hồng Thanh, Đ. Nguyễn Văn Trỗi, Bù Đăng, Đồng Nai, Việt Nam
+2026-09-08 15:22:42,843 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,845 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,845 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,846 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,847 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:42,847 | INFO | Google Maps title search variant 3/8: Đ. Nguyễn Văn Trỗi, Bù Đăng, Đồng Nai, Việt Nam, Hotel Hồng Thanh
+2026-09-08 15:22:42,847 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,849 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,849 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,850 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,851 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:42,851 | INFO | Google Maps title search variant 4/8: Hotel Hồng Thanh
+2026-09-08 15:22:42,851 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,855 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,857 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,861 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,866 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:42,895 | INFO | Google Maps address search variant 5/8: Đ. Nguyễn Văn Trỗi, Bù Đăng, Đồng Nai, Việt Nam
+2026-09-08 15:22:42,898 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,907 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,910 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,914 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,916 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:42,917 | INFO | Google Maps title search variant 6/8: Hotel Hồng Thanh, bu đang, đong nai
+2026-09-08 15:22:42,917 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,919 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,920 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,922 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,922 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:42,922 | INFO | Google Maps title search variant 7/8: đ. nguyen van troi, bu đang, đong nai
+2026-09-08 15:22:42,923 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,924 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,924 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,926 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,926 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:42,926 | INFO | Google Maps title search variant 8/8: bu đang, đong nai
+2026-09-08 15:22:42,926 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,928 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,928 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,929 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,929 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:42,930 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='Hotel Hồng Thanh' | address='Đ. Nguyễn Văn Trỗi, Bù Đăng, Đồng Nai, Việt Nam'
+2026-09-08 15:22:42,930 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''
+2026-09-08 15:22:44,521 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:44,554 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Hotel Cát Tường Phú Hưng' | actual_title='' | input_address='10 Cát Tường, Bình Phước, Đồng Nai, Việt Nam' | actual_address='' | url='https://www.google.com/maps/place/Hotel+Tu%E1%BA%A5n+Ph%C3%A1t/data=!4m7!3m6!1s0x3174e47fd4daa55f:0xf6cf943cb1a59a43!8m2!3d10.9453826!4d107.0604087!16s/g/11bbrgfcz3!19sChIJX6Xa1H_kdDERQ5qlsTyUz_Y?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1'
+2026-09-08 15:22:44,555 | INFO | Google Maps title search variant 1/8: Hotel Cát Tường Phú Hưng, 10 cat tuong, binh phuoc, đong nai
+2026-09-08 15:22:44,555 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,556 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,557 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,558 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,558 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:44,558 | INFO | Google Maps title search variant 2/8: Hotel Cát Tường Phú Hưng, 10 Cát Tường, Bình Phước, Đồng Nai, Việt Nam
+2026-09-08 15:22:44,559 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,560 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,561 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,562 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,562 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:44,562 | INFO | Google Maps title search variant 3/8: 10 Cát Tường, Bình Phước, Đồng Nai, Việt Nam, Hotel Cát Tường Phú Hưng
+2026-09-08 15:22:44,563 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,564 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,564 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,566 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,566 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:44,566 | INFO | Google Maps title search variant 4/8: Hotel Cát Tường Phú Hưng
+2026-09-08 15:22:44,566 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,567 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,568 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,569 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,569 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:44,569 | INFO | Google Maps address search variant 5/8: 10 Cát Tường, Bình Phước, Đồng Nai, Việt Nam
+2026-09-08 15:22:44,569 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,571 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,571 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,572 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,572 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:44,572 | INFO | Google Maps title search variant 6/8: Hotel Cát Tường Phú Hưng, binh phuoc, đong nai
+2026-09-08 15:22:44,573 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,574 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,574 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,576 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,576 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:44,576 | INFO | Google Maps title search variant 7/8: 10 cat tuong, binh phuoc, đong nai
+2026-09-08 15:22:44,576 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,578 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,578 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,579 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,579 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:44,579 | INFO | Google Maps title search variant 8/8: binh phuoc, đong nai
+2026-09-08 15:22:44,580 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,581 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,581 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,582 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,583 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:44,583 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='Hotel Cát Tường Phú Hưng' | address='10 Cát Tường, Bình Phước, Đồng Nai, Việt Nam'
+2026-09-08 15:22:44,583 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''
