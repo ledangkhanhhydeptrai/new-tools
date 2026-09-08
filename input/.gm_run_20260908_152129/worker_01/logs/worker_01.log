@@ -1,0 +1,148 @@
+2026-09-08 15:21:36,148 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-08 15:21:42,091 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:21:42,097 | INFO | Google Maps title search variant 1/8: Nie’K The Home, 152944 đ. 30 thang 4, tran bien, đong nai
+2026-09-08 15:21:42,179 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Nie%E2%80%99K%20The%20Home%2C%20152944%20%C4%91.%2030%20thang%204%2C%20tran%20bien%2C%20%C4%91ong%20nai
+2026-09-08 15:21:44,621 | INFO | Navigation success | attempt=1/3 | 2.44s | url=https://www.google.com/maps/search/?api=1&query=Nie%E2%80%99K%20The%20Home%2C%20152944%20%C4%91.%2030%20thang%204%2C%20tran%20bien%2C%20%C4%91ong%20nai
+2026-09-08 15:21:55,466 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:00,017 | INFO | Navigation success | attempt=1/3 | 4.55s | url=https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:06,779 | INFO | VERIFY CANDIDATE | input_title='Nie’K The Home' | actual_title='Nie’K The Home' | input_address='152944 Đ. 30 Tháng 4, Trấn Biên, Đồng Nai, Việt Nam' | actual_address='\ue0c8 152/94/4 Đ. 30 Tháng 4, Trấn Biên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | coordinates=(10.9550226, 106.8)
+2026-09-08 15:22:07,220 | INFO | VERIFY FINAL | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | title_ok=True | address_ok=True | input_title='Nie’K The Home' | maps_title='Nie’K The Home' | input_address='152944 Đ. 30 Tháng 4, Trấn Biên, Đồng Nai, Việt Nam' | maps_address='\ue0c8 152/94/4 Đ. 30 Tháng 4, Trấn Biên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:07,453 | INFO | Google Maps SUCCESS: Nie’K The Home |  152/94/4 Đ. 30 Tháng 4, Trấn Biên, Đồng Nai, Việt Nam | url=https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D | reason=TITLE_AND_ADDRESS_VERIFIED
+2026-09-08 15:22:07,665 | INFO | EXCEL SEARCH RESULT | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | google_maps_url='https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:07,795 | INFO | PROMOTE VERIFIED MAPS METADATA | title_verified=True | address_verified=True | maps_title='Nie’K The Home' | maps_address='\ue0c8 152/94/4 Đ. 30 Tháng 4, Trấn Biên, Đồng Nai, Việt Nam'
+2026-09-08 15:22:08,846 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:09,886 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Resort Vườn Mai' | actual_title='Nie’K The Home' | input_address='WCGJ3V7, Xuân Lộc, Đồng Nai, Việt Nam' | actual_address='152/94/4 Đ. 30 Tháng 4, Trấn Biên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nie%E2%80%99K+The+Home/@10.9550226,106.820536,17z/data=!3m1!4b1!4m6!3m5!1s0x3174df9c88043d0d:0xf23a4dcdd7a73e95!8m2!3d10.9550226!4d106.820536!16s%2Fg%2F11yg029phq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:09,940 | INFO | Google Maps title search variant 1/8: Resort Vườn Mai, wcgj3v7, xuan loc, đong nai
+2026-09-08 15:22:09,975 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Resort%20V%C6%B0%E1%BB%9Dn%20Mai%2C%20wcgj3v7%2C%20xuan%20loc%2C%20%C4%91ong%20nai
+2026-09-08 15:22:10,259 | INFO | Navigation success | attempt=1/3 | 0.28s | url=https://www.google.com/maps/search/?api=1&query=Resort%20V%C6%B0%E1%BB%9Dn%20Mai%2C%20wcgj3v7%2C%20xuan%20loc%2C%20%C4%91ong%20nai
+2026-09-08 15:22:17,810 | INFO | DIRECT PLACE DETECTED DURING HYDRATION | attempt=3/6 | mode=title | url='https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:17,823 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:18,089 | INFO | Navigation success | attempt=1/3 | 0.27s | url=https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:21,342 | INFO | VERIFY CANDIDATE | input_title='Resort Vườn Mai' | actual_title='Resort Vườn Mai' | input_address='WCGJ3V7, Xuân Lộc, Đồng Nai, Việt Nam' | actual_address='\ue0c8 WCGJ+3V7, Xuân Lộc, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | coordinates=(10.9251635, 107.4)
+2026-09-08 15:22:21,478 | INFO | VERIFY FINAL | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | title_ok=True | address_ok=True | input_title='Resort Vườn Mai' | maps_title='Resort Vườn Mai' | input_address='WCGJ3V7, Xuân Lộc, Đồng Nai, Việt Nam' | maps_address='\ue0c8 WCGJ+3V7, Xuân Lộc, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:21,547 | INFO | DIRECT PLACE RESCUE SUCCESS | mode=title | title_ok=True | address_ok=False | maps_title='Resort Vườn Mai' | maps_address='\ue0c8 WCGJ+3V7, Xuân Lộc, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:21,602 | INFO | Google Maps SUCCESS: Resort Vườn Mai |  WCGJ+3V7, Xuân Lộc, Đồng Nai, Việt Nam | url=https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D | reason=TITLE_AND_ADDRESS_VERIFIED
+2026-09-08 15:22:21,647 | INFO | EXCEL SEARCH RESULT | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | google_maps_url='https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:21,674 | INFO | PROMOTE VERIFIED MAPS METADATA | title_verified=True | address_verified=True | maps_title='Resort Vườn Mai' | maps_address='\ue0c8 WCGJ+3V7, Xuân Lộc, Đồng Nai, Việt Nam'
+2026-09-08 15:22:23,467 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:25,571 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Sunny Eco Lodge' | actual_title='Resort Vườn Mai' | input_address='Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam' | actual_address='WCGJ+3V7, Xuân Lộc, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Resort+V%C6%B0%E1%BB%9Dn+Mai/@10.9251635,107.4321601,17z/data=!3m1!4b1!4m6!3m5!1s0x3174519554e23499:0xdcb7f0339f612f1c!8m2!3d10.9251635!4d107.4321601!16s%2Fg%2F11j4n999gf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:25,673 | INFO | Google Maps title search variant 1/8: Sunny Eco Lodge, ap 1, nam cat tien, đong nai
+2026-09-08 15:22:25,701 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Sunny%20Eco%20Lodge%2C%20ap%201%2C%20nam%20cat%20tien%2C%20%C4%91ong%20nai
+2026-09-08 15:22:25,949 | INFO | Navigation success | attempt=1/3 | 0.25s | url=https://www.google.com/maps/search/?api=1&query=Sunny%20Eco%20Lodge%2C%20ap%201%2C%20nam%20cat%20tien%2C%20%C4%91ong%20nai
+2026-09-08 15:22:30,624 | INFO | DIRECT PLACE DETECTED DURING HYDRATION | attempt=2/6 | mode=title | url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:30,627 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:30,998 | INFO | Navigation success | attempt=1/3 | 0.37s | url=https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:35,151 | INFO | VERIFY CANDIDATE | input_title='Sunny Eco Lodge' | actual_title='Sunny Eco Lodge' | input_address='Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam' | actual_address='\ue0c8 Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | coordinates=(11.420322, 107.4)
+2026-09-08 15:22:35,160 | INFO | VERIFY FINAL | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | title_ok=True | address_ok=True | input_title='Sunny Eco Lodge' | maps_title='Sunny Eco Lodge' | input_address='Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam' | maps_address='\ue0c8 Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:35,163 | INFO | DIRECT PLACE RESCUE SUCCESS | mode=title | title_ok=True | address_ok=True | maps_title='Sunny Eco Lodge' | maps_address='\ue0c8 Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:35,163 | INFO | Google Maps SUCCESS: Sunny Eco Lodge |  Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam | url=https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D | reason=TITLE_AND_ADDRESS_VERIFIED
+2026-09-08 15:22:35,164 | INFO | EXCEL SEARCH RESULT | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | google_maps_url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:35,166 | INFO | PROMOTE VERIFIED MAPS METADATA | title_verified=True | address_verified=True | maps_title='Sunny Eco Lodge' | maps_address='\ue0c8 Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam'
+2026-09-08 15:22:38,128 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:39,905 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='THANH BINH HOTEL' | actual_title='Sunny Eco Lodge' | input_address='Nguyễn Bỉnh Khiêm, Bình Long, Đồng Nai 67850, Việt Nam' | actual_address='399.680 ₫' | url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:39,998 | INFO | Google Maps title search variant 1/8: THANH BINH HOTEL, nguyen binh khiem, binh long, đong nai 67850
+2026-09-08 15:22:40,133 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=THANH%20BINH%20HOTEL%2C%20nguyen%20binh%20khiem%2C%20binh%20long%2C%20%C4%91ong%20nai%2067850
+2026-09-08 15:22:40,429 | WARNING | Navigation ERROR | attempt=1/3 | 0.30s | retryable=True | error=Page.goto: Target page, context or browser has been closed
+2026-09-08 15:22:40,527 | INFO | Retryable error | retry in 0.92s | next_attempt=2/3
+2026-09-08 15:22:41,657 | INFO | Recreating page | delay=0.54s
+2026-09-08 15:22:42,198 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,198 | ERROR | Page recreation failed: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,199 | WARNING | Page recreation failed | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,200 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,201 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:42,201 | INFO | Google Maps title search variant 2/8: THANH BINH HOTEL, Nguyễn Bỉnh Khiêm, Bình Long, Đồng Nai 67850, Việt Nam
+2026-09-08 15:22:42,201 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,203 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,203 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,205 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,205 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:42,205 | INFO | Google Maps title search variant 3/8: Nguyễn Bỉnh Khiêm, Bình Long, Đồng Nai 67850, Việt Nam, THANH BINH HOTEL
+2026-09-08 15:22:42,205 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,207 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,207 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,209 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,209 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:42,209 | INFO | Google Maps title search variant 4/8: THANH BINH HOTEL
+2026-09-08 15:22:42,209 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,211 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,211 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,212 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,213 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:42,213 | INFO | Google Maps address search variant 5/8: Nguyễn Bỉnh Khiêm, Bình Long, Đồng Nai 67850, Việt Nam
+2026-09-08 15:22:42,213 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,214 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,215 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,216 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,216 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:42,216 | INFO | Google Maps title search variant 6/8: THANH BINH HOTEL, binh long, đong nai 67850
+2026-09-08 15:22:42,217 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,218 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,218 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,220 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,221 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:42,221 | INFO | Google Maps title search variant 7/8: nguyen binh khiem, binh long, đong nai 67850
+2026-09-08 15:22:42,221 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,222 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,223 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,224 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,224 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:42,225 | INFO | Google Maps title search variant 8/8: binh long, đong nai 67850
+2026-09-08 15:22:42,225 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:42,226 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,226 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,228 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:42,228 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:42,228 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='THANH BINH HOTEL' | address='Nguyễn Bỉnh Khiêm, Bình Long, Đồng Nai 67850, Việt Nam'
+2026-09-08 15:22:42,228 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''
+2026-09-08 15:22:43,946 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:44,015 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='The Chilling Homestay Chi Nhánh 2' | actual_title='' | input_address='WRX6V62, Trấn Biên, Đồng Nai 76100, Việt Nam' | actual_address='' | url='https://www.google.com/maps/place/Sunny+Eco+Lodge/@11.420322,107.4312593,17z/data=!4m9!3m8!1s0x31747b7482ebcd43:0xa9336aeed6dc0d97!5m2!4m1!1i2!8m2!3d11.420322!4d107.4312593!16s%2Fg%2F11shcwq3yf?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:44,016 | INFO | Google Maps title search variant 1/8: The Chilling Homestay Chi Nhánh 2, wrx6v62, tran bien, đong nai 76100
+2026-09-08 15:22:44,016 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,018 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,018 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,020 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,020 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:44,020 | INFO | Google Maps title search variant 2/8: The Chilling Homestay Chi Nhánh 2, WRX6V62, Trấn Biên, Đồng Nai 76100, Việt Nam
+2026-09-08 15:22:44,020 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,022 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,022 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,023 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,024 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:44,024 | INFO | Google Maps title search variant 3/8: WRX6V62, Trấn Biên, Đồng Nai 76100, Việt Nam, The Chilling Homestay Chi Nhánh 2
+2026-09-08 15:22:44,024 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,026 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,026 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,029 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,030 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:44,031 | INFO | Google Maps title search variant 4/8: The Chilling Homestay Chi Nhánh 2
+2026-09-08 15:22:44,031 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,032 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,032 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,034 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,034 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:44,035 | INFO | Google Maps address search variant 5/8: WRX6V62, Trấn Biên, Đồng Nai 76100, Việt Nam
+2026-09-08 15:22:44,035 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,036 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,037 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,038 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,038 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:44,038 | INFO | Google Maps title search variant 6/8: The Chilling Homestay Chi Nhánh 2, tran bien, đong nai 76100
+2026-09-08 15:22:44,038 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,040 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,040 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,041 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,041 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:44,042 | INFO | Google Maps title search variant 7/8: wrx6v62, tran bien, đong nai 76100
+2026-09-08 15:22:44,042 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,043 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,044 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,046 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,046 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:44,047 | INFO | Google Maps title search variant 8/8: tran bien, đong nai 76100
+2026-09-08 15:22:44,051 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:44,053 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,054 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,055 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:44,055 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:44,056 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='The Chilling Homestay Chi Nhánh 2' | address='WRX6V62, Trấn Biên, Đồng Nai 76100, Việt Nam'
+2026-09-08 15:22:44,056 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''

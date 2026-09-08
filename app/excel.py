@@ -2573,8 +2573,7 @@ def process_excel(
 
                 if verified:
                     good_url = clean_google_maps_url(
-                        verified.get("google_maps_url")
-                        or verified.get("url", "")
+                        verified.get("google_maps_url") or verified.get("url", "")
                     )
 
                     if good_url and is_google_maps_place_url(good_url):

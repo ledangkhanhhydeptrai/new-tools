@@ -1,0 +1,194 @@
+2026-09-08 15:21:36,174 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-08 15:21:41,989 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:21:42,171 | INFO | Google Maps title search variant 1/8: Moon HoTel 6, khu đo thi cat tuong phu hung, binh phuoc, đong nai 830000
+2026-09-08 15:21:42,247 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Moon%20HoTel%206%2C%20khu%20%C4%91o%20thi%20cat%20tuong%20phu%20hung%2C%20binh%20phuoc%2C%20%C4%91ong%20nai%20830000
+2026-09-08 15:21:44,964 | INFO | Navigation success | attempt=1/3 | 2.72s | url=https://www.google.com/maps/search/?api=1&query=Moon%20HoTel%206%2C%20khu%20%C4%91o%20thi%20cat%20tuong%20phu%20hung%2C%20binh%20phuoc%2C%20%C4%91ong%20nai%20830000
+2026-09-08 15:21:55,690 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:21:56,772 | INFO | Navigation success | attempt=1/3 | 1.08s | url=https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:05,046 | INFO | VERIFY CANDIDATE | input_title='Moon HoTel 6' | actual_title='Moon HoTel 6' | input_address='Lô D6-58, Khu Đô Thị Cát Tường Phú Hưng, Bình Phước, Đồng Nai 830000, Việt Nam' | actual_address='\ue0c8 Lô D6-58, Khu Đô Thị Cát Tường Phú Hưng, Bình Phước, Đồng Nai 830000, Việt Nam' | url='https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | coordinates=(11.4998263, 106.8)
+2026-09-08 15:22:05,197 | INFO | VERIFY FINAL | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | title_ok=True | address_ok=True | input_title='Moon HoTel 6' | maps_title='Moon HoTel 6' | input_address='Lô D6-58, Khu Đô Thị Cát Tường Phú Hưng, Bình Phước, Đồng Nai 830000, Việt Nam' | maps_address='\ue0c8 Lô D6-58, Khu Đô Thị Cát Tường Phú Hưng, Bình Phước, Đồng Nai 830000, Việt Nam' | url='https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:05,268 | INFO | Google Maps SUCCESS: Moon HoTel 6 |  Lô D6-58, Khu Đô Thị Cát Tường Phú Hưng, Bình Phước, Đồng Nai 830000, Việt Nam | url=https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D | reason=TITLE_AND_ADDRESS_VERIFIED
+2026-09-08 15:22:05,342 | INFO | EXCEL SEARCH RESULT | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | google_maps_url='https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:05,486 | INFO | PROMOTE VERIFIED MAPS METADATA | title_verified=True | address_verified=True | maps_title='Moon HoTel 6' | maps_address='\ue0c8 Lô D6-58, Khu Đô Thị Cát Tường Phú Hưng, Bình Phước, Đồng Nai 830000, Việt Nam'
+2026-09-08 15:22:08,165 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:09,899 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Nam Ky Motel' | actual_title='Moon HoTel 6' | input_address='MJ867J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam' | actual_address='\ue413' | url='https://www.google.com/maps/place/Moon+HoTel+6/@11.4998263,106.8763737,17z/data=!3m1!4b1!4m6!3m5!1s0x3174a1923fb66c21:0xc6021ad9de7cdfc!8m2!3d11.4998263!4d106.8763737!16s%2Fg%2F11zbfpft6b?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:09,975 | INFO | Google Maps title search variant 1/8: Nam Ky Motel, binh long commune, an loc, đong nai
+2026-09-08 15:22:10,029 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Nam%20Ky%20Motel%2C%20binh%20long%20commune%2C%20an%20loc%2C%20%C4%91ong%20nai
+2026-09-08 15:22:10,345 | INFO | Navigation success | attempt=1/3 | 0.32s | url=https://www.google.com/maps/search/?api=1&query=Nam%20Ky%20Motel%2C%20binh%20long%20commune%2C%20an%20loc%2C%20%C4%91ong%20nai
+2026-09-08 15:22:16,691 | INFO | DIRECT PLACE DETECTED DURING HYDRATION | attempt=3/6 | mode=title | url='https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:16,893 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:17,552 | INFO | Navigation success | attempt=1/3 | 0.66s | url=https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:21,450 | INFO | VERIFY CANDIDATE | input_title='Nam Ky Motel' | actual_title='Nam Ky Motel' | input_address='MJ867J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam' | actual_address='\ue0c8 MJ86+7J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | coordinates=(11.6656405, 106.6)
+2026-09-08 15:22:21,583 | INFO | VERIFY FINAL | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | title_ok=True | address_ok=True | input_title='Nam Ky Motel' | maps_title='Nam Ky Motel' | input_address='MJ867J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam' | maps_address='\ue0c8 MJ86+7J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:21,745 | INFO | DIRECT PLACE RESCUE SUCCESS | mode=title | title_ok=True | address_ok=False | maps_title='Nam Ky Motel' | maps_address='\ue0c8 MJ86+7J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:21,838 | INFO | Google Maps SUCCESS: Nam Ky Motel |  MJ86+7J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam | url=https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D | reason=TITLE_AND_ADDRESS_VERIFIED
+2026-09-08 15:22:21,945 | INFO | EXCEL SEARCH RESULT | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | google_maps_url='https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:22,002 | INFO | PROMOTE VERIFIED MAPS METADATA | title_verified=True | address_verified=True | maps_title='Nam Ky Motel' | maps_address='\ue0c8 MJ86+7J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam'
+2026-09-08 15:22:24,493 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:26,924 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Nguyễn Trâm Hotel' | actual_title='Nam Ky Motel' | input_address='Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam' | actual_address='MJ86+7J3, Phu Xuan Neighborhood, An Loc Ward, Binh Long Commune, An Lộc, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nam+Ky+Motel/@11.6656405,106.611533,17z/data=!3m1!4b1!4m6!3m5!1s0x317354095f95351d:0x5d6bcd50abd43531!8m2!3d11.6656405!4d106.611533!16s%2Fg%2F1pztpl21d?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:26,941 | INFO | Google Maps title search variant 1/8: Nguyễn Trâm Hotel, ly nam đe, trang bom, đong nai
+2026-09-08 15:22:26,950 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Nguy%E1%BB%85n%20Tr%C3%A2m%20Hotel%2C%20ly%20nam%20%C4%91e%2C%20trang%20bom%2C%20%C4%91ong%20nai
+2026-09-08 15:22:27,238 | INFO | Navigation success | attempt=1/3 | 0.29s | url=https://www.google.com/maps/search/?api=1&query=Nguy%E1%BB%85n%20Tr%C3%A2m%20Hotel%2C%20ly%20nam%20%C4%91e%2C%20trang%20bom%2C%20%C4%91ong%20nai
+2026-09-08 15:22:33,066 | INFO | DIRECT PLACE DETECTED DURING HYDRATION | attempt=3/6 | mode=title | url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:33,066 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:33,485 | INFO | Navigation success | attempt=1/3 | 0.42s | url=https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:36,898 | INFO | VERIFY CANDIDATE | input_title='Nguyễn Trâm Hotel' | actual_title='Nguyễn Trâm Hotel' | input_address='Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam' | actual_address='\ue0c8 Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | coordinates=(10.9583911, 106.9)
+2026-09-08 15:22:36,912 | INFO | VERIFY FINAL | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | title_ok=True | address_ok=True | input_title='Nguyễn Trâm Hotel' | maps_title='Nguyễn Trâm Hotel' | input_address='Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam' | maps_address='\ue0c8 Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:36,917 | INFO | DIRECT PLACE RESCUE SUCCESS | mode=title | title_ok=True | address_ok=True | maps_title='Nguyễn Trâm Hotel' | maps_address='\ue0c8 Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:36,917 | INFO | Google Maps SUCCESS: Nguyễn Trâm Hotel |  Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam | url=https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D | reason=TITLE_AND_ADDRESS_VERIFIED
+2026-09-08 15:22:36,918 | INFO | EXCEL SEARCH RESULT | success=True | reason=TITLE_AND_ADDRESS_VERIFIED | google_maps_url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D' | cleaned_url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:36,923 | INFO | PROMOTE VERIFIED MAPS METADATA | title_verified=True | address_verified=True | maps_title='Nguyễn Trâm Hotel' | maps_address='\ue0c8 Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam'
+2026-09-08 15:22:38,957 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:40,031 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Nopita Hotel' | actual_title='Nguyễn Trâm Hotel' | input_address='Bình Phước, Đồng Nai 830000, Việt Nam' | actual_address='\ue0c8 Lý Nam Đế, Trảng Bom, Đồng Nai, Việt Nam' | url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:40,032 | INFO | Google Maps title search variant 1/8: Nopita Hotel, binh phuoc, đong nai 830000
+2026-09-08 15:22:40,032 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Nopita%20Hotel%2C%20binh%20phuoc%2C%20%C4%91ong%20nai%20830000
+2026-09-08 15:22:40,224 | WARNING | Navigation ERROR | attempt=1/3 | 0.19s | retryable=True | error=Page.goto: net::ERR_ABORTED; maybe frame was detached?
+Call log:
+  - navigating to "https://www.google.com/maps/search/?api=1&query=Nopita%20Hotel%2C%20binh%20phuoc%2C%20%C4%91ong%20nai%20830000", waiting until "commit"
+
+2026-09-08 15:22:40,224 | INFO | Retryable error | retry in 0.81s | next_attempt=2/3
+2026-09-08 15:22:41,259 | INFO | Closed Playwright page
+2026-09-08 15:22:41,259 | INFO | Recreating page | delay=0.63s
+2026-09-08 15:22:41,893 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,893 | ERROR | Page recreation failed: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,894 | WARNING | Page recreation failed | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,895 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,895 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:41,896 | INFO | Google Maps title search variant 2/8: Nopita Hotel, Bình Phước, Đồng Nai 830000, Việt Nam
+2026-09-08 15:22:41,896 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,897 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,898 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,899 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,899 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:41,899 | INFO | Google Maps title search variant 3/8: Bình Phước, Đồng Nai 830000, Việt Nam, Nopita Hotel
+2026-09-08 15:22:41,900 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,901 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,902 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,903 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,903 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:41,904 | INFO | Google Maps title search variant 4/8: Nopita Hotel
+2026-09-08 15:22:41,904 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,905 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,906 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,907 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,907 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:41,908 | INFO | Google Maps address search variant 5/8: Bình Phước, Đồng Nai 830000, Việt Nam
+2026-09-08 15:22:41,908 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,909 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,910 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,911 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,911 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:41,911 | INFO | Google Maps title search variant 6/8: binh phuoc, đong nai 830000
+2026-09-08 15:22:41,912 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,913 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,913 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,915 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,915 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:41,915 | INFO | Google Maps title search variant 7/8: Nopita Hotel, đong nai 830000
+2026-09-08 15:22:41,916 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,917 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,917 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,919 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,919 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:41,920 | INFO | Google Maps title search variant 8/8: Nopita Hotel, binh phuoc
+2026-09-08 15:22:41,920 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,921 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,922 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,923 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,924 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:41,924 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='Nopita Hotel' | address='Bình Phước, Đồng Nai 830000, Việt Nam'
+2026-09-08 15:22:41,924 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''
+2026-09-08 15:22:43,564 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:43,583 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='PARADISE HOTEL' | actual_title='' | input_address='GVGR9C8, Tôn Đức Thắng, Bình Phước, Đồng Nai, Việt Nam' | actual_address='' | url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:43,584 | INFO | Google Maps title search variant 1/8: PARADISE HOTEL, ton đuc thang, binh phuoc, đong nai
+2026-09-08 15:22:43,584 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,587 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,587 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,589 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,589 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:43,589 | INFO | Google Maps title search variant 2/8: PARADISE HOTEL, GVGR9C8, Tôn Đức Thắng, Bình Phước, Đồng Nai, Việt Nam
+2026-09-08 15:22:43,590 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,592 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,592 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,594 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,594 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:43,594 | INFO | Google Maps title search variant 3/8: GVGR9C8, Tôn Đức Thắng, Bình Phước, Đồng Nai, Việt Nam, PARADISE HOTEL
+2026-09-08 15:22:43,594 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,596 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,596 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,598 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,598 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:43,598 | INFO | Google Maps title search variant 4/8: PARADISE HOTEL
+2026-09-08 15:22:43,599 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,600 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,600 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,602 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,602 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:43,602 | INFO | Google Maps address search variant 5/8: GVGR9C8, Tôn Đức Thắng, Bình Phước, Đồng Nai, Việt Nam
+2026-09-08 15:22:43,602 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,604 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,604 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,606 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,606 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:43,606 | INFO | Google Maps title search variant 6/8: PARADISE HOTEL, binh phuoc, đong nai
+2026-09-08 15:22:43,606 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,608 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,608 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,609 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,610 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:43,610 | INFO | Google Maps title search variant 7/8: ton đuc thang, binh phuoc, đong nai
+2026-09-08 15:22:43,610 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,611 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,612 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,613 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,613 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:43,613 | INFO | Google Maps title search variant 8/8: binh phuoc, đong nai
+2026-09-08 15:22:43,614 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,615 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,615 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,617 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,617 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:43,617 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='PARADISE HOTEL' | address='GVGR9C8, Tôn Đức Thắng, Bình Phước, Đồng Nai, Việt Nam'
+2026-09-08 15:22:43,617 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''
+2026-09-08 15:22:45,086 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:45,108 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Phương Lâm Hotel' | actual_title='' | input_address='Bình Phước, Đồng Nai, Việt Nam' | actual_address='' | url='https://www.google.com/maps/place/Nguy%E1%BB%85n+Tr%C3%A2m+Hotel/@10.9583911,106.9945313,17z/data=!3m1!4b1!4m6!3m5!1s0x316bcbbca079c34b:0x694925a348d110e7!8m2!3d10.9583911!4d106.9945313!16s%2Fg%2F11p0bql99p?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:45,151 | INFO | Google Maps title search variant 1/8: Phương Lâm Hotel, binh phuoc, đong nai
+2026-09-08 15:22:45,152 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,195 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,203 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,204 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,204 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:45,204 | INFO | Google Maps title search variant 2/8: Phương Lâm Hotel, Bình Phước, Đồng Nai, Việt Nam
+2026-09-08 15:22:45,204 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,205 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,205 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,206 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,206 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:45,206 | INFO | Google Maps title search variant 3/8: Bình Phước, Đồng Nai, Việt Nam, Phương Lâm Hotel
+2026-09-08 15:22:45,206 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,208 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,208 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,209 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,225 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:45,225 | INFO | Google Maps title search variant 4/8: Phương Lâm Hotel
+2026-09-08 15:22:45,225 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,226 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,226 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,227 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,227 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:45,227 | INFO | Google Maps address search variant 5/8: Bình Phước, Đồng Nai, Việt Nam
+2026-09-08 15:22:45,227 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,228 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,228 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,229 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,229 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:45,229 | INFO | Google Maps title search variant 6/8: binh phuoc, đong nai
+2026-09-08 15:22:45,229 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,230 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,230 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,231 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,232 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:45,232 | INFO | Google Maps title search variant 7/8: Phương Lâm Hotel, đong nai
+2026-09-08 15:22:45,232 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,233 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,233 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver

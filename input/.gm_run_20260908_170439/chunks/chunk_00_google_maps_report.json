@@ -1,0 +1,16 @@
+{
+  "input_file": "D:\\Product-Google-Maps.worktrees\\fix-google-maps-link-from-address\\input\\.gm_run_20260908_170439\\chunks\\chunk_00.xlsx",
+  "result_file": "D:\\Product-Google-Maps.worktrees\\fix-google-maps-link-from-address\\input\\.gm_run_20260908_170439\\chunks\\chunk_00_google_maps_result.xlsx",
+  "missing_file": "D:\\Product-Google-Maps.worktrees\\fix-google-maps-link-from-address\\input\\.gm_run_20260908_170439\\chunks\\chunk_00_google_maps_missing.xlsx",
+  "total_rows": 14,
+  "processed": 14,
+  "skipped": 0,
+  "cache_hits": 0,
+  "json_hits": 0,
+  "real_searches": 14,
+  "found": 12,
+  "missing": 2,
+  "recoveries": 0,
+  "elapsed_seconds": 1131.87,
+  "finished_at": "2026-09-08T17:23:41"
+}

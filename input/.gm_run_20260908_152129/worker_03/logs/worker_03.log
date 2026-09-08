@@ -1,0 +1,189 @@
+2026-09-08 15:21:36,342 | INFO | JSON lookup loaded: 0 Maps URLs
+2026-09-08 15:21:44,012 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:21:44,053 | INFO | Google Maps title search variant 1/8: Khách sạn Thanh Huyền, w273p2f, phu nghia, đong nai
+2026-09-08 15:21:44,098 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/?api=1&query=Kh%C3%A1ch%20s%E1%BA%A1n%20Thanh%20Huy%E1%BB%81n%2C%20w273p2f%2C%20phu%20nghia%2C%20%C4%91ong%20nai
+2026-09-08 15:21:47,450 | INFO | Navigation success | attempt=1/3 | 3.35s | url=https://www.google.com/maps/search/?api=1&query=Kh%C3%A1ch%20s%E1%BA%A1n%20Thanh%20Huy%E1%BB%81n%2C%20w273p2f%2C%20phu%20nghia%2C%20%C4%91ong%20nai
+2026-09-08 15:21:57,791 | INFO | CANDIDATES HYDRATED | attempt=1/6 | count=4
+2026-09-08 15:21:58,105 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Khách+Sạn+Thanh+Huyền/data=!4m7!3m6!1s0x31752930640ca7cf:0xaa8ebb0b4d4c8bb2!8m2!3d10.801344!4d106.662051!16s/g/11cmtry5x8!19sChIJz6cMZDApdTERsotMTQu7jqo?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:00,200 | INFO | Navigation success | attempt=1/3 | 2.09s | url=https://www.google.com/maps/place/Khách+Sạn+Thanh+Huyền/data=!4m7!3m6!1s0x31752930640ca7cf:0xaa8ebb0b4d4c8bb2!8m2!3d10.801344!4d106.662051!16s/g/11cmtry5x8!19sChIJz6cMZDApdTERsotMTQu7jqo?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:08,284 | INFO | VERIFY CANDIDATE | input_title='Khách sạn Thanh Huyền' | actual_title='' | input_address='W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam' | actual_address='\ue52e' | url='https://www.google.com/maps/place/Kh%C3%A1ch+S%E1%BA%A1n+Thanh+Huy%E1%BB%81n/data=!4m7!3m6!1s0x31752930640ca7cf:0xaa8ebb0b4d4c8bb2!8m2!3d10.801344!4d106.662051!16s/g/11cmtry5x8!19sChIJz6cMZDApdTERsotMTQu7jqo?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1' | coordinates=(10.8265472, 106.6)
+2026-09-08 15:22:08,447 | INFO | VERIFY FINAL | success=False | reason=TITLE_UNAVAILABLE | title_ok=False | address_ok=False | input_title='Khách sạn Thanh Huyền' | maps_title='' | input_address='W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam' | maps_address='\ue52e' | url='https://www.google.com/maps/place/Kh%C3%A1ch+S%E1%BA%A1n+Thanh+Huy%E1%BB%81n/data=!4m7!3m6!1s0x31752930640ca7cf:0xaa8ebb0b4d4c8bb2!8m2!3d10.801344!4d106.662051!16s/g/11cmtry5x8!19sChIJz6cMZDApdTERsotMTQu7jqo?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1'
+2026-09-08 15:22:08,551 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n,+w273p2f,+phu+nghia,+%C4%91ong+nai/@11.1256198,106.8760096,9z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:09,126 | INFO | Navigation success | attempt=1/3 | 0.57s | url=https://www.google.com/maps/search/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n,+w273p2f,+phu+nghia,+%C4%91ong+nai/@11.1256198,106.8760096,9z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:09,516 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Motel+THANH+HUYỀN/data=!4m10!3m9!1s0x31756f007455ae85:0xa9e777eb0eeb29b0!5m2!4m1!1i2!8m2!3d10.3369372!4d107.085472!16s/g/11z4r_b_hc!19sChIJha5VdABvdTERsCnrDut356k?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:24,586 | WARNING | Navigation TIMEOUT | attempt=1/3 | 15.07s | url=https://www.google.com/maps/place/Motel+THANH+HUYỀN/data=!4m10!3m9!1s0x31756f007455ae85:0xa9e777eb0eeb29b0!5m2!4m1!1i2!8m2!3d10.3369372!4d107.085472!16s/g/11z4r_b_hc!19sChIJha5VdABvdTERsCnrDut356k?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:24,633 | INFO | Retrying navigation | next_attempt=2/3 | delay=0.96s
+2026-09-08 15:22:26,694 | INFO | Closed Playwright page
+2026-09-08 15:22:26,820 | INFO | Recreating page | delay=0.71s
+2026-09-08 15:22:28,542 | INFO | Created new Playwright page
+2026-09-08 15:22:28,550 | INFO | Navigation start | attempt=2/3 | timeout=15000ms | url=https://www.google.com/maps/place/Motel+THANH+HUYỀN/data=!4m10!3m9!1s0x31756f007455ae85:0xa9e777eb0eeb29b0!5m2!4m1!1i2!8m2!3d10.3369372!4d107.085472!16s/g/11z4r_b_hc!19sChIJha5VdABvdTERsCnrDut356k?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:28,833 | INFO | Navigation success | attempt=2/3 | 0.28s | url=https://www.google.com/maps/place/Motel+THANH+HUYỀN/data=!4m10!3m9!1s0x31756f007455ae85:0xa9e777eb0eeb29b0!5m2!4m1!1i2!8m2!3d10.3369372!4d107.085472!16s/g/11z4r_b_hc!19sChIJha5VdABvdTERsCnrDut356k?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:30,584 | INFO | VERIFY CANDIDATE | input_title='Khách sạn Thanh Huyền' | actual_title='' | input_address='W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam' | actual_address='\ue52e' | url='https://www.google.com/maps/place/Motel+THANH+HUY%E1%BB%80N/data=!4m10!3m9!1s0x31756f007455ae85:0xa9e777eb0eeb29b0!5m2!4m1!1i2!8m2!3d10.3369372!4d107.085472!16s/g/11z4r_b_hc!19sChIJha5VdABvdTERsCnrDut356k?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1' | coordinates=(10.3369372, 107.0)
+2026-09-08 15:22:30,910 | INFO | VERIFY FINAL | success=False | reason=TITLE_UNAVAILABLE | title_ok=False | address_ok=False | input_title='Khách sạn Thanh Huyền' | maps_title='' | input_address='W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam' | maps_address='\ue52e' | url='https://www.google.com/maps/place/Motel+THANH+HUY%E1%BB%80N/data=!4m10!3m9!1s0x31756f007455ae85:0xa9e777eb0eeb29b0!5m2!4m1!1i2!8m2!3d10.3369372!4d107.085472!16s/g/11z4r_b_hc!19sChIJha5VdABvdTERsCnrDut356k?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1'
+2026-09-08 15:22:31,165 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n,+w273p2f,+phu+nghia,+%C4%91ong+nai/@11.1256198,106.8760096,9z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:31,545 | INFO | Navigation success | attempt=1/3 | 0.38s | url=https://www.google.com/maps/search/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n,+w273p2f,+phu+nghia,+%C4%91ong+nai/@11.1256198,106.8760096,9z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:31,939 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Khách+Sạn+Thanh+Huyền/data=!4m10!3m9!1s0x31756fa8965e2183:0xb1b73f48f9a84240!5m2!4m1!1i2!8m2!3d10.3375839!4d107.0899682!16s/g/11vk45vfvf!19sChIJgyFelqhvdTERQEKo-Ug_t7E?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:32,653 | INFO | Navigation success | attempt=1/3 | 0.71s | url=https://www.google.com/maps/place/Khách+Sạn+Thanh+Huyền/data=!4m10!3m9!1s0x31756fa8965e2183:0xb1b73f48f9a84240!5m2!4m1!1i2!8m2!3d10.3375839!4d107.0899682!16s/g/11vk45vfvf!19sChIJgyFelqhvdTERQEKo-Ug_t7E?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:34,923 | INFO | VERIFY CANDIDATE | input_title='Khách sạn Thanh Huyền' | actual_title='' | input_address='W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam' | actual_address='\ue52e' | url='https://www.google.com/maps/place/Kh%C3%A1ch+S%E1%BA%A1n+Thanh+Huy%E1%BB%81n/data=!4m10!3m9!1s0x31756fa8965e2183:0xb1b73f48f9a84240!5m2!4m1!1i2!8m2!3d10.3375839!4d107.0899682!16s/g/11vk45vfvf!19sChIJgyFelqhvdTERQEKo-Ug_t7E?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1' | coordinates=(10.3375839, 107.0)
+2026-09-08 15:22:35,254 | INFO | VERIFY FINAL | success=False | reason=TITLE_UNAVAILABLE | title_ok=False | address_ok=False | input_title='Khách sạn Thanh Huyền' | maps_title='' | input_address='W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam' | maps_address='\ue52e' | url='https://www.google.com/maps/place/Kh%C3%A1ch+S%E1%BA%A1n+Thanh+Huy%E1%BB%81n/data=!4m10!3m9!1s0x31756fa8965e2183:0xb1b73f48f9a84240!5m2!4m1!1i2!8m2!3d10.3375839!4d107.0899682!16s/g/11vk45vfvf!19sChIJgyFelqhvdTERQEKo-Ug_t7E?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1'
+2026-09-08 15:22:35,534 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/search/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n,+w273p2f,+phu+nghia,+%C4%91ong+nai/@11.1256198,106.8760096,9z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:36,966 | INFO | Navigation success | attempt=1/3 | 1.43s | url=https://www.google.com/maps/search/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n,+w273p2f,+phu+nghia,+%C4%91ong+nai/@11.1256198,106.8760096,9z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D
+2026-09-08 15:22:39,545 | INFO | Navigation start | attempt=1/3 | timeout=15000ms | url=https://www.google.com/maps/place/Khách+sạn+Thanh+Huyền/data=!4m7!3m6!1s0x317314abd89b2e2b:0x58ec3e43e0751197!8m2!3d11.9143023!4d107.0025416!16s/g/11bccd60gk!19sChIJKy6b2KsUczERlxF14EM-7Fg?authuser=0&hl=vi&g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&rclk=1
+2026-09-08 15:22:40,216 | WARNING | Navigation ERROR | attempt=1/3 | 0.67s | retryable=True | error=Page.goto: net::ERR_ABORTED; maybe frame was detached?
+Call log:
+  - navigating to "https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n/data=!4m7!3m6!1s0x317314abd89b2e2b:0x58ec3e43e0751197!8m2!3d11.9143023!4d107.0025416!16s/g/11bccd60gk!19sChIJKy6b2KsUczERlxF14EM-7Fg?authus
+2026-09-08 15:22:40,217 | INFO | Retryable error | retry in 0.85s | next_attempt=2/3
+2026-09-08 15:22:41,276 | INFO | Closed Playwright page
+2026-09-08 15:22:41,276 | INFO | Recreating page | delay=0.48s
+2026-09-08 15:22:41,773 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,773 | ERROR | Page recreation failed: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,773 | WARNING | Page recreation failed | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,775 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,775 | INFO | Google Maps title search variant 2/8: Khách sạn Thanh Huyền, W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam
+2026-09-08 15:22:41,775 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,777 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,777 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,779 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,779 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:41,779 | INFO | Google Maps title search variant 3/8: W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam, Khách sạn Thanh Huyền
+2026-09-08 15:22:41,779 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,781 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,781 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,783 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,783 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:41,783 | INFO | Google Maps title search variant 4/8: Khách sạn Thanh Huyền
+2026-09-08 15:22:41,784 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,785 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,785 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,787 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,787 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:41,787 | INFO | Google Maps address search variant 5/8: W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam
+2026-09-08 15:22:41,787 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,789 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,789 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,790 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,790 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:41,791 | INFO | Google Maps title search variant 6/8: Khách sạn Thanh Huyền, phu nghia, đong nai
+2026-09-08 15:22:41,791 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,792 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,792 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,794 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,794 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:41,794 | INFO | Google Maps title search variant 7/8: w273p2f, phu nghia, đong nai
+2026-09-08 15:22:41,794 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,796 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,796 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,799 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,799 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:41,799 | INFO | Google Maps title search variant 8/8: phu nghia, đong nai
+2026-09-08 15:22:41,799 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:41,801 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,801 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,802 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:41,802 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:41,803 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='Khách sạn Thanh Huyền' | address='W273P2F, Phú Nghĩa, Đồng Nai, Việt Nam'
+2026-09-08 15:22:41,803 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''
+2026-09-08 15:22:43,410 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:43,438 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='KHÁCH SẠN THIÊN PHƯỚC' | actual_title='' | input_address='CMM45G4, Đường D1, Chơn Thành, Đồng Nai, Việt Nam' | actual_address='' | url='https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n/@11.1256198,106.8760096,9z/data=!3m1!4b1!4m6!3m5!1s0x317314abd89b2e2b:0x58ec3e43e0751197!8m2!3d11.9143023!4d107.0025416!16s%2Fg%2F11bccd60gk?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:43,439 | INFO | Google Maps title search variant 1/8: KHÁCH SẠN THIÊN PHƯỚC, đuong d1, chon thanh, đong nai
+2026-09-08 15:22:43,439 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,441 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,441 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,442 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,443 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:43,443 | INFO | Google Maps title search variant 2/8: KHÁCH SẠN THIÊN PHƯỚC, CMM45G4, Đường D1, Chơn Thành, Đồng Nai, Việt Nam
+2026-09-08 15:22:43,443 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,446 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,446 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,448 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,448 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:43,449 | INFO | Google Maps title search variant 3/8: CMM45G4, Đường D1, Chơn Thành, Đồng Nai, Việt Nam, KHÁCH SẠN THIÊN PHƯỚC
+2026-09-08 15:22:43,449 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,453 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,454 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,457 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,457 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:43,457 | INFO | Google Maps title search variant 4/8: KHÁCH SẠN THIÊN PHƯỚC
+2026-09-08 15:22:43,457 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,460 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,460 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,463 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,463 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:43,463 | INFO | Google Maps address search variant 5/8: CMM45G4, Đường D1, Chơn Thành, Đồng Nai, Việt Nam
+2026-09-08 15:22:43,463 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,466 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,466 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,471 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,472 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:43,472 | INFO | Google Maps title search variant 6/8: KHÁCH SẠN THIÊN PHƯỚC, chon thanh, đong nai
+2026-09-08 15:22:43,472 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,474 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,475 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,476 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,477 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:43,478 | INFO | Google Maps title search variant 7/8: đuong d1, chon thanh, đong nai
+2026-09-08 15:22:43,478 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,480 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,480 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,482 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,483 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:43,483 | INFO | Google Maps title search variant 8/8: chon thanh, đong nai
+2026-09-08 15:22:43,483 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:43,486 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,486 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,498 | ERROR | Cannot create new page: BrowserContext.new_page: Target page, context or browser has been closed
+2026-09-08 15:22:43,498 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:43,499 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='KHÁCH SẠN THIÊN PHƯỚC' | address='CMM45G4, Đường D1, Chơn Thành, Đồng Nai, Việt Nam'
+2026-09-08 15:22:43,499 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''
+2026-09-08 15:22:45,236 | INFO | Existing URL check | maps_col=google_maps_url | url_col=URL | maps='' | url='' | reusable=''
+2026-09-08 15:22:45,244 | WARNING | CURRENT MAPS PLACE TITLE/ADDRESS MISMATCH | input_title='Khách sạn Trường Giang' | actual_title='' | input_address='QL20 Đức Long, Thống Nhất, Đồng Nai, Việt Nam' | actual_address='' | url='https://www.google.com/maps/place/Kh%C3%A1ch+s%E1%BA%A1n+Thanh+Huy%E1%BB%81n/@11.1256198,106.8760096,9z/data=!3m1!4b1!4m6!3m5!1s0x317314abd89b2e2b:0x58ec3e43e0751197!8m2!3d11.9143023!4d107.0025416!16s%2Fg%2F11bccd60gk?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D'
+2026-09-08 15:22:45,244 | INFO | Google Maps title search variant 1/8: Khách sạn Trường Giang, ql20 đuc long, thong nhat, đong nai
+2026-09-08 15:22:45,245 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,245 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,246 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,247 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,247 | WARNING | Google Maps navigation failed variant=1/8 attempts=1
+2026-09-08 15:22:45,247 | INFO | Google Maps title search variant 2/8: Khách sạn Trường Giang, QL20 Đức Long, Thống Nhất, Đồng Nai, Việt Nam
+2026-09-08 15:22:45,247 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,248 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,248 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,249 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,249 | WARNING | Google Maps navigation failed variant=2/8 attempts=1
+2026-09-08 15:22:45,249 | INFO | Google Maps title search variant 3/8: QL20 Đức Long, Thống Nhất, Đồng Nai, Việt Nam, Khách sạn Trường Giang
+2026-09-08 15:22:45,249 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,250 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,250 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,251 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,251 | WARNING | Google Maps navigation failed variant=3/8 attempts=1
+2026-09-08 15:22:45,251 | INFO | Google Maps title search variant 4/8: Khách sạn Trường Giang
+2026-09-08 15:22:45,251 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,252 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,252 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,253 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,253 | WARNING | Google Maps navigation failed variant=4/8 attempts=1
+2026-09-08 15:22:45,253 | INFO | Google Maps address search variant 5/8: QL20 Đức Long, Thống Nhất, Đồng Nai, Việt Nam
+2026-09-08 15:22:45,253 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,254 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,254 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,255 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,255 | WARNING | Google Maps navigation failed variant=5/8 attempts=1
+2026-09-08 15:22:45,255 | INFO | Google Maps title search variant 6/8: Khách sạn Trường Giang, thong nhat, đong nai
+2026-09-08 15:22:45,255 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,256 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,256 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,257 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,257 | WARNING | Google Maps navigation failed variant=6/8 attempts=1
+2026-09-08 15:22:45,257 | INFO | Google Maps title search variant 7/8: ql20 đuc long, thong nhat, đong nai
+2026-09-08 15:22:45,257 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,258 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,258 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,259 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,259 | WARNING | Google Maps navigation failed variant=7/8 attempts=1
+2026-09-08 15:22:45,260 | INFO | Google Maps title search variant 8/8: thong nhat, đong nai
+2026-09-08 15:22:45,260 | WARNING | Current page already closed | attempt=1/3
+2026-09-08 15:22:45,260 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,261 | WARNING | Page validation failed | attempt=1/3 | error=BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,261 | ERROR | Cannot create new page: BrowserContext.new_page: Connection closed while reading from the driver
+2026-09-08 15:22:45,261 | WARNING | Google Maps navigation failed variant=8/8 attempts=1
+2026-09-08 15:22:45,262 | WARNING | Google Maps search exhausted | reason=NOT_FOUND | title='Khách sạn Trường Giang' | address='QL20 Đức Long, Thống Nhất, Đồng Nai, Việt Nam'
+2026-09-08 15:22:45,262 | INFO | EXCEL SEARCH RESULT | success=False | reason=NOT_FOUND | google_maps_url=None | url=None | cleaned_url=''

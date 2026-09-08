@@ -46324,3 +46324,27 @@ TypeError: Invalid value '177 Đ. Lê Thái Tổ, Hoa Lư, Ninh Bình 430000, Vi
 2026-09-07 16:10:48,156 | WARNING | Stopping Worker 2 | PID=8232
 2026-09-07 16:10:48,464 | WARNING | Stopping Worker 3 | PID=3368
 2026-09-07 16:10:48,916 | WARNING | Stopping Worker 4 | PID=18352
+2026-09-08 08:40:43,766 | WARNING | Stopping Worker 1 | PID=25856
+2026-09-08 08:40:44,336 | WARNING | Stopping Worker 2 | PID=21120
+2026-09-08 08:40:44,676 | WARNING | Stopping Worker 3 | PID=13224
+2026-09-08 08:40:44,970 | WARNING | Stopping Worker 4 | PID=21420
+2026-09-08 09:13:56,194 | WARNING | Stopping Worker 1 | PID=29852
+2026-09-08 09:13:56,888 | WARNING | Stopping Worker 2 | PID=27620
+2026-09-08 09:13:57,210 | WARNING | Stopping Worker 3 | PID=29860
+2026-09-08 09:13:57,699 | WARNING | Stopping Worker 4 | PID=29940
+2026-09-08 09:14:52,103 | WARNING | Stopping Worker 1 | PID=20468
+2026-09-08 09:14:52,370 | WARNING | Stopping Worker 2 | PID=27132
+2026-09-08 09:14:52,651 | WARNING | Stopping Worker 4 | PID=27164
+2026-09-08 09:35:02,338 | WARNING | Stopping Worker 1 | PID=12720
+2026-09-08 09:35:02,971 | WARNING | Stopping Worker 2 | PID=29188
+2026-09-08 09:35:03,560 | WARNING | Stopping Worker 3 | PID=31964
+2026-09-08 09:35:03,848 | WARNING | Stopping Worker 4 | PID=8348
+2026-09-08 15:19:40,595 | WARNING | Stopping Worker 1 | PID=31660
+2026-09-08 15:21:47,244 | WARNING | Stopping Worker 1 | PID=32084
+2026-09-08 15:21:50,882 | WARNING | taskkill failed for Worker 1: Command '['taskkill', '/PID', '32084', '/T', '/F']' timed out after 3.0 seconds
+2026-09-08 15:21:54,118 | WARNING | Stopping Worker 2 | PID=23388
+2026-09-08 15:21:57,204 | WARNING | taskkill failed for Worker 2: Command '['taskkill', '/PID', '23388', '/T', '/F']' timed out after 3.0 seconds
+2026-09-08 15:22:00,378 | WARNING | Stopping Worker 3 | PID=29136
+2026-09-08 15:22:03,473 | WARNING | taskkill failed for Worker 3: Command '['taskkill', '/PID', '29136', '/T', '/F']' timed out after 3.0 seconds
+2026-09-08 15:22:06,681 | WARNING | Stopping Worker 4 | PID=28380
+2026-09-08 15:22:09,810 | WARNING | taskkill failed for Worker 4: Command '['taskkill', '/PID', '28380', '/T', '/F']' timed out after 3.0 seconds
